@@ -31,10 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //Play Button
             GestureDetector(
               onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FarmScreen())
-                )
+                Navigator.pushNamed(context, '/farm')
               },
               child: Image.asset('assets/images/PlayButton.png',
               fit: BoxFit.cover,
