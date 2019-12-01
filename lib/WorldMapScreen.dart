@@ -4,28 +4,28 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'dart:async';
-
 import 'WorldMap_Player&SeedData.dart';
 
+//worldmapscreen widget
 class WorldMapScreen extends StatefulWidget {
   WorldMapScreen({Key key, this.title, this.currentSeeds}) : super(key: key);
   final String title;
 
-  final List<SeedMapData> currentSeeds;
+  //currentSeeds that take in leftover seeds from last visit to mapscreen
+  final List<SeedMapData> currentSeeds; //from farm screen
 
   @override
   _WorldMapPage createState() => _WorldMapPage();
 }
 
+//worldmappage state
 class _WorldMapPage extends State<WorldMapScreen> {
 
   var playerController = MapController(); //mapcontroller to control where map is centered
-
   var playerLocation = Geolocator(); //geolocator
 
   //the player's map data, holding their position on the map
   var mapPlayer = PlayerMapData(2); //radius of 2
-
   //the seed data, to create various seeds using the list of seeds
   var seedData = SeedMarker();
 
@@ -40,10 +40,11 @@ class _WorldMapPage extends State<WorldMapScreen> {
 
   //geocoding function to return street names
   String checkPosition() {
-    //reverse geocoding
+    //reverse geocoding to get street names from player location
     playerLocation.placemarkFromCoordinates(mapPlayer.position.latitude, mapPlayer.position.longitude).then((List<Placemark> surroundingLoc) {
-      for (Placemark place in surroundingLoc) {
-        street = place.thoroughfare; //set street to current street name
+      //loop through the list of surrounding locations
+      for (Placemark currentStreets in surroundingLoc) { 
+        street = currentStreets.thoroughfare; //set street to current street name
       }
     });
 
@@ -77,7 +78,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
     if(onWorldMapScreen) {
       playerLocation.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position pos) {
         setState(() {
-          mapPlayer.position = new LatLng(pos.latitude, pos.longitude);
+          mapPlayer.position = new LatLng(pos.latitude, pos.longitude); //update the player position
         });
       });
     }

@@ -26,8 +26,8 @@ class SeedMarker {
     //generate a new seed
     SeedMapData newSeed = new SeedMapData();
 
-      //create a marker for the seed
-      Marker temp = new Marker (
+    //create a marker for the seed
+    Marker temp = new Marker (
       width: 50, //width
       height: 50, //height
       //create the position of the seed using player position and randomized radius offsets
@@ -45,7 +45,6 @@ class SeedMarker {
         ),
       ),
     );
-
     //set the new seeds marker to the generated marker
     newSeed.theMarker = temp;
     //add the new seed to the list of seeds 
