@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:pocket_farm/WorldMapScreen.dart';
+
+import 'WorldMap_Player&SeedData.dart';
 
 class FarmScreen extends StatefulWidget {
-  FarmScreen({Key key, this.title}) : super(key: key);
+  FarmScreen({Key key, this.title,}) : super(key: key);
 
   final String title;
 
@@ -11,6 +15,18 @@ class FarmScreen extends StatefulWidget {
 
 class _FarmScreen extends State<FarmScreen> {
 
+  var seeds; //list to hold the ungrabbed seeds from the map
+
+  //function to send over the list of ungrabbed seeds with navigator
+  void sendSeeds() async {
+    //await the ungrabbed seeds
+    var temp = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
+    );
+
+    seeds = temp; //fill the seeds list with the ungrabbed seeds
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +49,13 @@ class _FarmScreen extends State<FarmScreen> {
               decoration: BoxDecoration(
                 color: Colors.amber,
               ),
+            ),
+          ),
+          Container(
+            height: 100.0,
+            child: GestureDetector(
+              child: Icon(Icons.map),
+              onTap: () => sendSeeds(),
             ),
           ),
         ],
