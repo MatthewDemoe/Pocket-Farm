@@ -1,0 +1,16 @@
+{
+	"words": {
+		"title": "Pocket Farm",
+		"language": "Language",
+		"english": "English",
+		"french": "French",
+		"play": "Play",
+		"settings": "Settings",
+		"exit": "Exit",
+		"langbutton": "FR",
+		"selectseed": "Select seed to plant",
+		"carrot": "Carrot", 
+		"cabbage": "Cabbage",
+		"kale": "Kale"
+	}
+}

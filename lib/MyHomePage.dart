@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'FarmScreen.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
 import 'dart:io';
+
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -12,55 +15,77 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  bool english = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text(widget.title),
-      ),*/
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset('assets/images/Pocket_Farm_Title.png',
-            fit: BoxFit.cover,
-
+            fit: BoxFit.cover,            
             ),
 
             //Play Button
             GestureDetector(
               onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FarmScreen())
-                )
+                Navigator.pushNamed(context, '/farm')
               },
-              child: Image.asset('assets/images/PlayButton.png',
-              fit: BoxFit.cover,
-              scale: 2.0,
+              child: Container(
+                constraints: BoxConstraints(minWidth: 120, minHeight: 60),
+                decoration: BoxDecoration(color: Colors.green),
+                child: Text(
+                  FlutterI18n.translate(context, 'words.play'),
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 2,
+                ),
               ),
             ),
 
             //Exit Button
             GestureDetector(
               onTap: () => exit(0),
-              child: Image.asset('assets/images/ExitButton.png',
-              fit: BoxFit.cover,
-              scale: 2.0,
+              child: Container(
+                constraints: BoxConstraints(minWidth: 120, minHeight: 60),
+                decoration: BoxDecoration(color: Colors.red),
+                child: Text(
+                  FlutterI18n.translate(context, "words.exit"),
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 2,
+                ),
               ),
             ),
-
-            /*RaisedButton(
-              child: Text('Exit',
-
-              ),
-              color: Colors.red,
-              onPressed: () => exit(0),
-            ),*/
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              
+              children: [
+                FlatButton(
+                  child: Text(FlutterI18n.translate(context, "words.langbutton")),
+                  onPressed: () {
+                    Locale newLocale;
+                if(english == true)
+                {
+                  newLocale = Locale('fr');
+                  english = !english;
+                }
+                else
+                {
+                  newLocale = Locale('en');
+                  english = !english;
+                }
+                setState((){
+                  FlutterI18n.refresh(context, newLocale);
+                });
+            },
+          ),
+              ]
+            )
           ],
         ),
       ),
-    );
-  }
+    );    
+  }  
 }
+
+
