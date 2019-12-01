@@ -13,7 +13,17 @@ class FarmScreen extends StatefulWidget {
   _FarmScreen createState() => _FarmScreen();
 }
 
+final snackBar = SnackBar(
+  behavior: SnackBarBehavior.floating,
+  content: Text('Snacks'),
+  action: SnackBarAction(
+    label: 'Back',
+    onPressed: () {},
+  ),
+);
+
 class _FarmScreen extends State<FarmScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var seeds; //list to hold the ungrabbed seeds from the map
 
@@ -30,11 +40,15 @@ class _FarmScreen extends State<FarmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text('This is a farm :)'),
+            RaisedButton(onPressed: () {
+              _scaffoldKey.currentState.showSnackBar(snackBar);
+            })
           ],
         ),
       ),
@@ -44,8 +58,10 @@ class _FarmScreen extends State<FarmScreen> {
           Container(
             height: 100.0,
             child: DrawerHeader(
-            child: Text('Drawer Items', 
-              textAlign: TextAlign.center,),
+              child: Text(
+                'Drawer Items',
+                textAlign: TextAlign.center,
+              ),
               decoration: BoxDecoration(
                 color: Colors.amber,
               ),
