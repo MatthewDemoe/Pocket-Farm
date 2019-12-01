@@ -1,0 +1,16 @@
+{
+	"words": {
+		"title": "Ferme de Poche",
+		"language": "La langue",
+		"english": "Anglais",
+		"french": "Français",
+		"play": "Jouer",
+		"settings": "Paramètres",
+		"exit": "Sortie",
+		"langbutton": "EN",
+		"selectseed": "Sélectionnez la graine à planter",
+		"carrot": "Carotte",
+		"cabbage": "Chou",
+		"kale": "Chou Frisé"
+	}
+}
