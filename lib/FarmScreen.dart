@@ -29,7 +29,8 @@ final snackBar = SnackBar(
   ),
 );
 
-class _FarmScreen extends State<FarmScreen> {  
+class _FarmScreen extends State<FarmScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
   //List<GestureDetector> fields = new List<GestureDetector>();
@@ -253,6 +254,9 @@ class _FarmScreen extends State<FarmScreen> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('The Farm'),
+      ),
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
@@ -263,12 +267,18 @@ class _FarmScreen extends State<FarmScreen> {
         ),
         child: ListView(children: [
           Image.asset(
-            'assets/images/Farm.png',
+            'assets/images/TheBarn.png',
             alignment: Alignment.topCenter,
             fit: BoxFit.scaleDown,
             scale: 0.5,
           ),
           buildRows(),
+          RaisedButton(
+            onPressed: () {
+              _scaffoldKey.currentState.showSnackBar(snackBar);
+            },
+            child: Text('Snackbar'),
+          ),
         ]),
       ),
 
