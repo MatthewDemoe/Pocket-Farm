@@ -1,4 +1,4 @@
-package com.example.pocket_farm
+package com.example.lab_7
 
 import android.os.Bundle
 

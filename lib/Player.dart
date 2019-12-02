@@ -1,4 +1,4 @@
-import 'package:pocket_farm/Enums.dart';
+import 'Enums.dart';
 import 'Inventory.dart';
 
 class Player{

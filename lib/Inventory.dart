@@ -9,6 +9,4 @@ class Inventory{
   int grownCarrots = 1;
   int grownCabbages = 1;
   int grownkale = 1;
-
-  
 }
