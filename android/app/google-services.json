@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "191242792652",
+    "firebase_url": "https://pocket-farm-35eb4.firebaseio.com",
+    "project_id": "pocket-farm-35eb4",
+    "storage_bucket": "pocket-farm-35eb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191242792652:android:a4839581fdb0998c9d1c69",
+        "android_client_info": {
+          "package_name": "com.example.lab_7"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191242792652-g4kq73m104oonv0o2vev8j625ptnqi3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8BeGI3gu7yilquD-ZxSeTYQo-IKyzi9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191242792652-g4kq73m104oonv0o2vev8j625ptnqi3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

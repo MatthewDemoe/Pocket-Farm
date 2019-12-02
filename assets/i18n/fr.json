@@ -11,6 +11,16 @@
 		"selectseed": "Sélectionnez la graine à planter",
 		"carrot": "Carotte",
 		"cabbage": "Chou",
+<<<<<<< Updated upstream
 		"kale": "Chou Frisé"
+=======
+		"kale": "Chou Frisé",
+		"readytoharvest": "Votre plante est prête à être récoltée!",
+		"onlysprouted": "Votre plante est seulement germée",
+		"notgrowing": "Votre plante n'a pas encore commencé à pousser",
+		"harvestchoice": "Récolte ma plante!",
+		"leavechoice": "Laisse ma plante pour l'instant",
+		"okay": "D'accord"
+>>>>>>> Stashed changes
 	}
 }
