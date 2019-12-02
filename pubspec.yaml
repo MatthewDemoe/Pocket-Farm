@@ -19,16 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-<<<<<<< Updated upstream
-  flutter_localizations: 
-    sdk: flutter
-
-  flutter_i18n:
-
-  flame: ^0.17.0
-
-=======
   cloud_firestore:
+  charts_flutter:
   flutter_localizations:
     sdk: flutter
 
@@ -37,17 +29,13 @@ dependencies:
   path:
 
   flame: ^0.17.0
->>>>>>> Stashed changes
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-<<<<<<< Updated upstream
-=======
   flutter_map: ^0.7.3
   geolocator: ^5.1.5
   flutter_local_notifications: ^0.8.4
->>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:
@@ -62,10 +50,7 @@ flutter:
   assets:
     - assets/images/
     - assets/i18n/
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -87,14 +72,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Countryside
-<<<<<<< Updated upstream
-      fonts: 
-=======
-      fonts:
->>>>>>> Stashed changes
-        - asset: assets/fonts/Countryside.ttf
+  # fonts:
+  #   - family: Countryside
+  #     fonts:
+  #       - asset: assets/fonts/Countryside.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
