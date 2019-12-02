@@ -357,7 +357,7 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
-                'assets/images/MapButton.png',
+                'assets/images/mapicon.png',
                 fit: BoxFit.scaleDown,
                 scale: 3.0,
               ),
@@ -369,7 +369,7 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
-                'assets/images/ShopButton.png',
+                'assets/images/shopicon.png',
                 fit: BoxFit.scaleDown,
               ),
               onTap: () => Navigator.pushNamed(context, '/shop'),
@@ -379,7 +379,7 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
-                'assets/images/kale.png',
+                'assets/images/tableicon.png',
                 fit: BoxFit.cover,
               ),
               onTap: () => Navigator.pushNamed(context, '/table'),
@@ -390,7 +390,7 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
-                'assets/images/carrot.png',
+                'assets/images/charticon.png',
                 fit: BoxFit.cover,
               ),
               onTap: () => Navigator.pushNamed(context, '/chart'),
