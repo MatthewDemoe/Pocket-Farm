@@ -126,7 +126,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+4"7
+    version: "0.4.0+9"
   flame:
     dependency: "direct main"
     description:
@@ -471,4 +471,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.5.0 <3.0.0"
-  flutter: ">=1.9.1+hotfix.5 <1.10.15-pre.144"
+  flutter: ">=1.9.1 <1.10.15-pre.144"

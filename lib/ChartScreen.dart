@@ -22,23 +22,30 @@ class _ChartScreen extends State<ChartScreen> {
   }
 }
 
-class Chart extends StatelessWidget {
-  final List<Series> seriesList;
-  final bool animate;
+class Foods {
+  final String foodType;
+  final int totalOfFood;
 
-  Chart(this.seriesList, {this.animate});
+  Foods(this.foodType, this.totalOfFood);
+}
+
+class Chart extends StatelessWidget {
+  final List<Series> foodList;
+  final bool animateChart;
+
+  Chart(this.foodList, {this.animateChart});
 
   factory Chart.seedData() {
     return new Chart(
       _createSeedData(),
-      animate: false,
+      animateChart: false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new BarChart(seriesList,
-        animate: animate,
+    return new BarChart(foodList,
+        animate: animateChart,
         domainAxis: OrdinalAxisSpec(
             renderSpec: SmallTickRendererSpec(
           labelStyle: new TextStyleSpec(
@@ -64,26 +71,19 @@ class Chart extends StatelessWidget {
 
   static List<Series<Foods, String>> _createSeedData() {
     final data = [
-      new Foods('Carrot', 5),
-      new Foods('Cabbage', 25),
-      new Foods('Kale', 100),
+      new Foods('Carrot', 2000),
+      new Foods('Cabbage', 1),
+      new Foods('Kale', 2),
     ];
 
     return [
       new Series<Foods, String>(
         id: 'Grown',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-        domainFn: (Foods food, _) => food.name,
-        measureFn: (Foods food, _) => food.amount,
+        domainFn: (Foods food, _) => food.foodType,
+        measureFn: (Foods food, _) => food.totalOfFood,
         data: data,
       )
     ];
   }
-}
-
-class Foods {
-  final String name;
-  final int amount;
-
-  Foods(this.name, this.amount);
 }

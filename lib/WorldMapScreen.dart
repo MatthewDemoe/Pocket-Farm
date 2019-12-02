@@ -1,3 +1,6 @@
+//referenced class slides on maps, geolocation, geocoding
+//referenced https://stackoverflow.com/questions/54610121/flutter-countdown-timer for timers
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

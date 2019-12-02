@@ -9,8 +9,8 @@ import 'CloudStorage.dart';
 import 'MyHomePage.dart';
 import 'FarmScreen.dart';
 import 'ShopScreen.dart';
-import 'Table.dart';
-import 'Chart.dart';
+import 'DataTableScreen.dart';
+import 'ChartScreen.dart';
 
 import 'Database.dart';
 
@@ -20,9 +20,9 @@ GameData data = new GameData(
   carrotSeeds: 0,
   cabbageSeeds: 0,
   kayleSeeds: 0,
-  carrots: 0,
-  cabbage: 0,
-  kayle: 0,
+  carrots: 2000,
+  cabbage: 1,
+  kayle: 2,
   carrotsGrown: 0,
   cabbageGrown: 0,
   kayleGrown: 0,
