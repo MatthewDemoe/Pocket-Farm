@@ -11,9 +11,6 @@
 		"selectseed": "Select seed to plant",
 		"carrot": "Carrot", 
 		"cabbage": "Cabbage",
-<<<<<<< Updated upstream
-		"kale": "Kale"
-=======
 		"kale": "Kale",
 		"readytohavest": "Your plant is ready to harvest!",
 		"onlysprouted": "Your plant is only sprouted",
@@ -21,6 +18,5 @@
 		"harvestchoice": "Havest my plant!",
 		"leavechoice": "Leave my plant for now",
 		"okay": "Okay"
->>>>>>> Stashed changes
 	}
 }

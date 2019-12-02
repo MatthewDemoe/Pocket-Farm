@@ -3,11 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 
-<<<<<<< Updated upstream
-import 'MyHomePage.dart';
-import 'FarmScreen.dart';
-import 'ShopScreen.dart';
-=======
 import 'CloudStorage.dart';
 import 'MyHomePage.dart';
 import 'FarmScreen.dart';
@@ -42,16 +37,12 @@ GameData data = new GameData(
   moreMoneyFromSellingLevel: 0,
   planterBoxLevel: 0,
 );
->>>>>>> Stashed changes
 
 saveData(data);
 
-<<<<<<< Updated upstream
-=======
   runApp(MyApp());
 }
 
->>>>>>> Stashed changes
 class MyApp extends StatelessWidget {  
   // This widget is the root of your application.
   @override

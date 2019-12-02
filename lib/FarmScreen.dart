@@ -5,13 +5,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'Enums.dart';
-<<<<<<< Updated upstream
-=======
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'WorldMapScreen.dart';
+//import 'WorldMapScreen.dart';
 import 'notifications.dart';
->>>>>>> Stashed changes
 
 
 ///////////////////////////////////////////////
@@ -40,12 +37,6 @@ class FarmScreen extends StatefulWidget {
   _FarmScreen createState() => _FarmScreen();
 }
 
-<<<<<<< Updated upstream
-class _FarmScreen extends State<FarmScreen> {  
-  int numFields = 5;
-  int counter = 0;
-  List<GestureDetector> fields = new List<GestureDetector>();
-=======
 final snackBar = SnackBar(
   behavior: SnackBarBehavior.floating,
   content: Text('Snacks'),
@@ -258,103 +249,7 @@ class _FarmScreen extends State<FarmScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
->>>>>>> Stashed changes
 
-  @override void initState() {
-    super.initState();
-    _scheduleTick();
-  }
-
-  void _tick(Duration timestamp){
-
-    _scheduleTick();
-  }
-
-  //Taken from flame's game loop
-  void _scheduleTick(){
-    SchedulerBinding.instance.scheduleFrameCallback(_tick);
-  }
-
-  Future<void> _seedPicker() async{
-    switch (await showDialog<SeedType>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(FlutterI18n.translate(context, "words.selectseed")),
-          children: [
-            SimpleDialogOption(
-              onPressed: (){
-                Navigator.pop(context, SeedType.carrot);
-              },
-              child: Text(FlutterI18n.translate(context, "words.carrot")),
-            ),
-            SimpleDialogOption(
-              onPressed: (){
-                Navigator.pop(context, SeedType.cabbage);
-              },
-              child: Text(FlutterI18n.translate(context, "words.cabbage")),
-            ),
-            SimpleDialogOption(
-              onPressed: (){
-                Navigator.pop(context, SeedType.kale);
-              },
-              child: Text(FlutterI18n.translate(context, "words.kale")),
-            ),
-          ]
-        );
-      }
-    )){
-      case SeedType.carrot:
-      print('carrot planted');
-      break;
-
-      case SeedType.cabbage:
-      print('cabbage planted');
-      break;
-
-      case SeedType.kale:
-      print('kale planted');
-      break;
-    }
-
-  }
-
-  Column buildRows() {
-    List<Row> rows = new List<Row>();
-
-    for (int i = 0; i < numFields; i++) {
-      if ((i % 2) == 0) {
-        rows.add(new Row(
-          children: [
-            fields[i],
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.end,
-        ));
-      } else {
-        int t = i ~/ 2;
-        rows[t].children.add(fields[i]);
-      }
-    }
-
-    return Column(
-      children: rows
-          .map((row) => Container(
-                child: row,
-                padding: EdgeInsets.all(5.0),
-              ))
-          .toList(),
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-    );
-  }
-
-<<<<<<< Updated upstream
-  @override
-  Widget build(BuildContext context) {
-    while (fields.length < numFields) {
-      fields.add(new GestureDetector(
-=======
   void _displayNotification(String title, String message) {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
@@ -373,19 +268,12 @@ class _FarmScreen extends State<FarmScreen> {
         onTap: () => _pickDialogue(temp),//() => _seedPicker(),
       )));
       /*fields.add(new GestureDetector(
->>>>>>> Stashed changes
         child: Image.asset(
           'assets/images/Land.png',
           scale: 3.0,
           fit: BoxFit.cover,
         ),
         onTap: () => _seedPicker(),//() => {print('tapped land $counter'), counter++},
-<<<<<<< Updated upstream
-      ));
-    }
-
-    return Scaffold(
-=======
       ));*/
     }
 
@@ -394,7 +282,6 @@ class _FarmScreen extends State<FarmScreen> {
         title: Text('The Farm'),
       ),
       key: _scaffoldKey,
->>>>>>> Stashed changes
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -403,15 +290,6 @@ class _FarmScreen extends State<FarmScreen> {
           ),
         ),
         child: ListView(children: [
-<<<<<<< Updated upstream
-          Image.asset(
-            'assets/images/Farm.png',
-            alignment: Alignment.topCenter,
-            fit: BoxFit.scaleDown,
-            scale: 0.5,
-          ),
-          buildRows(),
-=======
           Container(
             width: 1000,
             height: 300,
@@ -440,7 +318,6 @@ class _FarmScreen extends State<FarmScreen> {
             },
             child: Text('Snackbar'),
           ),
->>>>>>> Stashed changes
         ]),
       ),
 
@@ -468,19 +345,6 @@ class _FarmScreen extends State<FarmScreen> {
               ),
               onTap: () => Navigator.pushNamed(context, '/shop'),
             ),
-<<<<<<< Updated upstream
-=======
-          ),
-          Container(
-            height: 100.0,
-            child: GestureDetector(
-              child: Image.asset(
-                'assets/images/ShopButton.png',
-                fit: BoxFit.cover,
-              ),
-              onTap: () => Navigator.pushNamed(context, '/shop'),
-            ),
->>>>>>> Stashed changes
             alignment: Alignment.center,
           )
         ],

@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import 'package:pocket_farm/Enums.dart';
-=======
 import 'Enums.dart';
->>>>>>> Stashed changes
 import 'Inventory.dart';
 
 class Player{
