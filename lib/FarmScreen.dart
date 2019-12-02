@@ -8,6 +8,7 @@ import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pocket_farm/WorldMapScreen.dart';
+import 'notifications.dart';
 
 import 'WorldMap_Player&SeedData.dart';
 
@@ -35,9 +36,11 @@ class _FarmScreen extends State<FarmScreen> {
   int counter = 0;
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
+  var _notifications = Notifications();
 
   @override void initState() {
     super.initState();
+    _notifications.init();
     _scheduleTick();
   }
 
@@ -83,9 +86,12 @@ class _FarmScreen extends State<FarmScreen> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           title: Text(FlutterI18n.translate(context, "words.readytoharvest")),
           children: [
-            Image.asset('assets/images/Temp_Carrot.png',
+            Image.asset('assets/images/carrot.png',
             fit: BoxFit.cover,     
             scale: 0.5,       
             ),
@@ -119,9 +125,12 @@ class _FarmScreen extends State<FarmScreen> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),  
           title: plot.isSprouted() ? Text(FlutterI18n.translate(context, "words.onlysprouted")) : Text(FlutterI18n.translate(context, "words.notgrowing")),
           children: [
-            Image.asset( plot.isSprouted() ? 'assets/images/Temp_Sprout.png' : 'assets/images/Temp_Empty_Ground.png',
+            Image.asset( plot.isSprouted() ? 'assets/images/sprout.png' : 'assets/images/dirt.png',
             fit: BoxFit.cover,     
             scale: 0.5,       
             ),
@@ -131,6 +140,13 @@ class _FarmScreen extends State<FarmScreen> {
               },
               child: Text(FlutterI18n.translate(context, "words.okay")),
             ),
+            SimpleDialogOption(
+            child: const Text('Use Fertilizer'),
+            onPressed: () { 
+              _displayNotification("You used fertilizer", "check back later"); 
+              Navigator.pop(context, true);
+              },
+          ),
           ]
         );
       }
@@ -144,7 +160,7 @@ class _FarmScreen extends State<FarmScreen> {
         return SimpleDialog(
           title: Text(FlutterI18n.translate(context, "words.selectseed")),
           children: [
-            Image.asset('assets/images/Temp_Empty_Ground.png',
+            Image.asset('assets/images/dirt.png',
             fit: BoxFit.cover,     
             scale: 0.5,       
             ),
@@ -230,6 +246,11 @@ class _FarmScreen extends State<FarmScreen> {
 
     seeds = temp; //fill the seeds list with the ungrabbed seeds
   }
+
+  void _displayNotification(String title, String message) {
+    _notifications.sendNotificationNow(title, message, 'payload');
+  }
+
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
@@ -266,12 +287,27 @@ class _FarmScreen extends State<FarmScreen> {
           ),
         ),
         child: ListView(children: [
-          Image.asset(
-            'assets/images/TheBarn.png',
-            alignment: Alignment.topCenter,
-            fit: BoxFit.scaleDown,
-            scale: 0.5,
-          ),
+          Container(
+            width: 1000,
+            height: 300,
+          child: Row(
+            children: <Widget>[
+              Image.asset(    
+                'assets/images/TheBarn.png',
+                alignment: Alignment.bottomLeft,
+                height:200,
+                width:200,
+            ),
+            Image.asset(
+                'assets/images/House.png',
+                alignment: Alignment.bottomRight,
+                height:200,
+                width:200,
+            ),
+                     
+          ],
+          ),),
+          
           buildRows(),
           RaisedButton(
             onPressed: () {
