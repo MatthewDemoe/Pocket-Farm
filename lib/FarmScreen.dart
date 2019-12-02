@@ -7,7 +7,7 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
-//import 'WorldMapScreen.dart';
+import 'WorldMapScreen.dart';
 import 'notifications.dart';
 
 
@@ -254,6 +254,18 @@ class _FarmScreen extends State<FarmScreen> {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  var seeds; //list to hold the ungrabbed seeds from the map
+
+  //function to send over the list of ungrabbed seeds with navigator
+  void sendSeeds() async {
+    //await the ungrabbed seeds
+    var temp = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
+    );
+    seeds = temp; //fill the seeds list with the ungrabbed seeds
+  }
+
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
@@ -291,7 +303,7 @@ class _FarmScreen extends State<FarmScreen> {
         ),
         child: ListView(children: [
           Container(
-            width: 1000,
+            width: 800,
             height: 300,
           child: Row(
             children: <Widget>[
@@ -299,24 +311,27 @@ class _FarmScreen extends State<FarmScreen> {
                 'assets/images/TheBarn.png',
                 alignment: Alignment.bottomLeft,
                 height:200,
-                width:200,
+                width:190,
             ),
             Image.asset(
                 'assets/images/House.png',
                 alignment: Alignment.bottomRight,
                 height:200,
-                width:200,
+                width:190,
             ),
                      
           ],
           ),),
           
           buildRows(),
-          RaisedButton(
-            onPressed: () {
-              _scaffoldKey.currentState.showSnackBar(snackBar);
-            },
-            child: Text('Snackbar'),
+          Container(
+            alignment: Alignment.bottomRight,
+            child: RaisedButton(
+              onPressed: () {
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+              },
+              child: Text('Snackbar'),
+            ),
           ),
         ]),
       ),
@@ -340,13 +355,24 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
+                'assets/images/MapButton.png',
+                fit: BoxFit.scaleDown,
+                scale: 3.0,
+              ),
+              onTap: () => sendSeeds(),
+            ),
+          ),
+          Container(
+            height: 100.0,
+            child: GestureDetector(
+              child: Image.asset(
                 'assets/images/ShopButton.png',
                 fit: BoxFit.cover,
               ),
               onTap: () => Navigator.pushNamed(context, '/shop'),
             ),
             alignment: Alignment.center,
-          )
+          ),
         ],
       ),
     );
