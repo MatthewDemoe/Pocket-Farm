@@ -26,7 +26,7 @@ GameData data = new GameData(
   carrotsGrown: 0,
   cabbageGrown: 0,
   kayleGrown: 0,
-  p1Plant: 0,
+  p1Plant: 3,
   p2Plant: 0,
   p3Plant: 0,
   p4Plant: 0,

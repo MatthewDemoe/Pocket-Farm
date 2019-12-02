@@ -305,7 +305,7 @@ class _FarmScreen extends State<FarmScreen> {
         ),
         child: ListView(children: [
           Container(
-            width: 1000,
+            width: 800,
             height: 300,
           child: Row(
             children: <Widget>[
@@ -313,24 +313,27 @@ class _FarmScreen extends State<FarmScreen> {
                 'assets/images/TheBarn.png',
                 alignment: Alignment.bottomLeft,
                 height:200,
-                width:200,
+                width:190,
             ),
             Image.asset(
                 'assets/images/House.png',
                 alignment: Alignment.bottomRight,
                 height:200,
-                width:200,
+                width:190,
             ),
                      
           ],
           ),),
           
           buildRows(),
-          RaisedButton(
-            onPressed: () {
-              _scaffoldKey.currentState.showSnackBar(snackBar);
-            },
-            child: Text('Snackbar'),
+          Container(
+            alignment: Alignment.bottomRight,
+            child: RaisedButton(
+              onPressed: () {
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+              },
+              child: Text('Snackbar'),
+            ),
           ),
         ]),
       ),
@@ -361,10 +364,11 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
-                'assets/images/ShopButton.png',
-                fit: BoxFit.cover,
+                'assets/images/MapButton.png',
+                fit: BoxFit.scaleDown,
+                scale: 3.0,
               ),
-              onTap: () => Navigator.pushNamed(context, '/shop'),
+              onTap: () => sendSeeds(),
             ),
             alignment: Alignment.center,
           ),
@@ -389,7 +393,7 @@ class _FarmScreen extends State<FarmScreen> {
               onTap: () => Navigator.pushNamed(context, '/chart'),
             ),
             alignment: Alignment.center,
-          )
+          ),
         ],
       ),
     );
