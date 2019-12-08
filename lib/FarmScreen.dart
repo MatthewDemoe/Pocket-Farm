@@ -11,6 +11,9 @@ import 'WorldMapScreen.dart';
 import 'notifications.dart';
 
 import 'WorldMap_Player&SeedData.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+
+
 
 ///////////////////////////////////////////////
 
@@ -54,6 +57,7 @@ class _FarmScreen extends State<FarmScreen> {
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
+  int _currentValue = 1;
 
   @override void initState() {
     super.initState();
@@ -62,17 +66,19 @@ class _FarmScreen extends State<FarmScreen> {
   }
 
   void _tick(Duration timestamp){
-    
-
     _scheduleTick();
   }
 
   //Taken from flame's game loop
   void _scheduleTick(){
+    setState(() {
+      _currentValue++;
+    });
     SchedulerBinding.instance.scheduleFrameCallback(_tick);
   }
 
   void _pickDialogue(FarmPlot plot){
+    
     if(!plot.isPlanted())
     {
       _seedPicker(plot);
@@ -226,16 +232,38 @@ class _FarmScreen extends State<FarmScreen> {
 
     for (int i = 0; i < numFields; i++) {
       if ((i % 2) == 0) {
-        rows.add(new Row(
+        rows.add(new Row(     
           children: [
-            farmPlots[i].gestureDetector,
-          ],
+                Container(
+                  height:130,
+                  width:125,
+                  child: Column(children: <Widget>[
+                  farmPlots[i].gestureDetector,
+                  Flexible(
+                    child: farmPlots[i].theProgress,
+                  ),
+                  ],
+                )
+              ),                 
+            ],
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
         ));
-      } else {
+        } else {
         int t = i ~/ 2;
-        rows[t].children.add(farmPlots[i].gestureDetector);
+        rows[t].children.add( Container(
+                  height:130,
+                  width:125,
+                  child: Column(children: <Widget>[
+                  farmPlots[i].gestureDetector,
+                  Flexible(
+                    child: farmPlots[i].theProgress,
+                  ),
+                  ],
+                )
+              ),         
+          );
       }
     }
 
@@ -279,12 +307,24 @@ class _FarmScreen extends State<FarmScreen> {
           scale: 3.0,
           fit: BoxFit.cover,
         ),
+      
         onTap: () => _pickDialogue(temp),//() => _seedPicker(),
-      )));
+      ),
+      theProgress: new FAProgressBar(
+        size: 8,
+        currentValue: _currentValue, 
+        maxValue: 10, 
+        borderRadius: 1,
+        progressColor: Colors.lightBlue,
+        direction: Axis.horizontal,
+        verticalDirection: VerticalDirection.down,
+        animatedDuration: const Duration(milliseconds: 10000),
+      ),
+      ));
       /*fields.add(new GestureDetector(
         child: Image.asset(
           'assets/images/Land.png',
-          scale: 3.0,
+          scale: 3.0, 
           fit: BoxFit.cover,
         ),
         onTap: () => _seedPicker(),//() => {print('tapped land $counter'), counter++},

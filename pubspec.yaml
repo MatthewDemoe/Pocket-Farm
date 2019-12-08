@@ -23,7 +23,7 @@ dependencies:
   charts_flutter:
   flutter_localizations:
     sdk: flutter
-
+  
   flutter_i18n:
   sqflite:
   path:
@@ -36,6 +36,7 @@ dependencies:
   flutter_map: ^0.7.3
   geolocator: ^5.1.5
   flutter_local_notifications: ^0.8.4
+  flutter_animation_progress_bar: ^1.0.0
 
 dev_dependencies:
   flutter_test:

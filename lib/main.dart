@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
       ],
       title: "Pocket Farm",
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
         //fontFamily: 'Countryside',
       ),
 

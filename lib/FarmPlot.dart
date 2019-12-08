@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'Enums.dart';
+import 'package:flutter/material.dart';
+
 
 import 'Plants.dart';
 class FarmPlot{
@@ -8,8 +11,9 @@ class FarmPlot{
   DateTime timeCompleted; 
 
   GestureDetector gestureDetector;
+  FAProgressBar theProgress;
 
-  FarmPlot({this.gestureDetector});
+  FarmPlot({this.gestureDetector, this.theProgress});
 
   bool plantSomething(SeedType seed)
   {
