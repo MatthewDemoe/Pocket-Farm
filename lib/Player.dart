@@ -2,15 +2,15 @@ import 'Enums.dart';
 import 'Inventory.dart';
 
 class Player{
-  Inventory inventory;
 
   //Wow what a bad function
-  bool plantSeed(SeedType seed)
+  void plantSeed(SeedType seed)
   {
-    switch(seed)
+    Inventory.instance().plantSeed(seed);
+    /*switch(seed)
     {
       case SeedType.carrot:
-      if(inventory.carrotSeeds > 0)
+      if(Inventory.instance().carrotSeeds > 0)
       {
         inventory.carrotSeeds--;
         return true;
@@ -41,6 +41,6 @@ class Player{
 
       default : 
       return false;
-    }
+    }*/
   }
 }

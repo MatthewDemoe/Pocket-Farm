@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -51,6 +52,8 @@ class _FarmScreen extends State<FarmScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
+  Inventory inventory = new Inventory();
+
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
@@ -185,19 +188,19 @@ class _FarmScreen extends State<FarmScreen> {
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
               },
-              child: Text(FlutterI18n.translate(context, "words.carrot")),
+              child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${inventory.carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
               },
-              child: Text(FlutterI18n.translate(context, "words.cabbage")),
+              child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${inventory.cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
               },
-              child: Text(FlutterI18n.translate(context, "words.kale")),
+              child: Text(FlutterI18n.translate(context, "words.kale") +  " (${inventory.kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
           ]
         );
