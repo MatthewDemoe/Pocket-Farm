@@ -1,3 +1,4 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -6,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import 'CloudStorage.dart';
+import 'GameData.dart';
 import 'MyHomePage.dart';
 import 'FarmScreen.dart';
 import 'ShopScreen.dart';
@@ -15,38 +17,7 @@ import 'ChartScreen.dart';
 import 'Database.dart';
 
 void main() async {
-
-GameData data = new GameData(
-  carrotSeeds: 0,
-  cabbageSeeds: 0,
-  kayleSeeds: 0,
-  carrots: 2000,
-  cabbage: 1,
-  kayle: 2,
-  carrotsGrown: 0,
-  cabbageGrown: 0,
-  kayleGrown: 0,
-  p1Plant: 3,
-  p2Plant: 0,
-  p3Plant: 0,
-  p4Plant: 0,
-  p5Plant: 0,
-  p1TimeLeft: 0,
-  p2TimeLeft: 0,
-  p3TimeLeft: 0,
-  p4TimeLeft: 0,
-  p5TimeLeft: 0,
-  money: 0,
-  fasterGrowingLevel: 0,
-  betterHarvestLevel: 0,
-  moreSeedsLevel: 0,
-  moreMoneyFromSellingLevel: 0,
-  planterBoxLevel: 0,
-);
-
-saveData(data);
-
-database = openDatabase(
+  database = openDatabase(
     join(await getDatabasesPath(), 'farm_database.db'),
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
@@ -56,11 +27,10 @@ database = openDatabase(
     },
     version: 1,
   );
-
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {  
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -79,16 +49,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         //fontFamily: 'Countryside',
       ),
-
       initialRoute: '/',
       routes: {
         '/': (context) => MyHomePage(),
-        '/farm' : (context) => FarmScreen(), 
-        '/shop' : (context) => ShopScreen(),
+        '/farm': (context) => FarmScreen(),
+        '/shop': (context) => ShopScreen(),
         '/table': (context) => TableScreen(),
         '/chart': (context) => ChartScreen(),
       },
     );
   }
 }
-

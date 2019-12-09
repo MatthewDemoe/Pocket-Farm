@@ -1,33 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'Database.dart';
+import 'GameData.dart';
+import 'CloudStorage.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 import 'WorldMap_Player&SeedData.dart';
 
-///////////////////////////////////////////////
-
-//final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-/*final snackBar = SnackBar(
-  content: Text('Snacks'),
-  action: SnackBarAction(
-    label: 'Back',
-    onPressed: () {},
-  ),
-);*/
-
-//to show it
-//_scaffoldKey.currentState.showSnackBar(snackBar);
-
-//////////////////////////////////////////////
 
 class FarmScreen extends StatefulWidget {
   FarmScreen({Key key, this.title,}) : super(key: key);
@@ -63,7 +50,6 @@ class _FarmScreen extends State<FarmScreen> {
 
   void _tick(Duration timestamp){
     
-
     _scheduleTick();
   }
 
@@ -268,6 +254,56 @@ class _FarmScreen extends State<FarmScreen> {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  void _save()
+  {
+    gamedata = new GameData(
+    zero: 0,
+    carrotSeeds: 7,
+    cabbageSeeds: 5,
+    kayleSeeds: 5,
+    carrots: 5,
+    cabbage: 5,
+    kayle: 5,
+    carrotsGrown: 5,
+    cabbageGrown: 5,
+    kayleGrown: 5,
+    p1Plant: 5,
+    p2Plant: 5,
+    p3Plant: 5,
+    p4Plant: 5,
+    p5Plant: 5,
+    p1TimeLeft: 5,
+    p2TimeLeft: 5,
+    p3TimeLeft: 5,
+    p4TimeLeft: 5,
+    p5TimeLeft: 5,
+    money: 5,
+    fasterGrowingLevel: 5,
+    betterHarvestLevel: 5,
+    moreSeedsLevel: 5,
+    moreMoneyFromSellingLevel: 5,
+    planterBoxLevel: 5,
+    );
+    saveData();
+  }
+
+  void _load() async
+  {
+    //farm = await farm();
+    loadData();
+    print(gamedata);
+  }
+
+  void _cloudSave()
+  {
+    saveDataCloud(gamedata);
+  }
+
+  void _cloudLoad()
+  {
+      cloudLoad();
+  }
+
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
@@ -294,6 +330,29 @@ class _FarmScreen extends State<FarmScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('The Farm'),
+        actions: <Widget>[
+          // saves the game to a local database
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: _save,
+          ),
+          // loads from database
+          IconButton(
+            icon: Icon(Icons.file_download),
+            onPressed: _load,
+          ),
+          // saves the game to the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: _cloudSave,
+          ),
+          // loads the game from the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_download),
+            onPressed: _cloudLoad,
+          )
+
+        ],
       ),
       key: _scaffoldKey,
       body: Container(
