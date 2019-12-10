@@ -6,11 +6,14 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:pocket_farm/Plants.dart';
 import 'package:pocket_farm/ShopItem.dart';
-import 'Enums.dart';
-import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
+import 'CloudStorage.dart';
+import 'FarmPlot.dart';
+import 'GameData.dart';
+import 'Database.dart';
+import 'Enums.dart';
 
 import 'WorldMap_Player&SeedData.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
@@ -287,6 +290,28 @@ class _FarmScreen extends State<FarmScreen> {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  void _save()
+  {
+    saveData();
+  }
+
+  void _load() async
+  {
+    //farm = await farm();
+    loadData();
+    print(gamedata);
+  }
+
+  void _cloudSave()
+  {
+    saveDataCloud(gamedata);
+  }
+
+  void _cloudLoad()
+  {
+      cloudLoad();
+  }
+
   void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
   {
     setState(() {
@@ -353,6 +378,28 @@ class _FarmScreen extends State<FarmScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('The Farm'),
+        actions: <Widget>[
+          // saves the game to a local database
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: _save,
+          ),
+          // loads from database
+          IconButton(
+            icon: Icon(Icons.file_download),
+            onPressed: _load,
+          ),
+          // saves the game to the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: _cloudSave,
+          ),
+          // loads the game from the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_download),
+            onPressed: _cloudLoad,
+          )
+        ],
       ),
       key: _scaffoldKey,
       body: Container(
