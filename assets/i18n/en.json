@@ -18,7 +18,20 @@
 		"harvestchoice": "Havest my plant!",
 		"leavechoice": "Leave my plant for now",
 		"okay": "Okay",
-		"seeds": "Seeds"
+		"seeds": "Seeds",
+		"carrotSeeds": "Carrot Seeds",
+		"cabbageSeeds": "Cabbage Seeds",
+		"kaleSeeds": "Kale Seeds",
+		"lifetime": "Lifetime",
+		"item": "Item",
+		"current": "Current",
+		"useFertilizer": "Use Fertilizer",
+		"fertilizerNotification": "You used fertilizer",
+		"checkBack": "Check back later",
+		"grownCarrots": "Grown Carrots",
+		"grownCabbages": "Grown Cabbages",
+		"grownKale": "Grown Kale",
+		"money": "Money"
 
 	}
 }

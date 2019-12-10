@@ -18,6 +18,19 @@
 		"harvestchoice": "Récolte ma plante!",
 		"leavechoice": "Laisse ma plante pour l'instant",
 		"okay": "D'accord",
-		"seeds": "Des Graines"
+		"seeds": "Des Graines",
+		"carrotSeeds": "Graines de Carotte",
+		"cabbageSeeds": "Graines de Chou",
+		"kaleSeeds": "Graines de Chou Frisé",
+		"lifetime": "L' éternité",
+		"item": "L' article",
+		"current": "Actuel",
+		"useFertilizer": "Utiliser de L'engrais",
+		"fertilizerNotification": "Vous avez utilisé de l'engrais",
+		"checkBack": "Revenez plus tard",
+		"grownCarrots": "Carottes cultivées",
+		"grownCabbages": "Choux cultivées",
+		"grownKale": "Chou Frisé cultivées",
+		"money": "Argent"
 	}
 }

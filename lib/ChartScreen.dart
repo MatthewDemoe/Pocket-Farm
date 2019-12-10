@@ -71,7 +71,7 @@ class Chart extends StatelessWidget {
 
   static List<Series<Foods, String>> _createSeedData() {
     final data = [
-      new Foods('Carrot', 2000),
+      new Foods('Carrot', 200),
       new Foods('Cabbage', 1),
       new Foods('Kale', 2),
     ];

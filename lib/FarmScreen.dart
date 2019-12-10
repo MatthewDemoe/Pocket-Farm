@@ -1,13 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
 
@@ -132,6 +129,7 @@ class _FarmScreen extends State<FarmScreen> {
       }
     )){
       case true:
+        plot.harvestPlant();
       break;
       case false:
       break;
@@ -161,9 +159,9 @@ class _FarmScreen extends State<FarmScreen> {
               child: Text(FlutterI18n.translate(context, "words.okay")),
             ),
             SimpleDialogOption(
-            child: const Text('Use Fertilizer'),
+            child: Text(FlutterI18n.translate(context, "words.useFertilizer")),
             onPressed: () { 
-              _displayNotification("You used fertilizer", "check back later"); 
+              _displayNotification(FlutterI18n.translate(context, "words.fertilizerNotification"), FlutterI18n.translate(context, "words.checkBack")); 
               Navigator.pop(context, true);
               },
           ),
@@ -344,7 +342,7 @@ class _FarmScreen extends State<FarmScreen> {
       drawer: ListView(
         padding: EdgeInsets.only(top: 100.0, right: 200.0),
         children: [
-          Container(
+          /*Container(
             height: 100.0,
             child: DrawerHeader(
               child: Text(
@@ -355,7 +353,7 @@ class _FarmScreen extends State<FarmScreen> {
                 color: Colors.amber,
               ),
             ),
-          ),
+          ),*/
           Container(
             height: 100.0,
             child: GestureDetector(
