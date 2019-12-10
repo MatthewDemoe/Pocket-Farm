@@ -2,9 +2,9 @@
 class Inventory{
   int dollars = 100;
 
-  int carrotSeeds = 1;
-  int cabbageSeeds = 1;
-  int kaleSeeds = 1;
+  int carrotSeeds = 0;
+  int cabbageSeeds = 0;
+  int kaleSeeds = 0;
 
   int grownCarrots = 1;
   int grownCabbages = 1;

@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'dart:async';
 import 'WorldMap_Player&SeedData.dart';
+import 'notifications.dart';
 
 //worldmapscreen widget
 class WorldMapScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class WorldMapScreen extends StatefulWidget {
   final String title;
 
   //currentSeeds that take in leftover seeds from last visit to mapscreen
-  final List<SeedMapData> currentSeeds; //from farm screen
+  final SeedMarker currentSeeds; //from farm screen
 
   @override
   _WorldMapPage createState() => _WorldMapPage();
@@ -23,6 +24,8 @@ class WorldMapScreen extends StatefulWidget {
 
 //worldmappage state
 class _WorldMapPage extends State<WorldMapScreen> {
+
+  bool notifPlayer = false;
 
   var playerController = MapController(); //mapcontroller to control where map is centered
   var playerLocation = Geolocator(); //geolocator
@@ -99,11 +102,13 @@ class _WorldMapPage extends State<WorldMapScreen> {
   }
 
   //this will increment the seed spawn timer in order to spawn seeds
-  void seedSpawnTimer() {
+  void seedSpawnTimer() async {
     
     //timer that updates every 1 second
     spawnTimer = new Timer.periodic(new Duration(seconds: 1), (Timer temp) =>
-    setState(() {
+    setState(() { 
+
+      
       //use the geocoding checkPosition function to get the current street name
       var currentSurroundings = checkPosition();
       
@@ -138,8 +143,12 @@ class _WorldMapPage extends State<WorldMapScreen> {
   void initState() {
     super.initState();
     this.seedSpawnTimer(); //start the seed spawning timer on init
-    if (widget.currentSeeds != null)
-      seedData.seedList = widget.currentSeeds; //if not null, load in the previous seeds that weren't picked up
+    //if (widget.currentSeeds != null) {
+      //seedData.seedList = widget.currentSeeds.seedList; //if not null, load in the previous seeds that weren't picked up
+      //for (int i = 0; i < widget.currentSeeds.seedList.length; i++) {
+        //seedData.seedList[i].id = widget.currentSeeds.seedList[i].id;
+      //}
+    //4}
     onWorldMapScreen = true; //back on the map screen page, so true
   }
 
@@ -150,7 +159,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
     spawnTimer.cancel(); //stop the timer when we leave the world map screen
   }
 
-  //function to send remaining seeds back to farm screen, to hold data when returning
+  //function to send seed data back to farm screen, to add to player inventory
   void sendSeeds() {
     onWorldMapScreen = false; //no longer on the map screen page
     
@@ -158,7 +167,28 @@ class _WorldMapPage extends State<WorldMapScreen> {
     //to avoid geolocator updating after changing pages
     //this will avoid memory leaks
     new Timer(new Duration(seconds: 1), () =>
-    Navigator.pop(context, seedData.seedList)
+    Navigator.pop(context, seedData)
+    );
+  }
+
+  //notification function
+  void showMapInfo() async  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container (
+          width: 300,
+          height: 1000,
+          alignment: Alignment.center,
+          //child: Image.asset(
+            //'assets/images/dirt.png'
+          //),
+          child: Dialog(
+            shape: RoundedRectangleBorder(side: BorderSide.none),
+            child: Text('\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will despawn if you leave without grabbing them!\n\n'),
+          ),
+        );
+      },
     );
   }
 
@@ -211,6 +241,11 @@ class _WorldMapPage extends State<WorldMapScreen> {
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: showMapInfo,
+          tooltip: 'Display more info about the World Map',
+          child: Icon(Icons.info),
         ),
     );
   }

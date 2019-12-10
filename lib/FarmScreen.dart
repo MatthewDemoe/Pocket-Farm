@@ -9,6 +9,7 @@ import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
+import 'Player.dart';
 
 import 'WorldMap_Player&SeedData.dart';
 
@@ -48,6 +49,7 @@ final snackBar = SnackBar(
 );
 
 class _FarmScreen extends State<FarmScreen> {
+  Player thePlayer = new Player(); //the player and their inventory
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
@@ -204,18 +206,42 @@ class _FarmScreen extends State<FarmScreen> {
       }
     )){
       case SeedType.carrot:
-      plot.plantSomething(SeedType.carrot);
-      print('carrot planted');
+      if(thePlayer.inventory.carrotSeeds != 0) {
+        plot.plantSomething(SeedType.carrot);
+        thePlayer.inventory.carrotSeeds--; //decrease carrot seeds from inventory
+        break;
+      }
+      else {
+        //send a notification that they have no carrots
+        _displayNotification('Uh oh!', 'You do not have enough carrot seeds!');
+        break;
+      }
       break;
 
       case SeedType.cabbage:
-      plot.plantSomething(SeedType.cabbage);
-      print('cabbage planted');
+      if(thePlayer.inventory.cabbageSeeds != 0) {
+        plot.plantSomething(SeedType.cabbage);
+        thePlayer.inventory.cabbageSeeds--; //decrease cabbage seeds from inventory
+        break;
+      }
+      else {
+        //send a notification that they have no cabbages
+        _displayNotification('Uh oh!', 'You do not have enough cabbage seeds!');
+        break;
+      }
       break;
 
       case SeedType.kale:
-      plot.plantSomething(SeedType.kale);
-      print('kale planted');
+      if(thePlayer.inventory.kaleSeeds != 0) {
+        plot.plantSomething(SeedType.kale); 
+        thePlayer.inventory.kaleSeeds--; //decrease kale seeds from inventory
+        break;
+      }
+      else {
+        //send a notification that they have no kale
+        _displayNotification('Uh oh!', 'You do not have enough kale seeds!');
+        break;
+      }
       break;
     }
 
@@ -251,18 +277,22 @@ class _FarmScreen extends State<FarmScreen> {
     );
   }
 
-  var seeds; //list to hold the ungrabbed seeds from the map
+  SeedMarker seeds = new SeedMarker(); //list to hold the ungrabbed seeds from the map
 
   //function to send over the list of ungrabbed seeds with navigator
   void sendSeeds() async {
     //await the ungrabbed seeds
-    var temp = await Navigator.push(
+    SeedMarker temp = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
     );
 
-    seeds = temp; //fill the seeds list with the ungrabbed seeds
-  }
+    seeds.seedList = temp.seedList; //fill the seeds list with the ungrabbed seeds
+    thePlayer.inventory.carrotSeeds += temp.totalCarrotSeeds; //increment carrot seeds from map
+    thePlayer.inventory.cabbageSeeds += temp.totalCabbageSeeds; //increment cabbage seeds from map
+    thePlayer.inventory.kaleSeeds += temp.totalKaleSeeds; //increment kale seeds from map
+
+  }  
 
   void _displayNotification(String title, String message) {
     _notifications.sendNotificationNow(title, message, 'payload');

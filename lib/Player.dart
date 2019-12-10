@@ -2,7 +2,7 @@ import 'Enums.dart';
 import 'Inventory.dart';
 
 class Player{
-  Inventory inventory;
+  Inventory inventory = new Inventory();
 
   //Wow what a bad function
   bool plantSeed(SeedType seed)
