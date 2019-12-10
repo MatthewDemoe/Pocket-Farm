@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -49,10 +50,11 @@ final snackBar = SnackBar(
 );
 
 class _FarmScreen extends State<FarmScreen> {
-  Player thePlayer = new Player(); //the player and their inventory
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
+  Inventory inventory = new Inventory();
+
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
@@ -187,28 +189,28 @@ class _FarmScreen extends State<FarmScreen> {
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
               },
-              child: Text(FlutterI18n.translate(context, "words.carrot")),
+              child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${inventory.carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
               },
-              child: Text(FlutterI18n.translate(context, "words.cabbage")),
+              child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${inventory.cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
               },
-              child: Text(FlutterI18n.translate(context, "words.kale")),
+              child: Text(FlutterI18n.translate(context, "words.kale") +  " (${inventory.kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
           ]
         );
       }
     )){
       case SeedType.carrot:
-      if(thePlayer.inventory.carrotSeeds != 0) {
+      if(inventory.carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
-        thePlayer.inventory.carrotSeeds--; //decrease carrot seeds from inventory
+        inventory.carrotSeeds--; //decrease carrot seeds
         break;
       }
       else {
@@ -219,9 +221,9 @@ class _FarmScreen extends State<FarmScreen> {
       break;
 
       case SeedType.cabbage:
-      if(thePlayer.inventory.cabbageSeeds != 0) {
+      if(inventory.cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
-        thePlayer.inventory.cabbageSeeds--; //decrease cabbage seeds from inventory
+        inventory.cabbageSeeds--; //decrease cabbage seeds
         break;
       }
       else {
@@ -232,9 +234,9 @@ class _FarmScreen extends State<FarmScreen> {
       break;
 
       case SeedType.kale:
-      if(thePlayer.inventory.kaleSeeds != 0) {
+      if(inventory.kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
-        thePlayer.inventory.kaleSeeds--; //decrease kale seeds from inventory
+        inventory.kaleSeeds--; //decrease kale seeds
         break;
       }
       else {
@@ -288,9 +290,9 @@ class _FarmScreen extends State<FarmScreen> {
     );
 
     seeds.seedList = temp.seedList; //fill the seeds list with the ungrabbed seeds
-    thePlayer.inventory.carrotSeeds += temp.totalCarrotSeeds; //increment carrot seeds from map
-    thePlayer.inventory.cabbageSeeds += temp.totalCabbageSeeds; //increment cabbage seeds from map
-    thePlayer.inventory.kaleSeeds += temp.totalKaleSeeds; //increment kale seeds from map
+    inventory.carrotSeeds += temp.totalCarrotSeeds; //increment carrot seeds from map
+    inventory.cabbageSeeds += temp.totalCabbageSeeds; //increment cabbage seeds from map
+    inventory.kaleSeeds += temp.totalKaleSeeds; //increment kale seeds from map
 
   }  
 

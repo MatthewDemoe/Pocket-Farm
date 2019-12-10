@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
 
 import 'Plants.dart';
@@ -11,6 +12,8 @@ class FarmPlot{
 
   FarmPlot({this.gestureDetector});
 
+  SeedType plantedSeed;
+
   bool plantSomething(SeedType seed)
   {
     if(plant != null)
@@ -22,22 +25,35 @@ class FarmPlot{
       plant = new Carrot();
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      plantedSeed = SeedType.carrot;
       break;
 
       case SeedType.cabbage:
       plant = new Cabbage();
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      plantedSeed = SeedType.cabbage;
       break;
 
       case SeedType.kale:
       plant = new Kale();
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      plantedSeed = SeedType.kale;
       break;
     }
 
     return true;
+  }
+
+  void harvestPlant()
+  {
+    if(isReadyToPick())
+    {
+      Inventory.instance().harvestPlant(plantedSeed);
+
+      plant = null;
+    }
   }
 
   bool isPlanted()
