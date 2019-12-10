@@ -15,14 +15,42 @@ class Inventory{
   }
 
   int dollars = 100;
+  int lifetimeDollars = 100;
 
-  int carrotSeeds = 0;
-  int cabbageSeeds = 0;
-  int kaleSeeds = 0;
+  int carrotSeeds = 1;
+  int lifetimeCarrotSeeds = 1;
+  int cabbageSeeds = 1;
+  int lifetimeCabbageSeeds = 1;
+  int kaleSeeds = 1;
+  int lifetimeKaleSeeds = 1;
 
   int grownCarrots = 1;
+  int lifetimeGrownCarrots = 1;
   int grownCabbages = 1;
+  int lifetimeGrownCabbages = 1;
   int grownkale = 1;
+  int lifetimeGrownKale = 1;
+
+  void addSeed(SeedType type)
+  {
+    switch(type)
+    {
+      case SeedType.carrot:
+      carrotSeeds++;
+      lifetimeCarrotSeeds++;
+      break;
+
+      case SeedType.cabbage:
+      cabbageSeeds++;
+      lifetimeCabbageSeeds++;
+      break;
+
+      case SeedType.kale:
+      kaleSeeds++;
+      lifetimeKaleSeeds++;
+      break;
+    }
+  }
 
   bool plantSeed(SeedType type)
   {
@@ -62,15 +90,18 @@ class Inventory{
     switch(type)
     {
       case SeedType.carrot:
-        carrotSeeds++;
+        grownCarrots++;
+        lifetimeGrownCarrots++;
       break;
 
       case SeedType.cabbage:
-        cabbageSeeds++;
+        grownCabbages++;
+        lifetimeGrownCabbages++;
       break;
 
       case SeedType.kale:
-        kaleSeeds++;
+        grownkale++;
+        lifetimeGrownKale++;
       break;
     }
   }
