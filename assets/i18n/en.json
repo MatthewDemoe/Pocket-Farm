@@ -31,7 +31,10 @@
 		"grownCarrots": "Grown Carrots",
 		"grownCabbages": "Grown Cabbages",
 		"grownKale": "Grown Kale",
-		"money": "Money"
+		"money": "Money",
+		"amountGrown": "Amount Grown",
+		"theFarm": "The Farm",
+		"map": "The Map"
 
 	}
 }

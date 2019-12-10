@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         FlutterI18nDelegate(
           useCountryCode: false,
-          fallbackFile: 'fr',
+          fallbackFile: 'en',
           path: 'assets/i18n',
         ),
         GlobalMaterialLocalizations.delegate,
