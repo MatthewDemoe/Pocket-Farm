@@ -93,6 +93,7 @@ class FarmPlot{
     return false;
   }
 
+  //todo: Find a non-hacky solution
   void setProgressBar()
   {
     theProgress = new FAProgressBar(

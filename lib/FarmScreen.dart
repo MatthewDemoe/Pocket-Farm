@@ -335,21 +335,15 @@ class _FarmScreen extends State<FarmScreen> {
         ),
         child: ListView(children: [
           Container(
-            width: 800,
+            width: 300,
             height: 300,
+            
           child: Row(
             children: <Widget>[
               Image.asset(    
                 'assets/images/TheBarn.png',
-                alignment: Alignment.bottomLeft,
+                width:400,
                 height:200,
-                width:190,
-            ),
-            Image.asset(
-                'assets/images/House.png',
-                alignment: Alignment.bottomRight,
-                height:200,
-                width:190,
             ),         
           ],
           ),

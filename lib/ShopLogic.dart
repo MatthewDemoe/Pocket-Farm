@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_farm/Plants.dart';
+import 'package:badges/badges.dart'; //I was planning on using this for extra visual flair
 import 'ShopItem.dart';
 
+//Atiya Nova
 class ShopLogic
 {
    List<ShopObject> shopItems = new List<ShopObject>();
@@ -10,7 +11,7 @@ class ShopLogic
 
    ShopLogic()
    {
-      //adding all the different shop items
+      //the different shop items get added
       shopItems.add(new CarrotSeed());
       shopItems.add(new CabbageSeed());
       shopItems.add(new KaleSeed());
@@ -20,6 +21,7 @@ class ShopLogic
       shopItems.add(new MoreSeeds());
       shopItems.add(new FasterGrowth());
 
+      //The shop items get initialized
       for (int i = 0; i < shopItems.length; i++) {
       initializeShopObject(i);
       columns.add(new Column(
@@ -39,9 +41,13 @@ class ShopLogic
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-            columns[0],
-            columns[1],
-            columns[2],
+        Container(height:100,child:Image.asset('assets/images/shop.png')),
+        Row(             
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            columns[0],columns[1]
+            ]),
+        columns[2],
       ],
     );
   }
@@ -52,6 +58,7 @@ class ShopLogic
      return Column(
      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
      children: <Widget>[
+           Container(height:60,child:Image.asset('assets/images/shop.png')),
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
@@ -65,13 +72,14 @@ class ShopLogic
              ],
            ),
            columns[itemAmount+4],
-     ],
+        ],
      );
   } 
 
-  //sets up the gesture detector for each item
+  //initializes each shop item
   void initializeShopObject(int i)
   {
+    //sets up the gesturedetector and the image
     shopItems[i].theGestureDetector= new GestureDetector(
         child: Image.asset(
           shopItems[i].imageAddress,
@@ -82,20 +90,13 @@ class ShopLogic
     );
   }
 
-  void _checkOut()
-  {
-    for (int i = 0; i < shopItems.length;i++)
-    {
-      shopItems[i].AddItem();
-    }
-  }
-
+  //Just increases the amount that's added to the cart
   void _addToCart(int index)
   {
     shopItems[index].amount += 1;
-    print(shopItems[index].amount.toString() + " " + index.toString());
   }
 
+  //Builds what the player sees when they check their cart of items
   List<Card> buildCheckout()
   {
     List<Card> checkoutItems = new List<Card>();
@@ -113,5 +114,20 @@ class ShopLogic
 
     return checkoutItems;
    }
+
+  //The function that adds the cart items to the inventory
+  void checkOut()
+  {
+    for (int i = 0; i < shopItems.length;i++)
+    {
+      shopItems[i].AddItem();
+    }
   }
+
+  //this is for when the player removes something from their checkout
+   void removeItem(int i)
+   {
+      shopItems[i].amount=0;
+   }
+}
 

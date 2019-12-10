@@ -21,41 +21,54 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/Pocket_Farm_Title.png',
-            fit: BoxFit.cover,            
+            Container(
+              height:300,
+              width:350,
+              child: Image.asset('assets/images/Pocket_Farm_Title.png',
+              fit: BoxFit.cover,            
+              ),
             ),
-
             //Play Button
-            GestureDetector(
-              onTap: () => {
-                Navigator.pushNamed(context, '/farm')
-              },
-              child: Container(
-                constraints: BoxConstraints(minWidth: 120, minHeight: 60),
-                decoration: BoxDecoration(color: Colors.green),
-                child: Text(
-                  FlutterI18n.translate(context, 'words.play'),
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 2,
-                ),
-              ),
+            Container(
+              height:150,
+              width:350,
+              child: GestureDetector(
+                onTap: () => {
+                  Navigator.pushNamed(context, '/farm')
+                },
+                child: 
+                Stack(
+                  children: <Widget>[
+                  Center(child:Image.asset('assets/images/carrotbutton.png')),
+                  Center(child:Text(
+                    FlutterI18n.translate(context, 'words.play'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                    textScaleFactor: 2.4,
+                  ),),
+                ]
+              )
             ),
-
+            ),
             //Exit Button
-            GestureDetector(
-              onTap: () => exit(0),
-              child: Container(
-                constraints: BoxConstraints(minWidth: 120, minHeight: 60),
-                decoration: BoxDecoration(color: Colors.red),
-                child: Text(
-                  FlutterI18n.translate(context, "words.exit"),
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 2,
-                ),
-              ),
-            ),
+            Container(
+              height:125,
+              width:350,
+              child: GestureDetector(
+                onTap: () => exit(0),
+                child: Stack(
+                    children: <Widget>[
+                    Center(child:Image.asset('assets/images/carrotbutton.png')),
+                    Center(child: Text(
+                    FlutterI18n.translate(context, "words.exit"),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                    textScaleFactor: 2.4,
+                  ),
+                ),],
+            ),),),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               

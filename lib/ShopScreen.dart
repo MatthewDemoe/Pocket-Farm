@@ -12,6 +12,7 @@ class Layout {
   const Layout({this.title, this.icon, this.builder});
 }
 
+//builds the tab views
 Widget buildTabBar(List<Layout> options) {
   return TabBar(
     isScrollable: true,
@@ -26,7 +27,8 @@ Widget buildTabBar(List<Layout> options) {
 
 Widget buildTabBarView(List<Layout> options) {
   return TabBarView(
-    children: options.map<Widget>((Layout option) {
+    children: 
+    options.map<Widget>((Layout option) {
       return Padding(
         padding: EdgeInsets.all(16.0),
         child: Card(
@@ -50,11 +52,10 @@ class ShopScreen extends StatefulWidget {
 class _ShopScreen extends State<ShopScreen> {
   ShopLogic theShop = new ShopLogic();
 
-  
-
   @override
   Widget build(BuildContext context) {
 
+  //Sets up the tab options
   List<Layout> tabOptions = <Layout>[
       Layout(
         title: 'Items',
@@ -76,22 +77,28 @@ class _ShopScreen extends State<ShopScreen> {
           bottom: buildTabBar(tabOptions),
         ),
         body: 
+        //builds the body content
           buildTabBarView(tabOptions),
-        floatingActionButton: new FloatingActionButton(
-          onPressed: _checkList,
-          tooltip: 'check cart',
-          child: Icon(Icons.list),
+          floatingActionButton: new FloatingActionButton(
+          heroTag: "one",
+          onPressed: _buy,
+              tooltip: 'buy',
+              child: Icon(Icons.shopping_cart),
         ),
-        
+        bottomSheet: new FloatingActionButton(
+              heroTag: "two",
+              onPressed: _checkList,
+              tooltip: 'check cart',
+              child: Icon(Icons.list),),
       ),
     );
   }
 
-
-   void _checkList() async
+  void _checkList() async
   {
     List<Card> temp = theShop.buildCheckout();
 
+    //the list of cart items are build here with a listview.builder
     await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -106,10 +113,24 @@ class _ShopScreen extends State<ShopScreen> {
             width: 300.0,
             child: new ListView.builder
             (
+              //built the dismissable with an example from the flutter docs
               itemCount: temp.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-            return temp[index];
-            }),),
+              itemBuilder: (BuildContext ctxt, int index) {
+                return Dismissible(
+                  key: Key(temp[index].toString()),
+                  onDismissed: (direction)
+                  {
+                    setState(() {
+                    temp.removeAt(index);
+                    theShop.removeItem(index); //removes the item from the cart
+                  });
+                },
+                background: Container(color: Colors.red),
+                child: temp[index],
+              );
+            }
+            ),
+            ),
           ]
         );
       }
@@ -131,6 +152,7 @@ class _ShopScreen extends State<ShopScreen> {
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);
+                theShop.checkOut(); //'checks out' (this is rough)
               },
               child: Text("yes"),
             ),
