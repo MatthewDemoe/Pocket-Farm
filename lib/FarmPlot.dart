@@ -36,7 +36,6 @@ class FarmPlot{
     switch(seed)
     {
       case SeedType.carrot:
-      setProgressBar();
       plant = new Carrot();
       chosenPlant=0;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
@@ -44,7 +43,6 @@ class FarmPlot{
       break;
 
       case SeedType.cabbage:
-      setProgressBar();
       plant = new Cabbage();
       chosenPlant=1;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
@@ -52,7 +50,6 @@ class FarmPlot{
       break;
 
       case SeedType.kale:
-      setProgressBar();
       plant = new Kale();
       chosenPlant=2;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
@@ -92,23 +89,4 @@ class FarmPlot{
 
     return false;
   }
-
-  //todo: Find a non-hacky solution
-  void setProgressBar()
-  {
-    theProgress = new FAProgressBar(
-        size: 8,
-        currentValue: 10, 
-        maxValue: 10, 
-        borderRadius: 1,
-        direction: Axis.horizontal,
-        verticalDirection: VerticalDirection.down,
-        animatedDuration: const Duration(minutes: 1),
-        changeColorValue: 5,
-        backgroundColor: Colors.white,
-        progressColor: Colors.red,
-        changeProgressColor: Colors.blue,
-      );
-  }
-  
 }

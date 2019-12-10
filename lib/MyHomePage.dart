@@ -22,6 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               height:300,

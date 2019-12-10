@@ -3,7 +3,7 @@ import 'package:badges/badges.dart'; //I was planning on using this for extra vi
 import 'ShopItem.dart';
 
 //Atiya Nova
-class ShopLogic
+class ShopLogic 
 {
    List<ShopObject> shopItems = new List<ShopObject>();
    List<Column> columns = new List<Column>();
@@ -34,20 +34,22 @@ class ShopLogic
         crossAxisAlignment: CrossAxisAlignment.end,
       ));
     }
-    }
+  }
 
    //to build the view of the windows
    Widget buildItemWindow() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
+         
         Container(height:100,child:Image.asset('assets/images/shop.png')),
         Row(             
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            columns[0],columns[1]
+            getShopUI(0),
+            getShopUI(1),
             ]),
-        columns[2],
+        getShopUI(2),
       ],
     );
   }
@@ -62,19 +64,28 @@ class ShopLogic
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
-             columns[itemAmount+0], columns[itemAmount+1],
+             getShopUI(itemAmount+0), getShopUI(itemAmount+1),
              ],
            ),
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
-             columns[itemAmount+2], columns[itemAmount+3],
+             getShopUI(itemAmount+2), getShopUI(itemAmount+3),
              ],
            ),
-           columns[itemAmount+4],
+           getShopUI(itemAmount+4),
         ],
      );
   } 
+
+  //This builds the ui componenet for each of the shop objects
+  Badge getShopUI(int index)
+  {
+     return Badge(
+        badgeContent: Text(shopItems[index].amount.toString()),
+        child: columns[index],
+      );
+  }
 
   //initializes each shop item
   void initializeShopObject(int i)

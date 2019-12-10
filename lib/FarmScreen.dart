@@ -4,6 +4,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:pocket_farm/Plants.dart';
+import 'package:pocket_farm/ShopItem.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -22,8 +24,6 @@ class FarmScreen extends StatefulWidget {
   @override
   _FarmScreen createState() => _FarmScreen();
 }
-
-
 
 final snackBar = SnackBar(
   behavior: SnackBarBehavior.floating,
@@ -170,18 +170,21 @@ class _FarmScreen extends State<FarmScreen> {
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
+                _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
               },
               child: Text(FlutterI18n.translate(context, "words.carrot")),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
+                _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
               },
               child: Text(FlutterI18n.translate(context, "words.cabbage")),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
+                _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
               },
               
               child: Text(FlutterI18n.translate(context, "words.kale")),
@@ -205,7 +208,6 @@ class _FarmScreen extends State<FarmScreen> {
       print('kale planted');
       break;
     }
-
   }
 
   Column buildRows() {
@@ -243,11 +245,7 @@ class _FarmScreen extends State<FarmScreen> {
                   child: Column(children: <Widget>[
                     Row(children: <Widget>[
                       farmPlots[i].gestureDetector,
-                      Image.asset(
-                        'assets/images/signpost.png',
-                        scale: 4.2,
-                        fit: BoxFit.cover,
-                      ),
+                      farmPlots[i].signpostImage,
                     ],
                   ),
                   Flexible(
@@ -289,6 +287,36 @@ class _FarmScreen extends State<FarmScreen> {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
+  {
+    setState(() {
+      //Creates the right progress bar
+      theFarmPlot.theProgress = new FAProgressBar(
+        size: 8,
+        currentValue: 10, 
+        maxValue: 10, 
+        borderRadius: 1,
+        direction: Axis.horizontal,
+        verticalDirection: VerticalDirection.down,
+        animatedDuration: Duration(minutes: theTime),
+        changeColorValue: 5,
+        backgroundColor: Colors.white,
+        progressColor: Colors.yellow,
+        changeProgressColor: Colors.blue,
+      );
+
+      //sets the signpost
+      theFarmPlot.chosenPlant = plant;
+      theFarmPlot.signpostImage= Image.asset(
+          theFarmPlot.signpost[theFarmPlot.chosenPlant], 
+          scale: 4.2, 
+          fit: BoxFit.cover,
+      );
+    });
+    
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
@@ -314,8 +342,9 @@ class _FarmScreen extends State<FarmScreen> {
         ),        
         ),
       );
-      farmPlots[farmPlots.length-1].signpostImage= Image.asset(
-          farmPlots[farmPlots.length-1].signpost[farmPlots[farmPlots.length-1].chosenPlant], 
+      int index = farmPlots.length-1;
+      farmPlots[index].signpostImage= Image.asset(
+          farmPlots[index].signpost[farmPlots[index].chosenPlant], 
           scale: 4.2, 
           fit: BoxFit.cover,
       );
@@ -426,5 +455,4 @@ class _FarmScreen extends State<FarmScreen> {
       ),
     );
   }
-
 }
