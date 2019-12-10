@@ -1,16 +1,33 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
+import 'package:flutter/material.dart';
+import 'dart:async';
+
 
 import 'Plants.dart';
 class FarmPlot{
   Plant plant;
+  List<String> signpost = [
+  "assets/images/sp0.png",
+  "assets/images/sp1.png",
+  "assets/images/sp2.png",
+  "assets/images/signpost.png",
+  ];
+
   DateTime timeHalfCompleted;
   DateTime timeCompleted; 
 
   GestureDetector gestureDetector;
+  FAProgressBar theProgress = new FAProgressBar();
+  Image signpostImage; 
+  int progressTimer = 0, chosenPlant = 3;
+  Timer growTimer;
+  //set up the timer stuff
+  //you set off the timer stuff in the switch statement
 
-  FarmPlot({this.gestureDetector});
+  FarmPlot({this.gestureDetector, this.theProgress, this.signpostImage});
 
   SeedType plantedSeed;
 
@@ -23,6 +40,7 @@ class FarmPlot{
     {
       case SeedType.carrot:
       plant = new Carrot();
+      chosenPlant=0;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
       plantedSeed = SeedType.carrot;
@@ -30,6 +48,7 @@ class FarmPlot{
 
       case SeedType.cabbage:
       plant = new Cabbage();
+      chosenPlant=1;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
       plantedSeed = SeedType.cabbage;
@@ -37,6 +56,7 @@ class FarmPlot{
 
       case SeedType.kale:
       plant = new Kale();
+      chosenPlant=2;
       timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
       timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
       plantedSeed = SeedType.kale;

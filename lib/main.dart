@@ -16,36 +16,6 @@ import 'Database.dart';
 
 void main() async {
 
-GameData data = new GameData(
-  carrotSeeds: 0,
-  cabbageSeeds: 0,
-  kayleSeeds: 0,
-  carrots: 2000,
-  cabbage: 1,
-  kayle: 2,
-  carrotsGrown: 0,
-  cabbageGrown: 0,
-  kayleGrown: 0,
-  p1Plant: 3,
-  p2Plant: 0,
-  p3Plant: 0,
-  p4Plant: 0,
-  p5Plant: 0,
-  p1TimeLeft: 0,
-  p2TimeLeft: 0,
-  p3TimeLeft: 0,
-  p4TimeLeft: 0,
-  p5TimeLeft: 0,
-  money: 0,
-  fasterGrowingLevel: 0,
-  betterHarvestLevel: 0,
-  moreSeedsLevel: 0,
-  moreMoneyFromSellingLevel: 0,
-  planterBoxLevel: 0,
-);
-
-saveData(data);
-
 database = openDatabase(
     join(await getDatabasesPath(), 'farm_database.db'),
     onCreate: (db, version) {
@@ -56,6 +26,8 @@ database = openDatabase(
     },
     version: 1,
   );
+
+  checkEmpty();
 
   runApp(MyApp());
 }
@@ -76,7 +48,7 @@ class MyApp extends StatelessWidget {
       ],
       title: "Pocket Farm",
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
         //fontFamily: 'Countryside',
       ),
 

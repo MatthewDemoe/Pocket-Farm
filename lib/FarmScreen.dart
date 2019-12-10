@@ -2,31 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:pocket_farm/Plants.dart';
+import 'package:pocket_farm/ShopItem.dart';
 import 'package:pocket_farm/Inventory.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
 import 'Player.dart';
+import 'CloudStorage.dart';
+import 'FarmPlot.dart';
+import 'GameData.dart';
+import 'Database.dart';
 
 import 'WorldMap_Player&SeedData.dart';
-
-///////////////////////////////////////////////
-
-//final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-/*final snackBar = SnackBar(
-  content: Text('Snacks'),
-  action: SnackBarAction(
-    label: 'Back',
-    onPressed: () {},
-  ),
-);*/
-
-//to show it
-//_scaffoldKey.currentState.showSnackBar(snackBar);
-
-//////////////////////////////////////////////
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'dart:async';
 
 class FarmScreen extends StatefulWidget {
   FarmScreen({Key key, this.title,}) : super(key: key);
@@ -63,8 +55,6 @@ class _FarmScreen extends State<FarmScreen> {
   }
 
   void _tick(Duration timestamp){
-    
-
     _scheduleTick();
   }
 
@@ -74,6 +64,7 @@ class _FarmScreen extends State<FarmScreen> {
   }
 
   void _pickDialogue(FarmPlot plot){
+    
     if(!plot.isPlanted())
     {
       _seedPicker(plot);
@@ -100,6 +91,7 @@ class _FarmScreen extends State<FarmScreen> {
 
   Future<void> _harvestPlant(FarmPlot plot) async
   {
+
     switch(await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -139,7 +131,7 @@ class _FarmScreen extends State<FarmScreen> {
   }
 
   Future<void> _notReadyToHarvest(FarmPlot plot) async
-  {
+  {    
     await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -186,18 +178,21 @@ class _FarmScreen extends State<FarmScreen> {
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
+                _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
               },
               child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${inventory.carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
+                _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
               },
               child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${inventory.cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
+                _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
               },
               child: Text(FlutterI18n.translate(context, "words.kale") +  " (${inventory.kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
@@ -244,7 +239,6 @@ class _FarmScreen extends State<FarmScreen> {
       }
       break;
     }
-
   }
 
   Column buildRows() {
@@ -252,16 +246,46 @@ class _FarmScreen extends State<FarmScreen> {
 
     for (int i = 0; i < numFields; i++) {
       if ((i % 2) == 0) {
-        rows.add(new Row(
+        rows.add(new Row(     
           children: [
-            farmPlots[i].gestureDetector,
-          ],
+                Container(
+                  height:130,
+                  width:200,
+                  child: Column(children: <Widget>[
+                  Row(children: <Widget>[
+                      farmPlots[i].gestureDetector,
+                      farmPlots[i].signpostImage,
+                    ],
+                  ),
+                  Flexible(
+                    child: farmPlots[i].theProgress,
+                  ),
+                  ],
+                )
+              ),                 
+            ],
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
         ));
-      } else {
+        } else {
         int t = i ~/ 2;
-        rows[t].children.add(farmPlots[i].gestureDetector);
+        rows[t].children.add( Container(
+                  height:130,
+                  width:200,
+                  child: Column(children: <Widget>[
+                    Row(children: <Widget>[
+                      farmPlots[i].gestureDetector,
+                      farmPlots[i].signpostImage,
+                    ],
+                  ),
+                  Flexible(
+                    child: farmPlots[i].theProgress,
+                  ),
+                  ],
+                )
+              ),         
+          );
       }
     }
 
@@ -298,6 +322,58 @@ class _FarmScreen extends State<FarmScreen> {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  void _save()
+  {
+    saveData();
+  }
+
+  void _load() async
+  {
+    //farm = await farm();
+    loadData();
+    print(gamedata);
+  }
+
+  void _cloudSave()
+  {
+    saveDataCloud(gamedata);
+  }
+
+  void _cloudLoad()
+  {
+      cloudLoad();
+  }
+
+  void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
+  {
+    setState(() {
+      //Creates the right progress bar
+      theFarmPlot.theProgress = new FAProgressBar(
+        size: 8,
+        currentValue: 10, 
+        maxValue: 10, 
+        borderRadius: 1,
+        direction: Axis.horizontal,
+        verticalDirection: VerticalDirection.down,
+        animatedDuration: Duration(minutes: theTime),
+        changeColorValue: 5,
+        backgroundColor: Colors.white,
+        progressColor: Colors.yellow,
+        changeProgressColor: Colors.blue,
+      );
+
+      //sets the signpost
+      theFarmPlot.chosenPlant = plant;
+      theFarmPlot.signpostImage= Image.asset(
+          theFarmPlot.signpost[theFarmPlot.chosenPlant], 
+          scale: 4.2, 
+          fit: BoxFit.cover,
+      );
+    });
+    
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
@@ -309,53 +385,80 @@ class _FarmScreen extends State<FarmScreen> {
           scale: 3.0,
           fit: BoxFit.cover,
         ),
-        onTap: () => _pickDialogue(temp),//() => _seedPicker(),
-      )));
-      /*fields.add(new GestureDetector(
-        child: Image.asset(
-          'assets/images/Land.png',
-          scale: 3.0,
-          fit: BoxFit.cover,
+      
+        onTap: () => {
+          _pickDialogue(temp),
+        },
         ),
-        onTap: () => _seedPicker(),//() => {print('tapped land $counter'), counter++},
-      ));*/
+        theProgress: new FAProgressBar(
+        size: 8,
+        currentValue: 0,
+        maxValue: 10, 
+        animatedDuration: const Duration(minutes: 5),
+        progressColor: Colors.red,
+        ),        
+        ),
+      );
+      int index = farmPlots.length-1;
+      farmPlots[index].signpostImage= Image.asset(
+          farmPlots[index].signpost[farmPlots[index].chosenPlant], 
+          scale: 4.2, 
+          fit: BoxFit.cover,
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text('The Farm'),
+        actions: <Widget>[
+          // saves the game to a local database
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: _save,
+          ),
+          // loads from database
+          IconButton(
+            icon: Icon(Icons.file_download),
+            onPressed: _load,
+          ),
+          // saves the game to the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: _cloudSave,
+          ),
+          // loads the game from the cloud
+          IconButton(
+            icon: Icon(Icons.cloud_download),
+            onPressed: _cloudLoad,
+          )
+        ],
       ),
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/grass.jpg'),
+            image: AssetImage('assets/images/grass.png'),
             repeat: ImageRepeat.repeat,
           ),
         ),
         child: ListView(children: [
           Container(
-            width: 800,
+            width: 300,
             height: 300,
+            
           child: Row(
             children: <Widget>[
               Image.asset(    
                 'assets/images/TheBarn.png',
-                alignment: Alignment.bottomLeft,
+                width:400,
                 height:200,
-                width:190,
-            ),
-            Image.asset(
-                'assets/images/House.png',
-                alignment: Alignment.bottomRight,
-                height:200,
-                width:190,
-            ),
-                     
+            ),         
           ],
-          ),),
+          ),
+          ),    
           
           buildRows(),
+          
           Container(
             alignment: Alignment.bottomRight,
             child: RaisedButton(
