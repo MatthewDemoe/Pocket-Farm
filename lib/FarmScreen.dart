@@ -178,21 +178,18 @@ class _FarmScreen extends State<FarmScreen> {
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
-                _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
               },
               child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${inventory.carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
-                _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
               },
               child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${inventory.cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
-                _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
               },
               child: Text(FlutterI18n.translate(context, "words.kale") +  " (${inventory.kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
@@ -204,6 +201,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
         inventory.carrotSeeds--; //decrease carrot seeds
+        _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
         break;
       }
       else {
@@ -217,6 +215,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
         inventory.cabbageSeeds--; //decrease cabbage seeds
+        _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
         break;
       }
       else {
@@ -230,6 +229,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
         inventory.kaleSeeds--; //decrease kale seeds
+        _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
         break;
       }
       else {
