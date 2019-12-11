@@ -95,7 +95,7 @@ class _ShopScreen extends State<ShopScreen> {
               heroTag: "two",
               onPressed: _checkList,
               tooltip: 'check cart',
-              child: Icon(Icons.assignment),),
+              child: Icon(Icons.shopping_basket),),
               FloatingActionButton(
               heroTag: "one",
                 onPressed: _buy,
@@ -207,6 +207,7 @@ class _ShopScreen extends State<ShopScreen> {
                 ),
                 onTap: (){
                   setState(() {
+                    if (temp[i]>0)
                     itemsToSell[i]++;
                     print(itemsToSell);
                   });
@@ -221,6 +222,7 @@ class _ShopScreen extends State<ShopScreen> {
               ),
               onTap: (){
                 setState(() {
+                  if (itemsToSell[i]>0)
                   itemsToSell[i]--;
                   print(itemsToSell);
                 });
@@ -240,8 +242,17 @@ class _ShopScreen extends State<ShopScreen> {
                 child: row,
                 padding: EdgeInsets.all(5.0),
               ))
-          .toList(),
-    ),
+          .toList()),
+      GestureDetector(
+        child:FloatingActionButton(
+        child: Icon(Icons.done_outline),
+        onPressed: (){
+          setState(() {
+            theShop.sell(itemsToSell);
+          });
+          },
+      ),
+      ),
   ],);
 
   }

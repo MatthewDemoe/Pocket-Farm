@@ -72,12 +72,12 @@ class GameData {
       {
         switch (index)
         {
-          case 0: carrotSeeds-=amount; break;
-          case 1: cabbageSeeds-=amount; break; 
-          case 2: kayleSeeds-=amount; break; 
-          case 3: carrots-=amount; break;
-          case 4: cabbage-=amount; break; 
-          case 5: kayle-=amount; break; 
+          case 0: {carrotSeeds-=amount; money+=(100*amount);} break;
+          case 1: {cabbageSeeds-=amount; money+=(100*amount);} break; 
+          case 2: {kayleSeeds-=amount; money+=(100*amount);} break; 
+          case 3: {carrots-=amount; money+=(100*amount);}break;
+          case 4: {cabbage-=amount; money+=(100*amount);} break; 
+          case 5: {kayle-=amount; money+=(100*amount);} break; 
         }
       }
 

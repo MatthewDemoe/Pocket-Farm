@@ -158,5 +158,16 @@ class ShopLogic
    {
       shopItems[i].amount=0;
    }
+
+    //function used to sell the items
+   void sell(List<int> items)
+   {
+     for (int i = 0; i < items.length; i++)
+     {
+       gamedata.sellItem(i, items[i]);
+     }
+
+     print(gamedata.getShopList());
+   }
 }
 
