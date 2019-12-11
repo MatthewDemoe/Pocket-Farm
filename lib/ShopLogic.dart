@@ -5,12 +5,33 @@ import 'package:pocket_farm/GameData.dart';
 import 'Inventory.dart';
 import 'ShopItem.dart';
 
+//upgrade snackbar
+final upgradesSnackBar = new SnackBar(
+  behavior: SnackBarBehavior.floating,
+  content: Text('You have maxed this upgrade.\nThere is no need to buy any more.'),
+  action: SnackBarAction(
+    label: 'Okay!',
+    onPressed: () {},
+  ),
+);
+
+//full cart snackbar
+final fullcartSnackBar = new SnackBar(
+  behavior: SnackBarBehavior.floating,
+  content: Text('You have the max amount of this item already in your cart!'),
+  action: SnackBarAction(
+    label: 'Okay!',
+    onPressed: () {},
+  ),
+);
+
 //Atiya Nova
 class ShopLogic 
 {
    List<ShopObject> shopItems = new List<ShopObject>();
    List<Column> columns = new List<Column>();
    int itemAmount = 3;
+   GlobalKey<ScaffoldState> contextKey; //scaffold key to show snackbars
 
    ShopLogic(BuildContext context)
    {
@@ -99,15 +120,20 @@ class ShopLogic
           scale: 3.0,
           fit: BoxFit.cover,
         ),
-        onTap: () => _addToCart(i)
+        onTap: () => _addToCart(i),
+        
     );
   }
 
   //Just increases the amount that's added to the cart
   void _addToCart(int index)
   {
-    
-    shopItems[index].amount += 1;
+    if (shopItems[index].unlocked && shopItems[index].amount < shopItems[index].maxAmount) //only add to cart if item is unlocked and under max amount you can buy
+      shopItems[index].amount += 1;
+    else if (shopItems[index].unlocked == false)
+      contextKey.currentState.showSnackBar(upgradesSnackBar); //let the player know they've maxed the upgrade
+    else if (shopItems[index].amount >= shopItems[index].maxAmount && shopItems[index].unlocked)
+      contextKey.currentState.showSnackBar(fullcartSnackBar); //let the player know they can't add any more items to the cart
   }
 
   //This builds the header for all the tabs
@@ -154,8 +180,12 @@ class ShopLogic
 
     for (int i = 0; i < shopItems.length;i++)
     {
+      //only buy an item if it's in the cart
+      if (shopItems[i].amount > 0) {
       totalCost += shopItems[i].price;
-      if (shopItems[i].amount>0) shopItems[i].addItem();
+        shopItems[i].addItem();
+        shopItems[i].amount = 0; //clear the amount after purchase
+      }
     }
 
     if(totalCost > Inventory.instance().dollars)

@@ -52,6 +52,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreen extends State<ShopScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>(); 
   ShopLogic theShop = new ShopLogic();
   List<Card> theCart;
   List<int> itemsToSell = [0,0,0,0,0,0];
@@ -59,7 +60,7 @@ class _ShopScreen extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
   theShop = new ShopLogic(context);
-  
+  theShop.contextKey = _scaffoldKey; //set the shops scaffold key
   //Sets up the tab options
   List<Layout> tabOptions = <Layout>[
       Layout(
@@ -82,6 +83,7 @@ class _ShopScreen extends State<ShopScreen> {
     return DefaultTabController(
       length: tabOptions.length,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(FlutterI18n.translate(context, "words.shop")),
           bottom: buildTabBar(tabOptions),

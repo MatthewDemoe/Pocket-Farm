@@ -18,7 +18,9 @@ import 'GameData.dart';
 import 'Database.dart';
 
 import 'WorldMap_Player&SeedData.dart';
+
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+
 import 'dart:async';
 
 class FarmScreen extends StatefulWidget {
@@ -43,6 +45,8 @@ class _FarmScreen extends State<FarmScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
+
+  bool showBar = false;
 
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
@@ -123,6 +127,15 @@ class _FarmScreen extends State<FarmScreen> {
     )){
       case true:
         plot.harvestPlant();
+        setState(() {
+          plot.showProgressBar = false;
+          plot.signpostImage= Image.asset(
+          plot.signpost[3], //set back to regular fence
+          scale: 6, 
+          fit: BoxFit.cover,
+        ); 
+        });
+        
       break;
       case false:
       break;
@@ -201,7 +214,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
         Inventory.instance().plantSeed(SeedType.carrot); //decrease carrot seeds
-        _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
+        _setProgressBars(plot, Carrot().minutesToGrow, 0);
         break;
       }
       else {
@@ -215,7 +228,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
         Inventory.instance().plantSeed(SeedType.cabbage); //decrease cabbage seeds
-        _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
+        _setProgressBars(plot, Cabbage().minutesToGrow, 1);
         break;
       }
       else {
@@ -229,7 +242,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
         Inventory.instance().plantSeed(SeedType.kale); //decrease kale seeds
-        _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
+        _setProgressBars(plot, Kale().minutesToGrow, 2);
         break;
       }
       else {
@@ -250,16 +263,17 @@ class _FarmScreen extends State<FarmScreen> {
           children: [
                 Container(
                   height:130,
-                  width:200,
+                  width:195,
                   child: Column(children: <Widget>[
                   Row(children: <Widget>[
                       farmPlots[i].gestureDetector,
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  Flexible(
+                  if(farmPlots[i].showProgressBar)
+                    Flexible(
                     child: farmPlots[i].theProgress,
-                  ),
+                  ), 
                   ],
                 )
               ),                 
@@ -272,16 +286,17 @@ class _FarmScreen extends State<FarmScreen> {
         int t = i ~/ 2;
         rows[t].children.add( Container(
                   height:130,
-                  width:200,
+                  width:195,
                   child: Column(children: <Widget>[
                     Row(children: <Widget>[
                       farmPlots[i].gestureDetector,
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  Flexible(
-                    child: farmPlots[i].theProgress,
-                  ),
+                  if(farmPlots[i].showProgressBar)
+                    Flexible(
+                      child: farmPlots[i].theProgress,
+                    ),
                   ],
                 )
               ),         
@@ -293,7 +308,7 @@ class _FarmScreen extends State<FarmScreen> {
       children: rows
           .map((row) => Container(
                 child: row,
-                padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(1.0),
               ))
           .toList(),
       mainAxisAlignment: MainAxisAlignment.start,
@@ -347,18 +362,20 @@ class _FarmScreen extends State<FarmScreen> {
   void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
   {
     setState(() {
+
+      theFarmPlot.showProgressBar = true;
       //Creates the right progress bar
       theFarmPlot.theProgress = new FAProgressBar(
+        animatedDuration: Duration(seconds: theTime), //based off plant grow time
         size: 8,
-        currentValue: 10, 
-        maxValue: 10, 
+        currentValue: theTime, 
+        maxValue: theTime, //current / max = endValue, as per the plugin
         borderRadius: 1,
         direction: Axis.horizontal,
         verticalDirection: VerticalDirection.down,
-        animatedDuration: Duration(minutes: theTime),
-        changeColorValue: 5,
+        changeColorValue: theTime,
         backgroundColor: Colors.white,
-        progressColor: Colors.yellow,
+        progressColor: Colors.red,
         changeProgressColor: Colors.blue,
       );
 
@@ -366,7 +383,7 @@ class _FarmScreen extends State<FarmScreen> {
       theFarmPlot.chosenPlant = plant;
       theFarmPlot.signpostImage= Image.asset(
           theFarmPlot.signpost[theFarmPlot.chosenPlant], 
-          scale: 4.2, 
+          scale: 6, 
           fit: BoxFit.cover,
       );
     });
@@ -389,20 +406,13 @@ class _FarmScreen extends State<FarmScreen> {
         onTap: () => {
           _pickDialogue(temp),
         },
-        ),
-        theProgress: new FAProgressBar(
-        size: 8,
-        currentValue: 0,
-        maxValue: 10, 
-        animatedDuration: const Duration(minutes: 5),
-        progressColor: Colors.red,
-        ),        
+        ),     
         ),
       );
       int index = farmPlots.length-1;
       farmPlots[index].signpostImage= Image.asset(
           farmPlots[index].signpost[farmPlots[index].chosenPlant], 
-          scale: 4.2, 
+          scale: 6, 
           fit: BoxFit.cover,
       );
     }
@@ -450,7 +460,7 @@ class _FarmScreen extends State<FarmScreen> {
             children: <Widget>[
               Image.asset(    
                 'assets/images/TheBarn.png',
-                width:400,
+                width:375,
                 height:200,
             ),         
           ],

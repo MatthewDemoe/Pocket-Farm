@@ -185,7 +185,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
             //'assets/images/dirt.png'
           //),
           child: Dialog(
-            shape: RoundedRectangleBorder(side: BorderSide.none),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Text(FlutterI18n.translate(context, "words.mapInfo")),
           ),
         );

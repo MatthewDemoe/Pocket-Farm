@@ -7,6 +7,8 @@ import 'package:pocket_farm/GameData.dart';
 import 'Enums.dart';
 import 'Inventory.dart';
 
+import 'GameData.dart';
+
 //map player class
 class PlayerMapData {
   LatLng position; //the position of the player on the map
@@ -25,23 +27,23 @@ class SeedMapData {
 //seedMarker class to generate seeds markers on the map
 class SeedMarker {
   List<SeedMapData> seedList = []; //list of seeds
-  bool hasCabbageUnlocked = false ;
+  bool hasCabbageUnlocked = false;
   bool hasKaleUnlocked = false;
   int totalCarrotSeeds = 0, totalCabbageSeeds = 0, totalKaleSeeds = 0;
 
   //function to determine the seed that will spawn
   int determineSeed()
   {
-    if (!hasCabbageUnlocked && !hasKaleUnlocked) {
+    if (gamedata.moreSeedsLevel == 0) {
       return 0;
     }
-    else if (hasCabbageUnlocked && !hasKaleUnlocked) {
+    else if (gamedata.moreSeedsLevel == 1) {
       int temp;
       var randomizer = new Random();
       temp = randomizer.nextInt(2);
       return temp;
     }
-    else if (hasCabbageUnlocked && hasKaleUnlocked) {
+    else if (gamedata.moreSeedsLevel >= 2) {
       int temp;
       var randomizer = new Random();
       temp = randomizer.nextInt(3);
