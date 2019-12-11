@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'ShopLogic.dart';
 
 //Atiya Nova
@@ -50,20 +51,21 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreen extends State<ShopScreen> {
-  ShopLogic theShop = new ShopLogic();
+  ShopLogic theShop;
 
   @override
   Widget build(BuildContext context) {
-
+  theShop = new ShopLogic(context);
+  
   //Sets up the tab options
   List<Layout> tabOptions = <Layout>[
       Layout(
-        title: 'Items',
+        title: FlutterI18n.translate(context, "words.items"),
         icon: Icons.local_florist,
         builder: theShop.buildItemWindow,
       ),
       Layout(
-        title: 'Upgrades',
+        title: FlutterI18n.translate(context, "words.upgrades"),
         icon: Icons.grade,
         builder: theShop.buildUpgradeWindow,
       ),
@@ -73,22 +75,22 @@ class _ShopScreen extends State<ShopScreen> {
       length: tabOptions.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Shop"),
+          title: Text(FlutterI18n.translate(context, "words.shop")),
           bottom: buildTabBar(tabOptions),
         ),
         body: 
         //builds the body content
           buildTabBarView(tabOptions),
           floatingActionButton: new FloatingActionButton(
-          heroTag: "one",
+          heroTag: FlutterI18n.translate(context, "words.one"),
           onPressed: _buy,
-              tooltip: 'buy',
+              tooltip: FlutterI18n.translate(context, "words.buy"),
               child: Icon(Icons.shopping_cart),
         ),
         bottomSheet: new FloatingActionButton(
-              heroTag: "two",
+              heroTag: FlutterI18n.translate(context, "words.two"),
               onPressed: _checkList,
-              tooltip: 'check cart',
+              tooltip: FlutterI18n.translate(context, "words.checkCart"),
               child: Icon(Icons.list),),
       ),
     );
@@ -106,7 +108,7 @@ class _ShopScreen extends State<ShopScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          title: Text("Check your items"),
+          title: Text(FlutterI18n.translate(context, "words.checkItems")),
           children: [
             Container(
             height: 300.0, // Change as per your requirement
@@ -146,21 +148,21 @@ class _ShopScreen extends State<ShopScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          title: Text("Check out"),
+          title: Text(FlutterI18n.translate(context, "words.checkOut")),
           children: [
-            Text("This is what you selected, read to buy?"),
+            Text(FlutterI18n.translate(context, "words.readyToBuy")),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);
                 theShop.checkOut(); //'checks out' (this is rough)
               },
-              child: Text("yes"),
+              child: Text(FlutterI18n.translate(context, "words.yes")),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, false);
               },
-              child: Text("no"),
+              child: Text(FlutterI18n.translate(context, "words.no")),
             ),
           ]
         );

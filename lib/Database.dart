@@ -53,6 +53,10 @@ void checkEmpty() async
     );
     saveData();
   }
+  else{
+    loadData();
+  }
+
 }
 
 void loadData() async {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart'; //I was planning on using this for extra visual flair
+import 'package:path/path.dart';
+import 'package:pocket_farm/GameData.dart';
+import 'Inventory.dart';
 import 'ShopItem.dart';
 
 //Atiya Nova
@@ -9,17 +12,17 @@ class ShopLogic
    List<Column> columns = new List<Column>();
    int itemAmount = 3;
 
-   ShopLogic()
+   ShopLogic(BuildContext context)
    {
       //the different shop items get added
-      shopItems.add(new CarrotSeed());
-      shopItems.add(new CabbageSeed());
-      shopItems.add(new KaleSeed());
-      shopItems.add(new MoreHarvest());
-      shopItems.add(new MoreMoney());
-      shopItems.add(new MorePlanters());
-      shopItems.add(new MoreSeeds());
-      shopItems.add(new FasterGrowth());
+      shopItems.add(new CarrotSeed(context));
+      shopItems.add(new CabbageSeed(context));
+      shopItems.add(new KaleSeed(context));
+      shopItems.add(new MoreHarvest(context));
+      shopItems.add(new MoreMoney(context));
+      shopItems.add(new MorePlanters(context));
+      shopItems.add(new MoreSeeds(context));
+      shopItems.add(new FasterGrowth(context));
 
       //The shop items get initialized
       for (int i = 0; i < shopItems.length; i++) {
@@ -104,6 +107,7 @@ class ShopLogic
   //Just increases the amount that's added to the cart
   void _addToCart(int index)
   {
+    
     shopItems[index].amount += 1;
   }
 
@@ -127,11 +131,24 @@ class ShopLogic
    }
 
   //The function that adds the cart items to the inventory
-  void checkOut()
+  bool checkOut()
   {
+    int totalCost = 0;
+
     for (int i = 0; i < shopItems.length;i++)
     {
-      shopItems[i].AddItem();
+      totalCost += shopItems[i].price;
+    }
+
+    if(totalCost > Inventory.instance().dollars)
+    {
+       return false;
+    }
+
+    else
+    {
+      Inventory.instance().dollars -= totalCost;
+      return true;
     }
   }
 

@@ -42,11 +42,11 @@ class _FarmScreen extends State<FarmScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
   int numFields = 5;
   int counter = 0;
-  Inventory inventory = new Inventory();
 
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
+
 
   @override void initState() {
     super.initState();
@@ -91,7 +91,6 @@ class _FarmScreen extends State<FarmScreen> {
 
   Future<void> _harvestPlant(FarmPlot plot) async
   {
-
     switch(await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -179,62 +178,62 @@ class _FarmScreen extends State<FarmScreen> {
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
               },
-              child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${inventory.carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
+              child: Text(FlutterI18n.translate(context, "words.carrot") +  " (${Inventory.instance().carrotSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.cabbage);
               },
-              child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${inventory.cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
+              child: Text(FlutterI18n.translate(context, "words.cabbage") +  " (${Inventory.instance().cabbageSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.kale);
               },
-              child: Text(FlutterI18n.translate(context, "words.kale") +  " (${inventory.kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
+              child: Text(FlutterI18n.translate(context, "words.kale") +  " (${Inventory.instance().kaleSeeds} " + FlutterI18n.translate(context, "words.seeds") + ")"),
             ),
           ]
         );
       }
     )){
       case SeedType.carrot:
-      if(inventory.carrotSeeds != 0) {
+      if(Inventory.instance().carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
-        inventory.carrotSeeds--; //decrease carrot seeds
+        Inventory.instance().plantSeed(SeedType.carrot); //decrease carrot seeds
         _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
         break;
       }
       else {
         //send a notification that they have no carrots
-        _displayNotification('Uh oh!', 'You do not have enough carrot seeds!');
+        _displayNotification('Uh oh!', FlutterI18n.translate(context, "words.noSeeds"));
         break;
       }
       break;
 
       case SeedType.cabbage:
-      if(inventory.cabbageSeeds != 0) {
+      if(Inventory.instance().cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
-        inventory.cabbageSeeds--; //decrease cabbage seeds
+        Inventory.instance().plantSeed(SeedType.cabbage); //decrease cabbage seeds
         _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
         break;
       }
       else {
         //send a notification that they have no cabbages
-        _displayNotification('Uh oh!', 'You do not have enough cabbage seeds!');
+        _displayNotification('Uh oh!', FlutterI18n.translate(context, "words.noSeeds"));
         break;
       }
       break;
 
       case SeedType.kale:
-      if(inventory.kaleSeeds != 0) {
+      if(Inventory.instance().kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
-        inventory.kaleSeeds--; //decrease kale seeds
+        Inventory.instance().plantSeed(SeedType.kale); //decrease kale seeds
         _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
         break;
       }
       else {
         //send a notification that they have no kale
-        _displayNotification('Uh oh!', 'You do not have enough kale seeds!');
+        _displayNotification('Uh oh!', FlutterI18n.translate(context, "words.noSeeds"));
         break;
       }
       break;
@@ -310,12 +309,12 @@ class _FarmScreen extends State<FarmScreen> {
       context,
       MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
     );
-
+    /*
     seeds.seedList = temp.seedList; //fill the seeds list with the ungrabbed seeds
-    inventory.carrotSeeds += temp.totalCarrotSeeds; //increment carrot seeds from map
-    inventory.cabbageSeeds += temp.totalCabbageSeeds; //increment cabbage seeds from map
-    inventory.kaleSeeds += temp.totalKaleSeeds; //increment kale seeds from map
-
+    Inventory.instance().addSeed(SeedType.carrot, temp.totalCarrotSeeds); //increment carrot seeds from map
+    Inventory.instance().addSeed(SeedType.cabbage, temp.totalCabbageSeeds); //increment cabbage seeds from map
+    Inventory.instance().addSeed(SeedType.kale, temp.totalKaleSeeds); //increment kale seeds from map
+    */
   }  
 
   void _displayNotification(String title, String message) {
