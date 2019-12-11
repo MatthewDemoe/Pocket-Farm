@@ -1,5 +1,7 @@
 
-GameData gamedata;
+import 'package:pocket_farm/ShopItem.dart';
+
+GameData gamedata = new GameData();
 
 class GameData {
   int zero;
@@ -64,6 +66,33 @@ class GameData {
       this.moreMoneyFromSellingLevel,
       this.planterBoxLevel,
       });
+
+      //function to use to sell items in the shop
+      void sellItem(int index, int amount)
+      {
+        switch (index)
+        {
+          case 0: carrotSeeds-=amount; break;
+          case 1: cabbageSeeds-=amount; break; 
+          case 2: kayleSeeds-=amount; break; 
+          case 3: carrots-=amount; break;
+          case 4: cabbage-=amount; break; 
+          case 5: kayle-=amount; break; 
+        }
+      }
+
+      //function to help construct the list of the shopclass (for selling)
+      List<int> getShopList()
+      {
+          List<int> temp = new List<int>();
+          temp.add(carrotSeeds);
+          temp.add(cabbageSeeds);
+          temp.add(kayleSeeds);
+          temp.add(carrots);
+          temp.add(cabbage);
+          temp.add(kayle);
+          return temp;
+      }
 
       Map<String, dynamic> toMap() {
         return {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_farm/GameData.dart';
 
 //Atiya Nova
 //command design pattern used in order to optimize code
@@ -12,7 +13,7 @@ abstract class ShopObject
 
   ShopObject({this.theGestureDetector, this.theName, this.price, this.amount, this.maxAmount, this.imageAddress, this.unlocked});
 
-  void AddItem() //pass the necessary class here
+  void addItem() //pass the necessary class here
   {
       //this function would get overridden
       //put logic for adding this item or effect to the player here
@@ -30,6 +31,13 @@ class CarrotSeed extends ShopObject
     imageAddress: 'assets/images/item0.png',
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.carrotSeeds+=amount;
+    print("added carrot seed" + amount.toString());
+  }
 }
 
 class CabbageSeed extends ShopObject
@@ -42,6 +50,13 @@ class CabbageSeed extends ShopObject
     imageAddress: 'assets/images/item1.png',
     unlocked:true,
   );
+
+    @override
+  void addItem()
+  {
+    gamedata.cabbageSeeds+=amount;
+    print("added carrot seed" + amount.toString());
+  }
 }
 
 class KaleSeed extends ShopObject
@@ -54,6 +69,13 @@ class KaleSeed extends ShopObject
     amount: 0,
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.kayleSeeds+=amount;
+    print("added kale seed" + amount.toString());
+  }
 }
 
 class MoreHarvest extends ShopObject
@@ -66,6 +88,13 @@ class MoreHarvest extends ShopObject
     imageAddress: 'assets/images/upgrade0.png',
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.betterHarvestLevel+=amount;
+    print("better harvest" + amount.toString());
+  }
 }
 
 class MoreMoney extends ShopObject
@@ -78,6 +107,13 @@ class MoreMoney extends ShopObject
     imageAddress: 'assets/images/upgrade1.png',
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.moreMoneyFromSellingLevel+=amount;
+    print("better money" + amount.toString());
+  }
 }
 
 class MorePlanters extends ShopObject
@@ -90,6 +126,13 @@ class MorePlanters extends ShopObject
     imageAddress: 'assets/images/upgrade2.png',
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.planterBoxLevel+=amount;
+    print("more planter" + amount.toString());
+  }
 }
 
 class MoreSeeds extends ShopObject
@@ -114,4 +157,11 @@ class FasterGrowth extends ShopObject
     imageAddress: 'assets/images/upgrade4.png',
     unlocked:true,
   );
+
+  @override
+  void addItem()
+  {
+    gamedata.fasterGrowingLevel+=amount;
+    print("faster growth" + amount.toString());
+  }
 }
