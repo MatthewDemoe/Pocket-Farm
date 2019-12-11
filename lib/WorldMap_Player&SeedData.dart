@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:pocket_farm/Inventory.dart';
+import 'Enums.dart';
 
 //map player class
 class PlayerMapData {
@@ -72,7 +74,7 @@ class SeedMarker {
               'assets/images/carrotseed.png',
             ),
             onTap: () {
-              //NOTE: increment the amount of seeds player has once inventory is established
+              Inventory.instance().addSeed(SeedType.carrot, 1);
               removeSeed(newSeed); //remove the seed from the list of seeds/map
             }
           ),
@@ -96,7 +98,7 @@ class SeedMarker {
               'assets/images/cabbageseed.png',
             ),
             onTap: () {
-              //NOTE: increment the amount of seeds player has once inventory is established
+              Inventory.instance().addSeed(SeedType.cabbage, 1);
               removeSeed(newSeed); //remove the seed from the list of seeds/map
               }
           ),
@@ -121,7 +123,7 @@ class SeedMarker {
               'assets/images/kaleSeed.png',
             ),
             onTap: () {
-              //NOTE: increment the amount of seeds player has once inventory is established
+              Inventory.instance().addSeed(SeedType.kale, 1);
               removeSeed(newSeed); //remove the seed from the list of seeds/map
             }
           ),

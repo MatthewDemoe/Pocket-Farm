@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 //Atiya Nova
 //command design pattern used in order to optimize code
@@ -10,7 +11,7 @@ abstract class ShopObject
   String theName, imageAddress;
   bool unlocked;
 
-  ShopObject({this.theGestureDetector, this.theName, this.price, this.amount, this.maxAmount, this.imageAddress, this.unlocked});
+  ShopObject(BuildContext context, {this.theGestureDetector, this.theName, this.price, this.amount, this.maxAmount, this.imageAddress, this.unlocked});
 
   void AddItem() //pass the necessary class here
   {
@@ -22,8 +23,8 @@ abstract class ShopObject
 
 class CarrotSeed extends ShopObject
 {
-  CarrotSeed():super(
-    theName:"Carrot Seed",
+  CarrotSeed(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.carrotSeeds"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -34,8 +35,8 @@ class CarrotSeed extends ShopObject
 
 class CabbageSeed extends ShopObject
 {
-   CabbageSeed():super(
-    theName:"Cabbage Seed",
+   CabbageSeed(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.cabbageSeeds"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -46,8 +47,8 @@ class CabbageSeed extends ShopObject
 
 class KaleSeed extends ShopObject
 {
-   KaleSeed():super(
-    theName:"Kale Seed",
+   KaleSeed(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.kaleSeeds"),
     price: 100,
     maxAmount: 100,
     imageAddress: 'assets/images/item2.png',
@@ -58,8 +59,8 @@ class KaleSeed extends ShopObject
 
 class MoreHarvest extends ShopObject
 {
-  MoreHarvest():super(
-    theName:"More Harvest",
+  MoreHarvest(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.moreHarvest"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -70,8 +71,8 @@ class MoreHarvest extends ShopObject
 
 class MoreMoney extends ShopObject
 {
-  MoreMoney():super(
-    theName:"More Money",
+  MoreMoney(BuildContext context):super(context, 
+    theName:FlutterI18n.translate(context, "words.moreMoney"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -82,8 +83,8 @@ class MoreMoney extends ShopObject
 
 class MorePlanters extends ShopObject
 {
-  MorePlanters():super(
-    theName:"More Planters",
+  MorePlanters(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.morePlanters"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -94,8 +95,8 @@ class MorePlanters extends ShopObject
 
 class MoreSeeds extends ShopObject
 {
-  MoreSeeds():super(
-    theName:"More Seeds",
+  MoreSeeds(BuildContext context):super(context, 
+    theName:FlutterI18n.translate(context, "words.moreSeeds"),
     price: 100,
     maxAmount: 100,
     amount: 0,
@@ -106,8 +107,8 @@ class MoreSeeds extends ShopObject
 
 class FasterGrowth extends ShopObject
 {
-  FasterGrowth():super(
-    theName:"Faster Growth",
+  FasterGrowth(BuildContext context):super(context, 
+    theName: FlutterI18n.translate(context, "words.fasterGrowth"),
     price: 100,
     maxAmount: 100,
     amount: 0,

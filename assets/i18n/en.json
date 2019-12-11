@@ -24,6 +24,23 @@
 		"kaleSeeds": "Kale Seeds",
 		"lifetime": "Lifetime",
 		"item": "Item",
+		"items": "Items",
+		"upgrades": "Upgrades",
+		"moreHarvest": "More Harvest",
+		"moreMoney": "More Money",
+		"morePlanters": "More Planters",
+		"moreSeeds": "More Seeds",
+		"fasterGrowth": "Faster Growth",
+		"shop": "Shop",
+		"one": "One",
+		"two": "Two",
+		"buy": "Buy", 
+		"checkCart": "Check Cart",
+		"checkItems": "Check your items",
+		"checkOut": "Check Out",
+		"readyToBuy": "This is what you selected. Ready to buy?",
+		"yes": "Yes",
+		"no": "No",
 		"current": "Current",
 		"useFertilizer": "Use Fertilizer",
 		"fertilizerNotification": "You used fertilizer",
@@ -31,7 +48,10 @@
 		"grownCarrots": "Grown Carrots",
 		"grownCabbages": "Grown Cabbages",
 		"grownKale": "Grown Kale",
-		"money": "Money"
+		"money": "Money", 
+		"noSeeds": "You do not have enough seeds",
+		"mapButtonTooltip": "Display more info about the World Map",
+		"mapInfo": "\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will disappear if you leave without grabbing them!\n\n"
 
 	}
 }

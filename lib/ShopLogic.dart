@@ -9,17 +9,17 @@ class ShopLogic
    List<Column> columns = new List<Column>();
    int itemAmount = 3;
 
-   ShopLogic()
+   ShopLogic(BuildContext context)
    {
       //the different shop items get added
-      shopItems.add(new CarrotSeed());
-      shopItems.add(new CabbageSeed());
-      shopItems.add(new KaleSeed());
-      shopItems.add(new MoreHarvest());
-      shopItems.add(new MoreMoney());
-      shopItems.add(new MorePlanters());
-      shopItems.add(new MoreSeeds());
-      shopItems.add(new FasterGrowth());
+      shopItems.add(new CarrotSeed(context));
+      shopItems.add(new CabbageSeed(context));
+      shopItems.add(new KaleSeed(context));
+      shopItems.add(new MoreHarvest(context));
+      shopItems.add(new MoreMoney(context));
+      shopItems.add(new MorePlanters(context));
+      shopItems.add(new MoreSeeds(context));
+      shopItems.add(new FasterGrowth(context));
 
       //The shop items get initialized
       for (int i = 0; i < shopItems.length; i++) {

@@ -31,23 +31,23 @@ class Inventory{
   int grownkale = 1;
   int lifetimeGrownKale = 1;
 
-  void addSeed(SeedType type)
+  void addSeed(SeedType type, int amount)
   {
     switch(type)
     {
       case SeedType.carrot:
-      carrotSeeds++;
-      lifetimeCarrotSeeds++;
+      carrotSeeds += amount;
+      lifetimeCarrotSeeds += amount;
       break;
 
       case SeedType.cabbage:
-      cabbageSeeds++;
-      lifetimeCabbageSeeds++;
+      cabbageSeeds += amount;
+      lifetimeCabbageSeeds += amount;
       break;
 
       case SeedType.kale:
-      kaleSeeds++;
-      lifetimeKaleSeeds++;
+      kaleSeeds += amount;
+      lifetimeKaleSeeds += amount;
       break;
     }
   }
