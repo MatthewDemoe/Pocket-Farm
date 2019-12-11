@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:path/path.dart';
 
+import 'GameData.dart';
+import 'Inventory.dart';
+
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key key, this.title}) : super(key: key);
 
@@ -73,9 +76,9 @@ class Chart extends StatelessWidget {
 
   static List<Series<Foods, String>> _createSeedData(BuildContext context) {
     final data = [
-      new Foods(FlutterI18n.translate(context, "words.carrot"), 200),
-      new Foods(FlutterI18n.translate(context, "words.cabbage"), 1),
-      new Foods(FlutterI18n.translate(context, "words.kale"), 2),
+      new Foods(FlutterI18n.translate(context, "words.carrot"), gamedata.carrotsGrown),
+      new Foods(FlutterI18n.translate(context, "words.cabbage"), gamedata.cabbageGrown),
+      new Foods(FlutterI18n.translate(context, "words.kale"), gamedata.kayleGrown),
     ];
 
     return [

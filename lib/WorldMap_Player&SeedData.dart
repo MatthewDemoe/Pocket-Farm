@@ -3,8 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'package:pocket_farm/Inventory.dart';
+import 'package:pocket_farm/GameData.dart';
 import 'Enums.dart';
+import 'Inventory.dart';
 
 //map player class
 class PlayerMapData {

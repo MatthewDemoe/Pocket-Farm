@@ -47,6 +47,7 @@ class _FarmScreen extends State<FarmScreen> {
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
 
+
   @override void initState() {
     super.initState();
     _notifications.init();
@@ -90,7 +91,6 @@ class _FarmScreen extends State<FarmScreen> {
 
   Future<void> _harvestPlant(FarmPlot plot) async
   {
-
     switch(await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {

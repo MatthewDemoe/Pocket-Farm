@@ -13,7 +13,7 @@ abstract class ShopObject
 
   ShopObject(BuildContext context, {this.theGestureDetector, this.theName, this.price, this.amount, this.maxAmount, this.imageAddress, this.unlocked});
 
-  void AddItem() //pass the necessary class here
+  void addItem() //pass the necessary class here
   {
       //this function would get overridden
       //put logic for adding this item or effect to the player here

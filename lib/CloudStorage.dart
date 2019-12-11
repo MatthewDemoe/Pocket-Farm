@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:pocket_farm/GameData.dart';
 
 import 'dart:async';
+import 'Inventory.dart';
+import 'package:pocket_farm/Inventory.dart';
 
 Future<void> saveDataCloud(GameData data) async {
+  Inventory.instance().updateGameData();
+  print(gamedata.toMap());
+
   Firestore.instance.collection('userData').document('testing').setData({
         'zero': data.zero,
         'carrotSeeds': data.carrotSeeds,
@@ -68,6 +73,17 @@ void cloudLoad() async
     moreMoneyFromSellingLevel: d.data['moreMoneyFromSellingLevel'],
     planterBoxLevel: d.data['planterBoxLevel'],
   );
+
+  Inventory.instance().carrotSeeds = gamedata.carrotSeeds;
+  Inventory.instance().cabbageSeeds = gamedata.cabbageSeeds;
+  Inventory.instance().kaleSeeds = gamedata.kayleSeeds;
+  Inventory.instance().grownCarrots = gamedata.carrots;
+  Inventory.instance().grownCabbages = gamedata.cabbage;
+  Inventory.instance().grownkale = gamedata.kayle;
+  Inventory.instance().lifetimeGrownCarrots = gamedata.carrotsGrown;
+  Inventory.instance().lifetimeGrownCabbages = gamedata.cabbageGrown;
+  Inventory.instance().lifetimeGrownKale = gamedata.kayleGrown;
+  Inventory.instance().dollars = gamedata.money;
 
   print(gamedata.toMap());
 }
