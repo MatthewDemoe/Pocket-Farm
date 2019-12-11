@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'ShopLogic.dart';
+import 'GameData.dart';
 
 //Atiya Nova
 //Using parts of a layout example shown in class
@@ -51,7 +52,9 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreen extends State<ShopScreen> {
-  ShopLogic theShop;
+  ShopLogic theShop = new ShopLogic();
+  List<Card> theCart;
+  List<int> itemsToSell = [0,0,0,0,0,0];
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,11 @@ class _ShopScreen extends State<ShopScreen> {
         icon: Icons.grade,
         builder: theShop.buildUpgradeWindow,
       ),
+      Layout(
+        title: 'Sell',
+        icon: Icons.attach_money,
+        builder: buildSellingWindow,
+      ),
     ];
 
     return DefaultTabController(
@@ -81,24 +89,29 @@ class _ShopScreen extends State<ShopScreen> {
         body: 
         //builds the body content
           buildTabBarView(tabOptions),
-          floatingActionButton: new FloatingActionButton(
-          heroTag: FlutterI18n.translate(context, "words.one"),
-          onPressed: _buy,
-              tooltip: FlutterI18n.translate(context, "words.buy"),
-              child: Icon(Icons.shopping_cart),
-        ),
-        bottomSheet: new FloatingActionButton(
+        bottomSheet: new 
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+              FloatingActionButton(
               heroTag: FlutterI18n.translate(context, "words.two"),
               onPressed: _checkList,
               tooltip: FlutterI18n.translate(context, "words.checkCart"),
-              child: Icon(Icons.list),),
+              child: Icon(Icons.shopping_basket),),
+              FloatingActionButton(
+              heroTag: "one",
+                onPressed: _buy,
+              tooltip: 'buy',
+              child: Icon(Icons.shopping_cart),),
+        ],),
+           
       ),
     );
   }
 
   void _checkList() async
   {
-    List<Card> temp = theShop.buildCheckout();
+    theCart = theShop.buildCheckout();
 
     //the list of cart items are build here with a listview.builder
     await showDialog<bool>(
@@ -116,19 +129,19 @@ class _ShopScreen extends State<ShopScreen> {
             child: new ListView.builder
             (
               //built the dismissable with an example from the flutter docs
-              itemCount: temp.length,
+              itemCount: theCart.length,
               itemBuilder: (BuildContext ctxt, int index) {
                 return Dismissible(
-                  key: Key(temp[index].toString()),
+                  key: Key(theCart[index].toString()),
                   onDismissed: (direction)
                   {
                     setState(() {
-                    temp.removeAt(index);
+                    theCart.removeAt(index);
                     theShop.removeItem(index); //removes the item from the cart
                   });
                 },
                 background: Container(color: Colors.red),
-                child: temp[index],
+                child: theCart[index],
               );
             }
             ),
@@ -154,7 +167,8 @@ class _ShopScreen extends State<ShopScreen> {
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);
-                theShop.checkOut(); //'checks out' (this is rough)
+                theShop.checkOut();
+                theCart.clear(); //'checks out' (this is rough)
               },
               child: Text(FlutterI18n.translate(context, "words.yes")),
             ),
@@ -169,7 +183,84 @@ class _ShopScreen extends State<ShopScreen> {
       }
     );
   } 
-}
+
+   //builds the window for selling
+  Widget buildSellingWindow()
+  {
+    List<Row> display = new List<Row>();
+    //making a list of the shop items
+    List<int> temp = gamedata.getShopList();
+    //the item names
+    var names = ["Carrot Seeds", "Cabbage Seeds", "Kale Seeds", "Carrot", "Cabbage", "Kale"];
+
+    for (int i = 0; i < temp.length; i++)
+        display.add(
+          new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text(names[i]),
+            Text(itemsToSell[i].toString()),
+              GestureDetector(
+                child:Container(
+                  width: 30.0,
+                  margin: EdgeInsets.all(4.0),
+                  color: Colors.white,
+                  child: Icon(Icons.arrow_upward),
+                ),
+                onTap: (){
+                  setState(() {
+                    if (temp[i]>0)
+                    itemsToSell[i]++;
+                    print(itemsToSell);
+                  });
+                },
+            ),
+          GestureDetector(
+              child:Container(
+                width: 30.0,
+                margin: EdgeInsets.all(4.0),
+                color: Colors.white,
+                child: Icon(Icons.arrow_downward),
+              ),
+              onTap: (){
+                setState(() {
+                  if (itemsToSell[i]>0)
+                  itemsToSell[i]--;
+                  print(itemsToSell);
+                });
+              },
+          ),
+          ],
+        ));
+
+    return 
+    Column(children: <Widget>[
+      theShop.buildHeader(),
+      Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: display
+          .map((row) => Container(
+                child: row,
+                padding: EdgeInsets.all(5.0),
+              ))
+          .toList()),
+      GestureDetector(
+        child:FloatingActionButton(
+        child: Icon(Icons.done_outline),
+        onPressed: (){
+          setState(() {
+            theShop.sell(itemsToSell);
+          });
+          },
+      ),
+      ),
+  ],);
+
+  }
+    
+} 
+
 
 
 

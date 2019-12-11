@@ -44,8 +44,7 @@ class ShopLogic
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-         
-        Container(height:100,child:Image.asset('assets/images/shop.png')),
+        buildHeader(),
         Row(             
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -63,20 +62,20 @@ class ShopLogic
      return Column(
      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
      children: <Widget>[
-           Container(height:60,child:Image.asset('assets/images/shop.png')),
+           buildHeader(),
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
              getShopUI(itemAmount+0), getShopUI(itemAmount+1),
              ],
            ),
+           
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
-             getShopUI(itemAmount+2), getShopUI(itemAmount+3),
+             getShopUI(itemAmount+3), getShopUI(itemAmount+4),
              ],
            ),
-           getShopUI(itemAmount+4),
         ],
      );
   } 
@@ -111,6 +110,22 @@ class ShopLogic
     shopItems[index].amount += 1;
   }
 
+  //This builds the header for all the tabs
+  Container buildHeader()
+  {
+    return Container(
+      height:100,
+      child:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+        Image.asset('assets/images/shop.png', scale: 2,),
+        Text("money " + gamedata.money.toString()),
+       ],
+      ),
+    );
+  }
+
   //Builds what the player sees when they check their cart of items
   List<Card> buildCheckout()
   {
@@ -119,7 +134,9 @@ class ShopLogic
     {
       if (shopItems[i].amount>0)
       {checkoutItems.add(new Card(
-        child:Row(children: <Widget>[
+        child:Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
           Text(shopItems[i].theName), 
           Text(shopItems[i].amount.toString()),
           ]),
@@ -138,6 +155,7 @@ class ShopLogic
     for (int i = 0; i < shopItems.length;i++)
     {
       totalCost += shopItems[i].price;
+      if (shopItems[i].amount>0) shopItems[i].addItem();
     }
 
     if(totalCost > Inventory.instance().dollars)
@@ -156,6 +174,17 @@ class ShopLogic
    void removeItem(int i)
    {
       shopItems[i].amount=0;
+   }
+
+    //function used to sell the items
+   void sell(List<int> items)
+   {
+     for (int i = 0; i < items.length; i++)
+     {
+       gamedata.sellItem(i, items[i]);
+     }
+
+     print(gamedata.getShopList());
    }
 }
 
