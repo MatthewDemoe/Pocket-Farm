@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart'; //I was planning on using this for extra visual flair
+import 'package:path/path.dart';
+import 'package:pocket_farm/GameData.dart';
+import 'Inventory.dart';
 import 'ShopItem.dart';
 
 //upgrade snackbar
@@ -30,17 +33,17 @@ class ShopLogic
    int itemAmount = 3;
    GlobalKey<ScaffoldState> contextKey; //scaffold key to show snackbars
 
-   ShopLogic()
+   ShopLogic(BuildContext context)
    {
       //the different shop items get added
-      shopItems.add(new CarrotSeed());
-      shopItems.add(new CabbageSeed());
-      shopItems.add(new KaleSeed());
-      shopItems.add(new MoreHarvest());
-      shopItems.add(new MoreMoney());
-      shopItems.add(new MorePlanters());
-      shopItems.add(new MoreSeeds());
-      shopItems.add(new FasterGrowth());
+      shopItems.add(new CarrotSeed(context));
+      shopItems.add(new CabbageSeed(context));
+      shopItems.add(new KaleSeed(context));
+      shopItems.add(new MoreHarvest(context));
+      shopItems.add(new MoreMoney(context));
+      shopItems.add(new MorePlanters(context));
+      shopItems.add(new MoreSeeds(context));
+      shopItems.add(new FasterGrowth(context));
 
       //The shop items get initialized
       for (int i = 0; i < shopItems.length; i++) {
@@ -62,8 +65,7 @@ class ShopLogic
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-         
-        Container(height:100,child:Image.asset('assets/images/shop.png')),
+        buildHeader(),
         Row(             
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -81,20 +83,20 @@ class ShopLogic
      return Column(
      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
      children: <Widget>[
-           Container(height:60,child:Image.asset('assets/images/shop.png')),
+           buildHeader(),
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
              getShopUI(itemAmount+0), getShopUI(itemAmount+1),
              ],
            ),
+           
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: <Widget>[
-             getShopUI(itemAmount+2), getShopUI(itemAmount+3),
+             getShopUI(itemAmount+3), getShopUI(itemAmount+4),
              ],
            ),
-           getShopUI(itemAmount+4),
         ],
      );
   } 
@@ -134,6 +136,22 @@ class ShopLogic
       contextKey.currentState.showSnackBar(fullcartSnackBar); //let the player know they can't add any more items to the cart
   }
 
+  //This builds the header for all the tabs
+  Container buildHeader()
+  {
+    return Container(
+      height:100,
+      child:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+        Image.asset('assets/images/shop.png', scale: 2,),
+        Text("money " + gamedata.money.toString()),
+       ],
+      ),
+    );
+  }
+
   //Builds what the player sees when they check their cart of items
   List<Card> buildCheckout()
   {
@@ -142,8 +160,10 @@ class ShopLogic
     {
       if (shopItems[i].amount>0)
       {checkoutItems.add(new Card(
-        child:Row(children: <Widget>[
-          Text(shopItems[i].theName + ' = '), 
+        child:Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+          Text(shopItems[i].theName), 
           Text(shopItems[i].amount.toString()),
           ]),
       ));
@@ -154,15 +174,29 @@ class ShopLogic
    }
 
   //The function that adds the cart items to the inventory
-  void checkOut()
+  bool checkOut()
   {
+    int totalCost = 0;
+
     for (int i = 0; i < shopItems.length;i++)
     {
       //only buy an item if it's in the cart
       if (shopItems[i].amount > 0) {
+      totalCost += shopItems[i].price;
         shopItems[i].addItem();
         shopItems[i].amount = 0; //clear the amount after purchase
       }
+    }
+
+    if(totalCost > Inventory.instance().dollars)
+    {
+       return false;
+    }
+
+    else
+    {
+      Inventory.instance().dollars -= totalCost;
+      return true;
     }
   }
 
@@ -170,6 +204,17 @@ class ShopLogic
    void removeItem(int i)
    {
       shopItems[i].amount=0;
+   }
+
+    //function used to sell the items
+   void sell(List<int> items)
+   {
+     for (int i = 0; i < items.length; i++)
+     {
+       gamedata.sellItem(i, items[i]);
+     }
+
+     print(gamedata.getShopList());
    }
 }
 

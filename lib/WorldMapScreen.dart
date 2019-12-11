@@ -3,6 +3,7 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
@@ -185,7 +186,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
           //),
           child: Dialog(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Text('\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will despawn if you leave without grabbing them!\n\n'),
+            child: Text(FlutterI18n.translate(context, "words.mapInfo")),
           ),
         );
       },
@@ -203,7 +204,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => sendSeeds(), //return to farm screen, send ungrabbed seeds to be reloaded once returned to map
         ),
-        title: Text('The World Map'),
+        title: Text(FlutterI18n.translate(context, "words.map")),
       ),
       body: Center(
         //create a FlutterMap to show the world map
@@ -244,7 +245,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: showMapInfo,
-          tooltip: 'Display more info about the World Map',
+          tooltip: FlutterI18n.translate(context, "words.mapButtonTooltip"),
           child: Icon(Icons.info),
         ),
     );

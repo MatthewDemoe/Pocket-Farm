@@ -52,10 +52,10 @@ void checkEmpty() async
     planterBoxLevel: 0,
     );
     saveData();
-  }
-  else {
+  }else{
     loadData();
   }
+  
 }
 
 void loadData() async {

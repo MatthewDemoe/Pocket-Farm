@@ -3,8 +3,11 @@
 
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:path/path.dart';
 
 import 'GameData.dart';
+import 'Inventory.dart';
 
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key key, this.title}) : super(key: key);
@@ -19,7 +22,7 @@ class _ChartScreen extends State<ChartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chart.seedData(),
+      body: Chart.seedData(context),
     );
   }
 }
@@ -37,9 +40,9 @@ class Chart extends StatelessWidget {
 
   Chart(this.foodList, {this.animateChart});
 
-  factory Chart.seedData() {
+  factory Chart.seedData(BuildContext context) {
     return new Chart(
-      _createSeedData(),
+      _createSeedData(context),
       animateChart: false,
     );
   }
@@ -71,16 +74,16 @@ class Chart extends StatelessWidget {
         
   }
 
-  static List<Series<Foods, String>> _createSeedData() {
+  static List<Series<Foods, String>> _createSeedData(BuildContext context) {
     final data = [
-      new Foods('Carrot', gamedata.carrotsGrown),
-      new Foods('Cabbage', gamedata.cabbageGrown),
-      new Foods('Kale', gamedata.kayleGrown),
+      new Foods(FlutterI18n.translate(context, "words.carrot"), gamedata.carrotsGrown),
+      new Foods(FlutterI18n.translate(context, "words.cabbage"), gamedata.cabbageGrown),
+      new Foods(FlutterI18n.translate(context, "words.kale"), gamedata.kayleGrown),
     ];
 
     return [
       new Series<Foods, String>(
-        id: 'Total Crops Grown Highscore',
+        id: FlutterI18n.translate(context, "words.amountGrown"),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Foods food, _) => food.foodType,
         measureFn: (Foods food, _) => food.totalOfFood,

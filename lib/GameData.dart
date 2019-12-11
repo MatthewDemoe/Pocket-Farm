@@ -1,20 +1,23 @@
+import 'package:pocket_farm/ShopItem.dart';
 
-GameData gamedata;
+GameData gamedata = new GameData();
+
 
 class GameData {
-  int zero;
 
-  int carrotSeeds;
-  int cabbageSeeds;
-  int kayleSeeds;
+  int zero = 0;
 
-  int carrots;
-  int cabbage;
-  int kayle;
+  int carrotSeeds = 1;
+  int cabbageSeeds = 1;
+  int kayleSeeds = 1;
+
+  int carrots = 0;
+  int cabbage = 0;
+  int kayle = 0;
   
-  int carrotsGrown;
-  int cabbageGrown;
-  int kayleGrown;
+  int carrotsGrown = 0;
+  int cabbageGrown = 0;
+  int kayleGrown = 0;
 
   int p1Plant;
   int p2Plant;
@@ -28,13 +31,13 @@ class GameData {
   double p4TimeLeft;
   double p5TimeLeft;
 
-  int money;
+  int money = 50;
 
-  int fasterGrowingLevel;
-  int betterHarvestLevel;
-  int moreSeedsLevel;
-  int moreMoneyFromSellingLevel;
-  int planterBoxLevel;
+  int fasterGrowingLevel = 0;
+  int betterHarvestLevel = 0;
+  int moreSeedsLevel = 0;
+  int moreMoneyFromSellingLevel = 0;
+  int planterBoxLevel = 0;
 
   GameData({
       this.zero,
@@ -64,6 +67,33 @@ class GameData {
       this.moreMoneyFromSellingLevel,
       this.planterBoxLevel,
       });
+
+      //function to use to sell items in the shop
+      void sellItem(int index, int amount)
+      {
+        switch (index)
+        {
+          case 0: {carrotSeeds-=amount; money+=(100*amount);} break;
+          case 1: {cabbageSeeds-=amount; money+=(100*amount);} break; 
+          case 2: {kayleSeeds-=amount; money+=(100*amount);} break; 
+          case 3: {carrots-=amount; money+=(100*amount);}break;
+          case 4: {cabbage-=amount; money+=(100*amount);} break; 
+          case 5: {kayle-=amount; money+=(100*amount);} break; 
+        }
+      }
+
+      //function to help construct the list of the shopclass (for selling)
+      List<int> getShopList()
+      {
+          List<int> temp = new List<int>();
+          temp.add(carrotSeeds);
+          temp.add(cabbageSeeds);
+          temp.add(kayleSeeds);
+          temp.add(carrots);
+          temp.add(cabbage);
+          temp.add(kayle);
+          return temp;
+      }
 
       Map<String, dynamic> toMap() {
         return {
@@ -117,6 +147,7 @@ class GameData {
         this.p3TimeLeft = map['p3TimeLeft'];
         this.p4TimeLeft = map['p4TimeLeft'];
         this.p5TimeLeft = map['p5TimeLeft'];
+        this.money = map['money'];
         this. fasterGrowingLevel = map['fasterGrowingLevel'];
         this.betterHarvestLevel = map['betterHarvestLevel'];
         this.moreSeedsLevel = map['moreSeedsLevel'];

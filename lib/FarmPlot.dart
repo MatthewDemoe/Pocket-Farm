@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:pocket_farm/Inventory.dart';
+import 'package:pocket_farm/GameData.dart';
 import 'Enums.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 
+import 'Inventory.dart';
 import 'Plants.dart';
 class FarmPlot{
   Plant plant;

@@ -1,5 +1,6 @@
 
 import 'package:pocket_farm/Enums.dart';
+import 'GameData.dart';
 
 class Inventory{
 
@@ -14,8 +15,9 @@ class Inventory{
     return _inventory;    
   }
 
+  
+
   int dollars = 100;
-  int lifetimeDollars = 100;
 
   int carrotSeeds = 1;
   int lifetimeCarrotSeeds = 1;
@@ -24,30 +26,30 @@ class Inventory{
   int kaleSeeds = 1;
   int lifetimeKaleSeeds = 1;
 
-  int grownCarrots = 1;
-  int lifetimeGrownCarrots = 1;
-  int grownCabbages = 1;
-  int lifetimeGrownCabbages = 1;
-  int grownkale = 1;
-  int lifetimeGrownKale = 1;
+  int grownCarrots = 0;
+  int lifetimeGrownCarrots = 0;
+  int grownCabbages = 0;
+  int lifetimeGrownCabbages = 0;
+  int grownkale = 0;
+  int lifetimeGrownKale = 0;
 
-  void addSeed(SeedType type)
+  void addSeed(SeedType type, int amount)
   {
     switch(type)
     {
       case SeedType.carrot:
-      carrotSeeds++;
-      lifetimeCarrotSeeds++;
+      carrotSeeds += amount;
+      lifetimeCarrotSeeds += amount;
       break;
 
       case SeedType.cabbage:
-      cabbageSeeds++;
-      lifetimeCabbageSeeds++;
+      cabbageSeeds += amount;
+      lifetimeCabbageSeeds += amount;
       break;
 
       case SeedType.kale:
-      kaleSeeds++;
-      lifetimeKaleSeeds++;
+      kaleSeeds += amount;
+      lifetimeKaleSeeds += amount;
       break;
     }
   }
@@ -104,5 +106,22 @@ class Inventory{
         lifetimeGrownKale++;
       break;
     }
+  }
+
+  void updateGameData()
+  {
+
+        gamedata.carrotSeeds = carrotSeeds;
+        gamedata.cabbageSeeds = cabbageSeeds;
+        gamedata.kayleSeeds = kaleSeeds;
+        gamedata.carrots = grownCarrots;
+        gamedata.cabbage = grownCabbages;
+        gamedata.kayle = grownkale;
+        gamedata.carrotsGrown = lifetimeGrownCarrots;
+        gamedata.cabbageGrown = lifetimeGrownCabbages;
+        gamedata.kayleGrown = lifetimeGrownKale;
+        gamedata.money = dollars;
+
+        
   }
 }
