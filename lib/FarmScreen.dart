@@ -409,7 +409,7 @@ class _FarmScreen extends State<FarmScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('The Farm'),
+        title: Text(FlutterI18n.translate(context, "words.theFarm")),
         actions: <Widget>[
           // saves the game to a local database
           IconButton(

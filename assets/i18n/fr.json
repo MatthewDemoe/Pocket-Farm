@@ -31,6 +31,9 @@
 		"grownCarrots": "Carottes cultivées",
 		"grownCabbages": "Choux cultivées",
 		"grownKale": "Chou Frisé cultivées",
-		"money": "Argent"
+		"money": "Argent",
+		"amountGrown": "Quantité Cultivée",
+		"theFarm": "La Ferme",
+		"map": "La Carte"
 	}
 }
