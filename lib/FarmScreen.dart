@@ -17,7 +17,9 @@ import 'GameData.dart';
 import 'Database.dart';
 
 import 'WorldMap_Player&SeedData.dart';
+
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+
 import 'dart:async';
 
 class FarmScreen extends StatefulWidget {
@@ -129,7 +131,7 @@ class _FarmScreen extends State<FarmScreen> {
           plot.showProgressBar = false;
           plot.signpostImage= Image.asset(
           plot.signpost[3], //set back to regular fence
-          scale: 4.2, 
+          scale: 6, 
           fit: BoxFit.cover,
         ); 
         });
@@ -261,7 +263,7 @@ class _FarmScreen extends State<FarmScreen> {
           children: [
                 Container(
                   height:130,
-                  width:200,
+                  width:195,
                   child: Column(children: <Widget>[
                   Row(children: <Widget>[
                       farmPlots[i].gestureDetector,
@@ -284,7 +286,7 @@ class _FarmScreen extends State<FarmScreen> {
         int t = i ~/ 2;
         rows[t].children.add( Container(
                   height:130,
-                  width:200,
+                  width:195,
                   child: Column(children: <Widget>[
                     Row(children: <Widget>[
                       farmPlots[i].gestureDetector,
@@ -306,7 +308,7 @@ class _FarmScreen extends State<FarmScreen> {
       children: rows
           .map((row) => Container(
                 child: row,
-                padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(1.0),
               ))
           .toList(),
       mainAxisAlignment: MainAxisAlignment.start,
@@ -364,16 +366,16 @@ class _FarmScreen extends State<FarmScreen> {
       theFarmPlot.showProgressBar = true;
       //Creates the right progress bar
       theFarmPlot.theProgress = new FAProgressBar(
-        animatedDuration: Duration(seconds: theTime),
+        animatedDuration: Duration(seconds: theTime), //based off plant grow time
         size: 8,
         currentValue: theTime, 
         maxValue: theTime, //current / max = endValue, as per the plugin
         borderRadius: 1,
         direction: Axis.horizontal,
         verticalDirection: VerticalDirection.down,
-        changeColorValue: 1,
+        changeColorValue: theTime,
         backgroundColor: Colors.white,
-        progressColor: Colors.yellow,
+        progressColor: Colors.red,
         changeProgressColor: Colors.blue,
       );
 
@@ -381,7 +383,7 @@ class _FarmScreen extends State<FarmScreen> {
       theFarmPlot.chosenPlant = plant;
       theFarmPlot.signpostImage= Image.asset(
           theFarmPlot.signpost[theFarmPlot.chosenPlant], 
-          scale: 4.2, 
+          scale: 6, 
           fit: BoxFit.cover,
       );
     });
@@ -410,7 +412,7 @@ class _FarmScreen extends State<FarmScreen> {
       int index = farmPlots.length-1;
       farmPlots[index].signpostImage= Image.asset(
           farmPlots[index].signpost[farmPlots[index].chosenPlant], 
-          scale: 4.2, 
+          scale: 6, 
           fit: BoxFit.cover,
       );
     }
@@ -458,7 +460,7 @@ class _FarmScreen extends State<FarmScreen> {
             children: <Widget>[
               Image.asset(    
                 'assets/images/TheBarn.png',
-                width:400,
+                width:375,
                 height:200,
             ),         
           ],
