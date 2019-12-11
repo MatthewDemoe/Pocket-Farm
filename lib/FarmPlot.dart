@@ -27,6 +27,8 @@ class FarmPlot{
   //set up the timer stuff
   //you set off the timer stuff in the switch statement
 
+  bool showProgressBar = false;
+
   FarmPlot({this.gestureDetector, this.theProgress, this.signpostImage});
 
   SeedType plantedSeed;
@@ -41,24 +43,24 @@ class FarmPlot{
       case SeedType.carrot:
       plant = new Carrot();
       chosenPlant=0;
-      timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
-      timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2))); //change from seconds back to minutes after presentation
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
       plantedSeed = SeedType.carrot;
       break;
 
       case SeedType.cabbage:
       plant = new Cabbage();
       chosenPlant=1;
-      timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
-      timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
       plantedSeed = SeedType.cabbage;
       break;
 
       case SeedType.kale:
       plant = new Kale();
       chosenPlant=2;
-      timeHalfCompleted = new DateTime.now().add(new Duration(minutes: (plant.minutesToGrow ~/ 2)));
-      timeCompleted = new DateTime.now().add(new Duration(minutes: plant.minutesToGrow));
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
       plantedSeed = SeedType.kale;
       break;
     }

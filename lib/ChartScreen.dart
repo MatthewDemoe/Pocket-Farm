@@ -4,6 +4,8 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'GameData.dart';
+
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key key, this.title}) : super(key: key);
 
@@ -71,14 +73,14 @@ class Chart extends StatelessWidget {
 
   static List<Series<Foods, String>> _createSeedData() {
     final data = [
-      new Foods('Carrot', 200),
-      new Foods('Cabbage', 1),
-      new Foods('Kale', 2),
+      new Foods('Carrot', gamedata.carrotsGrown),
+      new Foods('Cabbage', gamedata.cabbageGrown),
+      new Foods('Kale', gamedata.kayleGrown),
     ];
 
     return [
       new Series<Foods, String>(
-        id: 'Grown',
+        id: 'Total Crops Grown Highscore',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Foods food, _) => food.foodType,
         measureFn: (Foods food, _) => food.totalOfFood,

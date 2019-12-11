@@ -184,7 +184,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
             //'assets/images/dirt.png'
           //),
           child: Dialog(
-            shape: RoundedRectangleBorder(side: BorderSide.none),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Text('\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will despawn if you leave without grabbing them!\n\n'),
           ),
         );

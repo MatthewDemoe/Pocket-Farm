@@ -50,10 +50,13 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreen extends State<ShopScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>(); 
   ShopLogic theShop = new ShopLogic();
 
   @override
   Widget build(BuildContext context) {
+  
+  theShop.contextKey = _scaffoldKey; //set the shops scaffold key
 
   //Sets up the tab options
   List<Layout> tabOptions = <Layout>[
@@ -72,6 +75,7 @@ class _ShopScreen extends State<ShopScreen> {
     return DefaultTabController(
       length: tabOptions.length,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Shop"),
           bottom: buildTabBar(tabOptions),
@@ -148,7 +152,7 @@ class _ShopScreen extends State<ShopScreen> {
           ),
           title: Text("Check out"),
           children: [
-            Text("This is what you selected, read to buy?"),
+            Text("This is what you selected, ready to buy?"),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);

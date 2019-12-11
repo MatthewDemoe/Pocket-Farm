@@ -14,6 +14,6 @@ class Cabbage extends Plant{
 }
 
 class Kale extends Plant{
-  @override int minutesToGrow = 60;
+  @override int minutesToGrow = 45;
   @override int dollarReward = 1000;
 }

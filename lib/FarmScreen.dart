@@ -44,6 +44,8 @@ class _FarmScreen extends State<FarmScreen> {
   int counter = 0;
   Inventory inventory = new Inventory();
 
+  bool showBar = false;
+
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
@@ -123,6 +125,15 @@ class _FarmScreen extends State<FarmScreen> {
     )){
       case true:
         plot.harvestPlant();
+        setState(() {
+          plot.showProgressBar = false;
+          plot.signpostImage= Image.asset(
+          plot.signpost[3], //set back to regular fence
+          scale: 4.2, 
+          fit: BoxFit.cover,
+        ); 
+        });
+        
       break;
       case false:
       break;
@@ -201,7 +212,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
         inventory.carrotSeeds--; //decrease carrot seeds
-        _setProgressBars(plot, Carrot().minutesToGrow~/2, 0);
+        _setProgressBars(plot, Carrot().minutesToGrow, 0);
         break;
       }
       else {
@@ -215,7 +226,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
         inventory.cabbageSeeds--; //decrease cabbage seeds
-        _setProgressBars(plot, Cabbage().minutesToGrow~/2, 1);
+        _setProgressBars(plot, Cabbage().minutesToGrow, 1);
         break;
       }
       else {
@@ -229,7 +240,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(inventory.kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
         inventory.kaleSeeds--; //decrease kale seeds
-        _setProgressBars(plot, Kale().minutesToGrow~/2, 2);
+        _setProgressBars(plot, Kale().minutesToGrow, 2);
         break;
       }
       else {
@@ -257,9 +268,10 @@ class _FarmScreen extends State<FarmScreen> {
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  Flexible(
+                  if(farmPlots[i].showProgressBar)
+                    Flexible(
                     child: farmPlots[i].theProgress,
-                  ),
+                  ), 
                   ],
                 )
               ),                 
@@ -279,9 +291,10 @@ class _FarmScreen extends State<FarmScreen> {
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  Flexible(
-                    child: farmPlots[i].theProgress,
-                  ),
+                  if(farmPlots[i].showProgressBar)
+                    Flexible(
+                      child: farmPlots[i].theProgress,
+                    ),
                   ],
                 )
               ),         
@@ -347,16 +360,18 @@ class _FarmScreen extends State<FarmScreen> {
   void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
   {
     setState(() {
+
+      theFarmPlot.showProgressBar = true;
       //Creates the right progress bar
       theFarmPlot.theProgress = new FAProgressBar(
+        animatedDuration: Duration(seconds: theTime),
         size: 8,
-        currentValue: 10, 
-        maxValue: 10, 
+        currentValue: theTime, 
+        maxValue: theTime, //current / max = endValue, as per the plugin
         borderRadius: 1,
         direction: Axis.horizontal,
         verticalDirection: VerticalDirection.down,
-        animatedDuration: Duration(minutes: theTime),
-        changeColorValue: 5,
+        changeColorValue: 1,
         backgroundColor: Colors.white,
         progressColor: Colors.yellow,
         changeProgressColor: Colors.blue,
@@ -389,14 +404,7 @@ class _FarmScreen extends State<FarmScreen> {
         onTap: () => {
           _pickDialogue(temp),
         },
-        ),
-        theProgress: new FAProgressBar(
-        size: 8,
-        currentValue: 0,
-        maxValue: 10, 
-        animatedDuration: const Duration(minutes: 5),
-        progressColor: Colors.red,
-        ),        
+        ),     
         ),
       );
       int index = farmPlots.length-1;

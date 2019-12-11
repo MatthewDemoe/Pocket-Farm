@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'GameData.dart';
+
 //Atiya Nova
 //command design pattern used in order to optimize code
 abstract class ShopObject
@@ -12,7 +14,7 @@ abstract class ShopObject
 
   ShopObject({this.theGestureDetector, this.theName, this.price, this.amount, this.maxAmount, this.imageAddress, this.unlocked});
 
-  void AddItem() //pass the necessary class here
+  void addItem() //pass the necessary class here
   {
       //this function would get overridden
       //put logic for adding this item or effect to the player here
@@ -97,11 +99,25 @@ class MoreSeeds extends ShopObject
   MoreSeeds():super(
     theName:"More Seeds",
     price: 100,
-    maxAmount: 100,
+    maxAmount: 1,
     amount: 0,
     imageAddress: 'assets/images/upgrade3.png',
-    unlocked:true,
+    unlocked:gamedata.moreSeedsLevel == 2 ? false : true,
   );
+
+  //upgrade function for more seed spawns on the map
+  @override
+  void addItem() {
+    super.addItem();
+    if (gamedata.moreSeedsLevel == 0)
+      gamedata.moreSeedsLevel = 1; //upgrade to tier 2, cabbages will now spawn
+    else if (gamedata.moreSeedsLevel == 1) {
+      this.unlocked = false; //lock the seed spawn upgrade as they've hit the max tier
+      gamedata.moreSeedsLevel = 2; //upgrade to tier 3, kale will now spawn
+    }
+
+    print(this.unlocked);
+  }
 }
 
 class FasterGrowth extends ShopObject
