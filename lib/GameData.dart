@@ -1,6 +1,8 @@
+import 'package:pocket_farm/ShopItem.dart';
+
 GameData gamedata = new GameData();
 
-import 'package:pocket_farm/ShopItem.dart';
+
 class GameData {
 
   int zero = 0;

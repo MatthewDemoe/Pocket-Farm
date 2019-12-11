@@ -51,7 +51,7 @@
 		"money": "Money",
 		"amountGrown": "Amount Grown",
 		"theFarm": "The Farm",
-		"map": "The Map"
+		"map": "The Map",
 		"noSeeds": "You do not have enough seeds",
 		"mapButtonTooltip": "Display more info about the World Map",
 		"mapInfo": "\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will disappear if you leave without grabbing them!\n\n"

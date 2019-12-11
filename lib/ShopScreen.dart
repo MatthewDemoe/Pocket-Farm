@@ -53,7 +53,7 @@ class ShopScreen extends StatefulWidget {
 
 class _ShopScreen extends State<ShopScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>(); 
-  ShopLogic theShop = new ShopLogic();
+  ShopLogic theShop;
   List<Card> theCart;
   List<int> itemsToSell = [0,0,0,0,0,0];
 

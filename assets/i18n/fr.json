@@ -51,7 +51,7 @@
 		"money": "Argent",
 		"amountGrown": "Quantité Cultivée",
 		"theFarm": "La Ferme",
-		"map": "La Carte"
+		"map": "La Carte",
 		"noSeeds": "Vous n'avez pas assez de graines",
 		"mapButtonTooltip": "Afficher plus d'informations sur la carte du monde",
 		"mapInfo": "\nBienvenue sur la carte du monde!\n\n*Les graines apparaîtront périodiquement; ils apparaîtront plus fréquemment lorsque vous vous déplacerez!\n\n*Assurez-vous de prendre des graines avant de retourner à votre ferme; ils disparaîtront si vous partez sans les attraper!\n\n"
