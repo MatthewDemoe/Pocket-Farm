@@ -4,10 +4,9 @@ import 'package:pocket_farm/GameData.dart';
 import 'Enums.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-
 import 'Inventory.dart';
 import 'Plants.dart';
+
 class FarmPlot{
 
   //used variables
@@ -18,6 +17,9 @@ class FarmPlot{
   "assets/images/sp2.png",
   "assets/images/signpost.png",
   ];
+
+  String plotPlant;
+  int plotId, seedId;
 
   DateTime timeHalfCompleted;
   DateTime timeCompleted; 
@@ -44,25 +46,72 @@ class FarmPlot{
       case SeedType.carrot:
       plant = new Carrot();
       chosenPlant=0;
-      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2))); //change from seconds back to minutes after presentation
-      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
+      seedId = 1;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.secondsToGrow ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.secondsToGrow));
       plantedSeed = SeedType.carrot;
+      plotPlant = 'carrot';
       break;
 
       case SeedType.cabbage:
       plant = new Cabbage();
       chosenPlant=1;
-      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2)));
-      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
+      seedId = 2;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.secondsToGrow ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.secondsToGrow));
       plantedSeed = SeedType.cabbage;
+      plotPlant = 'cabbage';
       break;
 
       case SeedType.kale:
       plant = new Kale();
       chosenPlant=2;
-      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.minutesToGrow ~/ 2)));
-      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.minutesToGrow));
+      seedId = 3;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (plant.secondsToGrow ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: plant.secondsToGrow));
       plantedSeed = SeedType.kale;
+      plotPlant = 'kale';
+      break;
+    }
+
+    return true;
+  }
+
+  bool plantSomethingOnLoad(SeedType seed, int remainingTime)
+  {
+    if(plant != null)
+      return false;
+
+    switch(seed)
+    {
+      case SeedType.carrot:
+      plant = new Carrot();
+      chosenPlant=0;
+      seedId = 1;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (remainingTime ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: remainingTime));
+      plantedSeed = SeedType.carrot;
+      plotPlant = 'carrot';
+      break;
+
+      case SeedType.cabbage:
+      plant = new Cabbage();
+      chosenPlant=1;
+      seedId = 2;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (remainingTime ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: remainingTime));
+      plantedSeed = SeedType.cabbage;
+      plotPlant = 'cabbage';
+      break;
+
+      case SeedType.kale:
+      plant = new Kale();
+      chosenPlant=2;
+      seedId = 3;
+      timeHalfCompleted = new DateTime.now().add(new Duration(seconds: (remainingTime ~/ 2)));
+      timeCompleted = new DateTime.now().add(new Duration(seconds: remainingTime));
+      plantedSeed = SeedType.kale;
+      plotPlant = 'kale';
       break;
     }
 

@@ -20,24 +20,24 @@ class GameData {
   int cabbageGrown = 0;
   int kayleGrown = 0;
 
-  int p1Plant;
-  int p2Plant;
-  int p3Plant;
-  int p4Plant;
-  int p5Plant;
+  int p1Plant = 0;
+  int p2Plant = 0;
+  int p3Plant = 0;
+  int p4Plant = 0;
+  int p5Plant = 0;
 
-  double p1TimeLeft;
-  double p2TimeLeft;
-  double p3TimeLeft;
-  double p4TimeLeft;
-  double p5TimeLeft;
+  int p1TimeLeft = 0;
+  int p2TimeLeft = 0;
+  int p3TimeLeft = 0;
+  int p4TimeLeft = 0;
+  int p5TimeLeft = 0;
 
   int money = 50;
 
-  int fasterGrowingLevel = 0;
-  int betterHarvestLevel = 0;
+  int fasterGrowingLevel = 1;
+  int betterHarvestLevel = 1;
   int moreSeedsLevel = 0;
-  int moreMoneyFromSellingLevel = 0;
+  int moreMoneyFromSellingLevel = 1;
   int planterBoxLevel = 0;
 
   GameData({

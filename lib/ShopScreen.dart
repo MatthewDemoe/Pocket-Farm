@@ -103,9 +103,9 @@ class _ShopScreen extends State<ShopScreen> {
               tooltip: FlutterI18n.translate(context, "words.checkCart"),
               child: Icon(Icons.shopping_basket),),
               FloatingActionButton(
-              heroTag: "one",
+              heroTag: "words.one",
                 onPressed: _buy,
-              tooltip: 'buy',
+              tooltip: 'words.buy',
               child: Icon(Icons.shopping_cart),),
         ],),
            

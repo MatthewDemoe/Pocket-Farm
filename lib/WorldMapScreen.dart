@@ -1,5 +1,6 @@
 //referenced class slides on maps, geolocation, geocoding
 //referenced https://stackoverflow.com/questions/54610121/flutter-countdown-timer for timers
+//referenced https://stackoverflow.com/questions/49356664/how-to-override-the-back-button-in-flutter for WillPopScope
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -9,15 +10,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'dart:async';
 import 'WorldMap_Player&SeedData.dart';
-import 'notifications.dart';
 
 //worldmapscreen widget
 class WorldMapScreen extends StatefulWidget {
-  WorldMapScreen({Key key, this.title, this.currentSeeds}) : super(key: key);
+  WorldMapScreen({Key key, this.title}) : super(key: key);
   final String title;
-
-  //currentSeeds that take in leftover seeds from last visit to mapscreen
-  final SeedMarker currentSeeds; //from farm screen
 
   @override
   _WorldMapPage createState() => _WorldMapPage();
@@ -144,12 +141,6 @@ class _WorldMapPage extends State<WorldMapScreen> {
   void initState() {
     super.initState();
     this.seedSpawnTimer(); //start the seed spawning timer on init
-    //if (widget.currentSeeds != null) {
-      //seedData.seedList = widget.currentSeeds.seedList; //if not null, load in the previous seeds that weren't picked up
-      //for (int i = 0; i < widget.currentSeeds.seedList.length; i++) {
-        //seedData.seedList[i].id = widget.currentSeeds.seedList[i].id;
-      //}
-    //4}
     onWorldMapScreen = true; //back on the map screen page, so true
   }
 
@@ -160,20 +151,23 @@ class _WorldMapPage extends State<WorldMapScreen> {
     spawnTimer.cancel(); //stop the timer when we leave the world map screen
   }
 
-  //function to send seed data back to farm screen, to add to player inventory
-  void sendSeeds() {
+  //function to send player back to farm screen
+  Future<bool> goBackToFarm() {
     onWorldMapScreen = false; //no longer on the map screen page
     
     //have a 1 second disconnect timer from the map
     //to avoid geolocator updating after changing pages
     //this will avoid memory leaks
     new Timer(new Duration(seconds: 1), () =>
-    Navigator.pop(context, seedData)
+    Navigator.pop(context, true)
     );
+
+    return null; //return null, will have returned to farm screen already
   }
 
-  //notification function
+  //function to display dialog about the map
   void showMapInfo() async  {
+    //show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -181,12 +175,9 @@ class _WorldMapPage extends State<WorldMapScreen> {
           width: 300,
           height: 1000,
           alignment: Alignment.center,
-          //child: Image.asset(
-            //'assets/images/dirt.png'
-          //),
           child: Dialog(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Text(FlutterI18n.translate(context, "words.mapInfo")),
+            child: Text(FlutterI18n.translate(context, "words.mapInfo")), //words to display in the dialog
           ),
         );
       },
@@ -196,32 +187,33 @@ class _WorldMapPage extends State<WorldMapScreen> {
   //widget
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        //back button in app bar
-        leading: IconButton (
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => sendSeeds(), //return to farm screen, send ungrabbed seeds to be reloaded once returned to map
-        ),
-        title: Text(FlutterI18n.translate(context, "words.map")),
-      ),
-      body: Center(
-        //create a FlutterMap to show the world map
-        child: FlutterMap (
-          //add the playerController as the map controller to keep centered on the player
-          mapController: playerController,
-          //setup the map options
-          options:
-          MapOptions (
-            zoom: 17, //set the zoom level
-            interactive: false, //interactive to false so players can't move the map away from their position
+    return WillPopScope(
+      onWillPop: goBackToFarm, //perform function if android back button is pressed
+      child: Scaffold(
+        appBar: AppBar(
+          //back button in app bar
+          leading: IconButton (
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => goBackToFarm(), //return to farm screen, send ungrabbed seeds to be reloaded once returned to map
           ),
-          layers: [
-             //generate tile layer options using OpenStreetMap
-             TileLayerOptions (
-               urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-               subdomains: ['a', 'b', 'c'],
+          title: Text(FlutterI18n.translate(context, "words.map")),
+        ),
+        body: Center(
+          //create a FlutterMap to show the world map
+          child: FlutterMap (
+            //add the playerController as the map controller to keep centered on the player
+            mapController: playerController,
+            //setup the map options
+            options:
+            MapOptions (
+              zoom: 17, //set the zoom level
+              interactive: false, //interactive to false so players can't move the map away from their position
+            ),
+            layers: [
+              //generate tile layer options using OpenStreetMap
+              TileLayerOptions (
+                urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c'],
               ),
               //generate the marker layer options
               MarkerLayerOptions (
@@ -243,11 +235,13 @@ class _WorldMapPage extends State<WorldMapScreen> {
             ],
           ),
         ),
+        //floating action button to display info about the map screen
         floatingActionButton: FloatingActionButton(
-          onPressed: showMapInfo,
+          onPressed: showMapInfo, //display the map info
           tooltip: FlutterI18n.translate(context, "words.mapButtonTooltip"),
           child: Icon(Icons.info),
         ),
+      ),
     );
   }
 }

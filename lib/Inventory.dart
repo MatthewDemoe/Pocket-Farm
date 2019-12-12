@@ -92,18 +92,21 @@ class Inventory{
     switch(type)
     {
       case SeedType.carrot:
-        grownCarrots++;
-        lifetimeGrownCarrots++;
+        grownCarrots += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownCarrots += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
 
       case SeedType.cabbage:
-        grownCabbages++;
-        lifetimeGrownCabbages++;
+        grownCabbages += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownCabbages += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
 
       case SeedType.kale:
-        grownkale++;
-        lifetimeGrownKale++;
+        grownkale += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownKale += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
     }
   }

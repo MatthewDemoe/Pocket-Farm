@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:pocket_farm/GameData.dart';
+import 'package:pocket_farm/Inventory.dart';
 
 import 'GameData.dart';
 
@@ -38,7 +39,7 @@ class CarrotSeed extends ShopObject
   @override
   void addItem()
   {
-    gamedata.carrotSeeds+=amount;
+    Inventory.instance().carrotSeeds+=amount;
     print("added carrot seed" + amount.toString());
   }
 }
@@ -57,7 +58,7 @@ class CabbageSeed extends ShopObject
     @override
   void addItem()
   {
-    gamedata.cabbageSeeds+=amount;
+    Inventory.instance().cabbageSeeds+=amount;
     print("added carrot seed" + amount.toString());
   }
 }
@@ -76,7 +77,7 @@ class KaleSeed extends ShopObject
   @override
   void addItem()
   {
-    gamedata.kayleSeeds+=amount;
+    Inventory.instance().kaleSeeds+=amount;
     print("added kale seed" + amount.toString());
   }
 }
@@ -86,7 +87,7 @@ class MoreHarvest extends ShopObject
   MoreHarvest(BuildContext context):super(context, 
     theName: FlutterI18n.translate(context, "words.moreHarvest"),
     price: 100,
-    maxAmount: 100,
+    maxAmount: 2,
     amount: 0,
     imageAddress: 'assets/images/upgrade0.png',
     unlocked:true,
@@ -96,6 +97,8 @@ class MoreHarvest extends ShopObject
   void addItem()
   {
     gamedata.betterHarvestLevel+=amount;
+    if(gamedata.betterHarvestLevel >= 3)
+      this.unlocked = false; //maxed upgrade, lock it
     print("better harvest" + amount.toString());
   }
 }
@@ -105,7 +108,7 @@ class MoreMoney extends ShopObject
   MoreMoney(BuildContext context):super(context, 
     theName:FlutterI18n.translate(context, "words.moreMoney"),
     price: 100,
-    maxAmount: 100,
+    maxAmount: 2,
     amount: 0,
     imageAddress: 'assets/images/upgrade1.png',
     unlocked:true,
@@ -115,6 +118,8 @@ class MoreMoney extends ShopObject
   void addItem()
   {
     gamedata.moreMoneyFromSellingLevel+=amount;
+    if(gamedata.moreMoneyFromSellingLevel >= 3)
+      this.unlocked = false; //maxed upgrade, lock it
     print("better money" + amount.toString());
   }
 }
@@ -143,7 +148,7 @@ class MoreSeeds extends ShopObject
   MoreSeeds(BuildContext context):super(context, 
     theName:FlutterI18n.translate(context, "words.moreSeeds"),
     price: 100,
-    maxAmount: 1,
+    maxAmount: 2,
     amount: 0,
     imageAddress: 'assets/images/upgrade3.png',
     unlocked:gamedata.moreSeedsLevel == 2 ? false : true,
@@ -152,12 +157,10 @@ class MoreSeeds extends ShopObject
   //upgrade function for more seed spawns on the map
   @override
   void addItem() {
-    super.addItem();
-    if (gamedata.moreSeedsLevel == 0)
-      gamedata.moreSeedsLevel = 1; //upgrade to tier 2, cabbages will now spawn
-    else if (gamedata.moreSeedsLevel == 1) {
-      this.unlocked = false; //lock the seed spawn upgrade as they've hit the max tier
-      gamedata.moreSeedsLevel = 2; //upgrade to tier 3, kale will now spawn
+    
+    gamedata.moreSeedsLevel += amount; //upgrade spawn tier
+    if (gamedata.moreSeedsLevel >= 2) {
+      this.unlocked = false; //maxed upgrade, lock it
     }
 
     print(this.unlocked);
@@ -179,6 +182,8 @@ class FasterGrowth extends ShopObject
   void addItem()
   {
     gamedata.fasterGrowingLevel+=amount;
+    if (gamedata.fasterGrowingLevel >= 3)
+      this.unlocked = false; //maxed upgrade, lock it
     print("faster growth" + amount.toString());
   }
 }

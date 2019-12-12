@@ -49,7 +49,19 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new BarChart(foodList,
+    return new Center(
+      child: Container(
+      width: 400,
+      height: 600,
+      padding: EdgeInsets.all(5.0),
+      child: BarChart(foodList,
+        behaviors: [
+          new ChartTitle(FlutterI18n.translate(context, "words.amountGrown"),
+          subTitle: FlutterI18n.translate(context, "words.highscore"),
+          innerPadding: 20,
+          behaviorPosition: BehaviorPosition.top,
+          ),
+        ],
         animate: animateChart,
         domainAxis: OrdinalAxisSpec(
             renderSpec: SmallTickRendererSpec(
@@ -69,8 +81,10 @@ class Chart extends StatelessWidget {
               // Change the line colors to match text color.
               lineStyle: new LineStyleSpec(
                   color: MaterialPalette.black))),
-    );
-
+        ),
+      
+      ),
+      );
         
   }
 
