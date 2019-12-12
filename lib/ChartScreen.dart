@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 import 'GameData.dart';
 import 'Inventory.dart';
 
+//ChartScreen
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key key, this.title}) : super(key: key);
 
@@ -27,19 +28,22 @@ class _ChartScreen extends State<ChartScreen> {
   }
 }
 
-class Foods {
+//the crops that will be displayed
+class Crops {
   final String foodType;
   final int totalOfFood;
 
-  Foods(this.foodType, this.totalOfFood);
+  Crops(this.foodType, this.totalOfFood);
 }
 
+//chart class
 class Chart extends StatelessWidget {
   final List<Series> foodList;
   final bool animateChart;
 
   Chart(this.foodList, {this.animateChart});
 
+  //create a factory for the data
   factory Chart.seedData(BuildContext context) {
     return new Chart(
       _createSeedData(context),
@@ -47,6 +51,7 @@ class Chart extends StatelessWidget {
     );
   }
 
+  //build the chart widget
   @override
   Widget build(BuildContext context) {
     Inventory.instance().updateGameData();
@@ -89,19 +94,20 @@ class Chart extends StatelessWidget {
         
   }
 
-  static List<Series<Foods, String>> _createSeedData(BuildContext context) {
+  //the list of how many crops have been grown
+  static List<Series<Crops, String>> _createSeedData(BuildContext context) {
     final data = [
-      new Foods(FlutterI18n.translate(context, "words.carrot"), gamedata.carrotsGrown),
-      new Foods(FlutterI18n.translate(context, "words.cabbage"), gamedata.cabbageGrown),
-      new Foods(FlutterI18n.translate(context, "words.kale"), gamedata.kayleGrown),
+      new Crops(FlutterI18n.translate(context, "words.carrot"), gamedata.carrotsGrown),
+      new Crops(FlutterI18n.translate(context, "words.cabbage"), gamedata.cabbageGrown),
+      new Crops(FlutterI18n.translate(context, "words.kale"), gamedata.kayleGrown),
     ];
 
     return [
-      new Series<Foods, String>(
+      new Series<Crops, String>(
         id: FlutterI18n.translate(context, "words.amountGrown"),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-        domainFn: (Foods food, _) => food.foodType,
-        measureFn: (Foods food, _) => food.totalOfFood,
+        domainFn: (Crops food, _) => food.foodType,
+        measureFn: (Crops food, _) => food.totalOfFood,
         data: data,
       )
     ];

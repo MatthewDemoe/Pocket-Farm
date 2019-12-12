@@ -5,7 +5,7 @@ import 'Inventory.dart';
 
 Future<Database> database;
 
-// Define a function that inserts grades into the database
+//save data from the local data
 Future<void> saveData() async {
   Inventory.instance().updateGameData();
   final Database db = await database;
@@ -17,6 +17,7 @@ Future<void> saveData() async {
     );
 }
 
+//check if database is empty and needs to be initialized
 void checkEmpty() async
 {
   final Database db = await database;
@@ -60,6 +61,7 @@ void checkEmpty() async
   
 }
 
+//load data from local data
 void loadData() async {
   gamedata = await loadfunc();
   print(gamedata.toMap());
@@ -90,11 +92,6 @@ Future<GameData> loadfunc() async {
   // Query the table for the list of farms, even though there's only 1.
   final List<Map<String, dynamic>> maps = await db.query('farm');
   
-  /*gamedata = await db.query(
-    'farm',
-    where: "zero = ?",
-    whereArgs: [gamedata.zero],
-  );*/
   
   // Convert the List<Map<String, dynamic> into a List<GameData>.
   //return List.generate(maps.length, (i) {
@@ -126,5 +123,5 @@ Future<GameData> loadfunc() async {
     moreMoneyFromSellingLevel: maps[0]['moreMoneyFromSellingLevel'],
     planterBoxLevel: maps[0]['planterBoxLevel'],
   );
-  //});
+  
 }

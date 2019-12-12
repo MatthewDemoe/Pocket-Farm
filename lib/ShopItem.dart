@@ -162,8 +162,6 @@ class MoreSeeds extends ShopObject
     if (gamedata.moreSeedsLevel >= 2) {
       this.unlocked = false; //maxed upgrade, lock it
     }
-
-    print(this.unlocked);
   }
 }
 

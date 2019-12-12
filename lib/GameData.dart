@@ -1,5 +1,6 @@
 import 'package:pocket_farm/ShopItem.dart';
 
+//create instance of gamedata
 GameData gamedata = new GameData();
 
 

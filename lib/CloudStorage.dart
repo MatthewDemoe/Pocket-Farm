@@ -5,6 +5,7 @@ import 'dart:async';
 import 'Inventory.dart';
 import 'package:pocket_farm/Inventory.dart';
 
+//save data to the cloud
 Future<void> saveDataCloud(GameData data) async {
   Inventory.instance().updateGameData();
   print(gamedata.toMap());
@@ -39,6 +40,7 @@ Future<void> saveDataCloud(GameData data) async {
   });
 }
 
+//load data from the cloud
 void cloudLoad() async
 {
   var d = await Firestore.instance.collection('userData').document('testing').get();

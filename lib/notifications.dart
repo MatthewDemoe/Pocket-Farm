@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+//notifications class for notifications
 class Notifications {
   final channelId = 'eventNotifications';
   final channelName = 'Event Notifications';

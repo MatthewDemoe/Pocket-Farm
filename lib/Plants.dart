@@ -1,5 +1,6 @@
 import 'GameData.dart';
 
+//plant used for monetary reward and time it takes to grow
 abstract class Plant{
   int secondsToGrow;
   int dollarReward;

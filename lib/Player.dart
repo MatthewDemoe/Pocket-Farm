@@ -1,9 +1,9 @@
 import 'Enums.dart';
 import 'Inventory.dart';
 
+//player class to show player (now inventory is used)
 class Player{
 
-  //Wow what a bad function
   void plantSeed(SeedType seed)
   {
     Inventory.instance().plantSeed(seed);

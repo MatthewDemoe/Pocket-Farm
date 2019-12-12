@@ -6,6 +6,7 @@ import 'package:pocket_farm/Inventory.dart';
 
 import 'GameData.dart';
 
+//data table screen
 class TableScreen extends StatefulWidget {
   TableScreen({Key key, this.title}) : super(key: key);
 
@@ -14,7 +15,7 @@ class TableScreen extends StatefulWidget {
   @override
   _TableScreen createState() => _TableScreen();
 }
-
+//data table class that acts as inventory
 class _TableScreen extends State<TableScreen> {
   @override
   Widget build(BuildContext context) {
