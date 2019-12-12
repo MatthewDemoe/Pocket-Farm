@@ -55,7 +55,9 @@
 		"map": "The Map",
 		"noSeeds": "You do not have enough seeds",
 		"mapButtonTooltip": "Display more info about the World Map",
-		"mapInfo": "\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will disappear if you leave without grabbing them!\n\n"
-
+		"mapInfo": "\nWelcome to the World Map!\n\n*Seeds will spawn periodically; they will spawn more frequently when you move around!\n\n*Make sure to grab seeds before heading back to your farm; they will disappear if you leave without grabbing them!\n\n",
+		"maxedUpgrade": "You have maxed this upgrade.\nThere is no need to buy any more.",
+		"fullCart": "You have the max amount of this item already in your cart!",
+		"lessMoney": "You do not have enough money to purchase all of this!"
 	}
 }

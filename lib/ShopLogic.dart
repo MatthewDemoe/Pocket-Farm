@@ -4,26 +4,16 @@ import 'package:path/path.dart';
 import 'package:pocket_farm/GameData.dart';
 import 'Inventory.dart';
 import 'ShopItem.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 //upgrade snackbar
-final upgradesSnackBar = new SnackBar(
-  behavior: SnackBarBehavior.floating,
-  content: Text('You have maxed this upgrade.\nThere is no need to buy any more.'),
-  action: SnackBarAction(
-    label: 'Okay!',
-    onPressed: () {},
-  ),
-);
+var upgradesSnackBar;
 
 //full cart snackbar
-final fullcartSnackBar = new SnackBar(
-  behavior: SnackBarBehavior.floating,
-  content: Text('You have the max amount of this item already in your cart!'),
-  action: SnackBarAction(
-    label: 'Okay!',
-    onPressed: () {},
-  ),
-);
+var fullcartSnackBar;
+
+//full cart snackbar
+var lessMoneySnackBar;
 
 //Atiya Nova
 class ShopLogic 
@@ -35,6 +25,31 @@ class ShopLogic
 
    ShopLogic(BuildContext context)
    {
+     lessMoneySnackBar = new SnackBar(
+       behavior: SnackBarBehavior.floating,
+       content: Text(FlutterI18n.translate(context, "words.lessMoney")),
+        action: SnackBarAction(
+        label: 'Okay!',
+        onPressed: () {},
+        ),
+      );
+      fullcartSnackBar = new SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(FlutterI18n.translate(context, "words.fullCart")),
+        action: SnackBarAction(
+          label: 'Okay!',
+        onPressed: () {},
+        ),
+      ) ;
+      upgradesSnackBar = new SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(FlutterI18n.translate(context, "words.maxedUpgrade")),
+        action: SnackBarAction(
+          label: 'Okay!',
+        onPressed: () {},
+        ),
+      );
+      
       //the different shop items get added
       shopItems.add(new CarrotSeed(context));
       shopItems.add(new CabbageSeed(context));
@@ -189,6 +204,7 @@ class ShopLogic
 
     if(totalCost > Inventory.instance().dollars)
     {
+       contextKey.currentState.showSnackBar(lessMoneySnackBar); //let the player know they can't afford what's in the cart
        return false;
     }
 
