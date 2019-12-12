@@ -1,8 +1,10 @@
 //referenced class slides on maps, geolocation, geocoding
 //referenced https://stackoverflow.com/questions/54610121/flutter-countdown-timer for timers
+//referenced https://stackoverflow.com/questions/49356664/how-to-override-the-back-button-in-flutter for WillPopScope
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
@@ -11,11 +13,8 @@ import 'WorldMap_Player&SeedData.dart';
 
 //worldmapscreen widget
 class WorldMapScreen extends StatefulWidget {
-  WorldMapScreen({Key key, this.title, this.currentSeeds}) : super(key: key);
+  WorldMapScreen({Key key, this.title}) : super(key: key);
   final String title;
-
-  //currentSeeds that take in leftover seeds from last visit to mapscreen
-  final List<SeedMapData> currentSeeds; //from farm screen
 
   @override
   _WorldMapPage createState() => _WorldMapPage();
@@ -23,6 +22,8 @@ class WorldMapScreen extends StatefulWidget {
 
 //worldmappage state
 class _WorldMapPage extends State<WorldMapScreen> {
+
+  bool notifPlayer = false;
 
   var playerController = MapController(); //mapcontroller to control where map is centered
   var playerLocation = Geolocator(); //geolocator
@@ -44,7 +45,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
   //geocoding function to return street names
   String checkPosition() {
     //reverse geocoding to get street names from player location
-    playerLocation.placemarkFromCoordinates(mapPlayer.position.latitude, mapPlayer.position.longitude).then((List<Placemark> surroundingLoc) {
+    playerLocation. placemarkFromCoordinates(mapPlayer.position.latitude, mapPlayer.position.longitude).then((List<Placemark> surroundingLoc) {
       //loop through the list of surrounding locations
       for (Placemark currentStreets in surroundingLoc) { 
         street = currentStreets.thoroughfare; //set street to current street name
@@ -58,7 +59,9 @@ class _WorldMapPage extends State<WorldMapScreen> {
   LatLng getPosition()
   {
     //geolocation to get the GPS's current position
+    
     if (onWorldMapScreen) {
+    new Timer(new Duration(seconds: 1), () =>
       playerLocation.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position pos) {
         setState(() {
           //update the player's latitude and longitude information
@@ -68,8 +71,10 @@ class _WorldMapPage extends State<WorldMapScreen> {
           //so they don't lose track of their player or the seeds around them
           playerController.move(mapPlayer.position, 17);
         });
-      });
+      }),    
+    );
     }
+    
 
     return mapPlayer.position; //return the latitude/longitude of the player
   }
@@ -99,18 +104,20 @@ class _WorldMapPage extends State<WorldMapScreen> {
   }
 
   //this will increment the seed spawn timer in order to spawn seeds
-  void seedSpawnTimer() {
+  void seedSpawnTimer() async {
     
     //timer that updates every 1 second
-    spawnTimer = new Timer.periodic(new Duration(seconds: 1), (Timer temp) =>
-    setState(() {
+    spawnTimer = new Timer.periodic(new Duration(seconds: 5), (Timer temp) =>
+    setState(() { 
+
+      
       //use the geocoding checkPosition function to get the current street name
       var currentSurroundings = checkPosition();
       
       //if the playersurroundings is the same as the current street (meaning they haven't moved)
       //and 10 or seeds have spawned, decrease the rate the spawnTime increases
       if (playerSurroundings == currentSurroundings && seedsSpawned >= 10) {
-        spawnTime-= 0.5;
+        spawnTime-= 2.5;
       }
       //otherwise, if the player has moved to a different street
       //update the playerSurroundings, and increase the rate the spawnTime increases
@@ -118,7 +125,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
       //this is to encourage the player to move around to get seeds spawning more frequently
       else {
         playerSurroundings = currentSurroundings;
-        spawnTime-= 1;
+        spawnTime-= 5;
         if (seedsSpawned >= 11)
           seedsSpawned = 0;
       }
@@ -138,8 +145,6 @@ class _WorldMapPage extends State<WorldMapScreen> {
   void initState() {
     super.initState();
     this.seedSpawnTimer(); //start the seed spawning timer on init
-    if (widget.currentSeeds != null)
-      seedData.seedList = widget.currentSeeds; //if not null, load in the previous seeds that weren't picked up
     onWorldMapScreen = true; //back on the map screen page, so true
   }
 
@@ -150,47 +155,69 @@ class _WorldMapPage extends State<WorldMapScreen> {
     spawnTimer.cancel(); //stop the timer when we leave the world map screen
   }
 
-  //function to send remaining seeds back to farm screen, to hold data when returning
-  void sendSeeds() {
+  //function to send player back to farm screen
+  Future<bool> goBackToFarm() {
     onWorldMapScreen = false; //no longer on the map screen page
     
     //have a 1 second disconnect timer from the map
     //to avoid geolocator updating after changing pages
     //this will avoid memory leaks
     new Timer(new Duration(seconds: 1), () =>
-    Navigator.pop(context, seedData.seedList)
+    Navigator.pop(context, true)
+    );
+
+    return null; //return null, will have returned to farm screen already
+  }
+
+  //function to display dialog about the map
+  void showMapInfo() async  {
+    //show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container (
+          width: 300,
+          height: 1000,
+          alignment: Alignment.center,
+          child: Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Text(FlutterI18n.translate(context, "words.mapInfo")), //words to display in the dialog
+          ),
+        );
+      },
     );
   }
 
   //widget
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        //back button in app bar
-        leading: IconButton (
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => sendSeeds(), //return to farm screen, send ungrabbed seeds to be reloaded once returned to map
-        ),
-        title: Text('The World Map'),
-      ),
-      body: Center(
-        //create a FlutterMap to show the world map
-        child: FlutterMap (
-          //add the playerController as the map controller to keep centered on the player
-          mapController: playerController,
-          //setup the map options
-          options:
-          MapOptions (
-            zoom: 17, //set the zoom level
-            interactive: false, //interactive to false so players can't move the map away from their position
+    return WillPopScope(
+      onWillPop: goBackToFarm, //perform function if android back button is pressed
+      child: Scaffold(
+        appBar: AppBar(
+          //back button in app bar
+          leading: IconButton (
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => goBackToFarm(), //return to farm screen, send ungrabbed seeds to be reloaded once returned to map
           ),
-          layers: [
-             //generate tile layer options using OpenStreetMap
-             TileLayerOptions (
-               urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-               subdomains: ['a', 'b', 'c'],
+          title: Text(FlutterI18n.translate(context, "words.map")),
+        ),
+        body: Center(
+          //create a FlutterMap to show the world map
+          child: FlutterMap (
+            //add the playerController as the map controller to keep centered on the player
+            mapController: playerController,
+            //setup the map options
+            options:
+            MapOptions (
+              zoom: 17, //set the zoom level
+              interactive: false, //interactive to false so players can't move the map away from their position
+            ),
+            layers: [
+              //generate tile layer options using OpenStreetMap
+              TileLayerOptions (
+                urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c'],
               ),
               //generate the marker layer options
               MarkerLayerOptions (
@@ -212,6 +239,13 @@ class _WorldMapPage extends State<WorldMapScreen> {
             ],
           ),
         ),
+        //floating action button to display info about the map screen
+        floatingActionButton: FloatingActionButton(
+          onPressed: showMapInfo, //display the map info
+          tooltip: FlutterI18n.translate(context, "words.mapButtonTooltip"),
+          child: Icon(Icons.info),
+        ),
+      ),
     );
   }
 }

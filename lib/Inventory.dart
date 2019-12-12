@@ -1,5 +1,6 @@
 
 import 'package:pocket_farm/Enums.dart';
+import 'GameData.dart';
 
 class Inventory{
 
@@ -17,13 +18,42 @@ class Inventory{
   int dollars = 100;
 
   int carrotSeeds = 1;
+  int lifetimeCarrotSeeds = 1;
   int cabbageSeeds = 1;
+  int lifetimeCabbageSeeds = 1;
   int kaleSeeds = 1;
+  int lifetimeKaleSeeds = 1;
 
-  int grownCarrots = 1;
-  int grownCabbages = 1;
-  int grownkale = 1;
+  int grownCarrots = 0;
+  int lifetimeGrownCarrots = 0;
+  int grownCabbages = 0;
+  int lifetimeGrownCabbages = 0;
+  int grownkale = 0;
+  int lifetimeGrownKale = 0;
 
+  void addSeed(SeedType type, int amount)
+  {
+    //picks which seed to add
+    switch(type)
+    {
+      case SeedType.carrot:
+      carrotSeeds += amount;
+      lifetimeCarrotSeeds += amount;
+      break;
+
+      case SeedType.cabbage:
+      cabbageSeeds += amount;
+      lifetimeCabbageSeeds += amount;
+      break;
+
+      case SeedType.kale:
+      kaleSeeds += amount;
+      lifetimeKaleSeeds += amount;
+      break;
+    }
+  }
+
+  //plants the seed of a specific type
   bool plantSeed(SeedType type)
   {
     switch(type)
@@ -62,16 +92,39 @@ class Inventory{
     switch(type)
     {
       case SeedType.carrot:
-        carrotSeeds++;
+        grownCarrots += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownCarrots += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
 
       case SeedType.cabbage:
-        cabbageSeeds++;
+        grownCabbages += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownCabbages += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
 
       case SeedType.kale:
-        kaleSeeds++;
+        grownkale += 1 * gamedata.betterHarvestLevel;
+        lifetimeGrownKale += 1 * gamedata.betterHarvestLevel;
+        updateGameData();
       break;
     }
   }
+
+  void updateGameData()
+  { 
+        //updates the storage data
+        gamedata.carrotSeeds = carrotSeeds;
+        gamedata.cabbageSeeds = cabbageSeeds;
+        gamedata.kayleSeeds = kaleSeeds;
+        gamedata.carrots = grownCarrots;
+        gamedata.cabbage = grownCabbages;
+        gamedata.kayle = grownkale;
+        gamedata.carrotsGrown = lifetimeGrownCarrots;
+        gamedata.cabbageGrown = lifetimeGrownCabbages;
+        gamedata.kayleGrown = lifetimeGrownKale;
+        gamedata.money = dollars;
+  }
+
+  
 }

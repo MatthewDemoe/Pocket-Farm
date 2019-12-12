@@ -3,6 +3,11 @@
 
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:path/path.dart';
+
+import 'GameData.dart';
+import 'Inventory.dart';
 
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key key, this.title}) : super(key: key);
@@ -17,7 +22,7 @@ class _ChartScreen extends State<ChartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chart.seedData(),
+      body: Chart.seedData(context),
     );
   }
 }
@@ -35,16 +40,29 @@ class Chart extends StatelessWidget {
 
   Chart(this.foodList, {this.animateChart});
 
-  factory Chart.seedData() {
+  factory Chart.seedData(BuildContext context) {
     return new Chart(
-      _createSeedData(),
+      _createSeedData(context),
       animateChart: false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new BarChart(foodList,
+    Inventory.instance().updateGameData();
+    return new Center(
+      child: Container(
+      width: 400,
+      height: 600,
+      padding: EdgeInsets.all(5.0),
+      child: BarChart(foodList,
+        behaviors: [
+          new ChartTitle(FlutterI18n.translate(context, "words.amountGrown"),
+          subTitle: FlutterI18n.translate(context, "words.highscore"),
+          innerPadding: 20,
+          behaviorPosition: BehaviorPosition.top,
+          ),
+        ],
         animate: animateChart,
         domainAxis: OrdinalAxisSpec(
             renderSpec: SmallTickRendererSpec(
@@ -64,21 +82,23 @@ class Chart extends StatelessWidget {
               // Change the line colors to match text color.
               lineStyle: new LineStyleSpec(
                   color: MaterialPalette.black))),
-    );
-
+        ),
+      
+      ),
+      );
         
   }
 
-  static List<Series<Foods, String>> _createSeedData() {
+  static List<Series<Foods, String>> _createSeedData(BuildContext context) {
     final data = [
-      new Foods('Carrot', 2000),
-      new Foods('Cabbage', 1),
-      new Foods('Kale', 2),
+      new Foods(FlutterI18n.translate(context, "words.carrot"), gamedata.carrotsGrown),
+      new Foods(FlutterI18n.translate(context, "words.cabbage"), gamedata.cabbageGrown),
+      new Foods(FlutterI18n.translate(context, "words.kale"), gamedata.kayleGrown),
     ];
 
     return [
       new Series<Foods, String>(
-        id: 'Grown',
+        id: FlutterI18n.translate(context, "words.amountGrown"),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Foods food, _) => food.foodType,
         measureFn: (Foods food, _) => food.totalOfFood,

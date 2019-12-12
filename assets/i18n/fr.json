@@ -13,8 +13,8 @@
 		"cabbage": "Chou",
 		"kale": "Chou Frisé",
 		"readytoharvest": "Votre plante est prête à être récoltée!",
-		"onlysprouted": "Votre plante est seulement germée",
-		"notgrowing": "Votre plante n'a pas encore commencé à pousser",
+		"onlysprouted": "Votre plante est seulement germée.",
+		"notgrowing": "Votre plante vient de commencer à grandir.",
 		"harvestchoice": "Récolte ma plante!",
 		"leavechoice": "Laisse ma plante pour l'instant",
 		"okay": "D'accord",
@@ -51,7 +51,13 @@
 		"money": "Argent", 
 		"noSeeds": "Vous n'avez pas assez de graines",
 		"mapButtonTooltip": "Afficher plus d'informations sur la carte du monde",
-		"mapInfo": "\nBienvenue sur la carte du monde!\n\n*Les graines apparaîtront périodiquement; ils apparaîtront plus fréquemment lorsque vous vous déplacerez!\n\n*Assurez-vous de prendre des graines avant de retourner à votre ferme; ils disparaîtront si vous partez sans les attraper!\n\n"
-		
+		"mapInfo": "\nBienvenue sur la carte du monde!\n\n*Les graines apparaîtront périodiquement; ils apparaîtront plus fréquemment lorsque vous vous déplacerez!\n\n*Assurez-vous de prendre des graines avant de retourner à votre ferme; ils disparaîtront si vous partez sans les attraper!\n\n",
+		"map": "La Carte",
+		"theFarm": "La Ferme",
+		"highscore": "Vos meilleurs scores",
+		"amountGrown": "Quantité totale de cultures cultivées",
+		"maxedUpgrade": "Vous avez optimisé cette mise à niveau.\nIl n’est plus nécessaire d’acheter.",
+		"fullCart": "Vous avez déjà le montant maximum de cet article dans votre panier!",
+		"lessMoney": "Vous n'avez pas assez d'argent pour acheter tout ça!"
 	}
 }
