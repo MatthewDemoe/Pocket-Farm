@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'ShopLogic.dart';
 import 'GameData.dart';
+import 'Inventory.dart';
 
 //Atiya Nova
 //Using parts of a layout example shown in class
@@ -52,6 +53,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreen extends State<ShopScreen> {
+  //the variables
   final _scaffoldKey = GlobalKey<ScaffoldState>(); 
   ShopLogic theShop;
   List<Card> theCart;
@@ -195,12 +197,16 @@ class _ShopScreen extends State<ShopScreen> {
     //the item names
     var names = ["Carrot Seeds", "Cabbage Seeds", "Kale Seeds", "Carrot", "Cabbage", "Kale"];
 
+    //the display of the information
     for (int i = 0; i < temp.length; i++)
         display.add(
           new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(names[i]),
+            Container(
+              width:60,
+              child:Text(names[i], textAlign: TextAlign.left,),
+              ),
             Text(itemsToSell[i].toString()),
               GestureDetector(
                 child:Container(
@@ -235,6 +241,7 @@ class _ShopScreen extends State<ShopScreen> {
           ],
         ));
 
+    //creates the sell view
     return 
     Column(children: <Widget>[
       theShop.buildHeader(),

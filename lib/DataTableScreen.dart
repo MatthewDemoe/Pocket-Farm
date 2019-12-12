@@ -21,43 +21,44 @@ class _TableScreen extends State<TableScreen> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text(FlutterI18n.translate(context, "words.item"))),
-            DataColumn(label: Text(FlutterI18n.translate(context, "words.current"))),
-          ],
-          rows: [
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.carrotSeeds"))),
-              DataCell(Text(Inventory.instance().carrotSeeds.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.cabbageSeeds"))),
-              DataCell(Text(Inventory.instance().cabbageSeeds.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.kaleSeeds"))),
-              DataCell(Text(Inventory.instance().kaleSeeds.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.grownCarrots"))),
-              DataCell(Text(Inventory.instance().grownCarrots.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.grownCabbages"))),
-              DataCell(Text(Inventory.instance().grownCabbages.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.grownKale"))),
-              DataCell(Text(Inventory.instance().grownkale.toString())),
-            ]),
-            DataRow(cells: [
-              DataCell(Text(FlutterI18n.translate(context, "words.money"))),
-              DataCell(Text(Inventory.instance().dollars.toString())),
-            ]),
-          ],
-        ),
+        child: 
+        Column(
+          children: <Widget>[
+            Container(
+              height:135,
+              child: Image.asset('assets/images/inventory.png', scale: 3),
+            ),
+            DataTable(
+            columns: [
+              DataColumn(label: Text(FlutterI18n.translate(context, "words.item"))),
+              DataColumn(label: Text(FlutterI18n.translate(context, "words.current"))),
+            ],
+            rows: [
+              getRow("words.carrotSeeds", Inventory.instance().carrotSeeds.toString()),
+              getRow("words.cabbageSeeds", Inventory.instance().cabbageSeeds.toString()),
+              getRow("words.kaleSeeds", Inventory.instance().kaleSeeds.toString()),
+              getRow("words.grownCarrots", Inventory.instance().grownCarrots.toString()),
+              getRow("words.grownCabbages", Inventory.instance().grownCabbages.toString()),
+              getRow("words.grownKale", Inventory.instance().grownkale.toString()),
+              getRow("words.money", Inventory.instance().dollars.toString()),
+            ],
+          ),
+          Container(
+              height:120,
+              child: Image.asset('assets/images/carrotGarland.png', scale: 2.3),
+            ),
+        ],
+      ),
       ),
     );
+  }
+
+  //In order to display each section of the inventory
+  DataRow getRow(String words, String info)
+  {
+    return DataRow(cells: [
+              DataCell(Text(FlutterI18n.translate(context, words))),
+              DataCell(Text(info),)
+    ]);
   }
 }

@@ -43,15 +43,12 @@ final snackBar = SnackBar(
 
 class _FarmScreen extends State<FarmScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();  
+  SeedMarker seeds = new SeedMarker(); //list to hold the ungrabbed seeds from the map
   int numFields = 5;
   int counter = 0;
-
   bool showBar = false;
-
-  //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
-
 
   @override void initState() {
     super.initState();
@@ -94,6 +91,7 @@ class _FarmScreen extends State<FarmScreen> {
     }
   }
 
+  //the dialogue that shows up to prompt the user to harvest
   Future<void> _harvestPlant(FarmPlot plot) async
   {
     switch(await showDialog<bool>(
@@ -105,10 +103,7 @@ class _FarmScreen extends State<FarmScreen> {
           ),
           title: Text(FlutterI18n.translate(context, "words.readytoharvest")),
           children: [
-            Image.asset('assets/images/carrot.png',
-            fit: BoxFit.cover,     
-            scale: 0.5,       
-            ),
+            getImage('assets/images/carrot.png', BoxFit.cover, 0.5),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);
@@ -129,11 +124,7 @@ class _FarmScreen extends State<FarmScreen> {
         plot.harvestPlant();
         setState(() {
           plot.showProgressBar = false;
-          plot.signpostImage= Image.asset(
-          plot.signpost[3], //set back to regular fence
-          scale: 6, 
-          fit: BoxFit.cover,
-        ); 
+          plot.signpostImage= getImage(plot.signpost[3], BoxFit.cover, 6); 
         });
         
       break;
@@ -143,6 +134,7 @@ class _FarmScreen extends State<FarmScreen> {
 
   }
 
+  //the dialogue that shows up to say to the user that the plant isn't ready to harvest
   Future<void> _notReadyToHarvest(FarmPlot plot) async
   {    
     await showDialog<bool>(
@@ -154,10 +146,7 @@ class _FarmScreen extends State<FarmScreen> {
           ),  
           title: plot.isSprouted() ? Text(FlutterI18n.translate(context, "words.onlysprouted")) : Text(FlutterI18n.translate(context, "words.notgrowing")),
           children: [
-            Image.asset( plot.isSprouted() ? 'assets/images/sprout.png' : 'assets/images/dirt.png',
-            fit: BoxFit.cover,     
-            scale: 0.5,       
-            ),
+            getImage(plot.isSprouted() ? 'assets/images/sprout.png' : 'assets/images/dirt.png', BoxFit.cover, 0.5),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, true);
@@ -177,6 +166,7 @@ class _FarmScreen extends State<FarmScreen> {
     );
   }
 
+  //the dialogue that allows the user to pick a seed
   Future<void> _seedPicker(FarmPlot plot) async{
     switch (await showDialog<SeedType>(
       context: context,
@@ -184,10 +174,7 @@ class _FarmScreen extends State<FarmScreen> {
         return SimpleDialog(
           title: Text(FlutterI18n.translate(context, "words.selectseed")),
           children: [
-            Image.asset('assets/images/dirt.png',
-            fit: BoxFit.cover,     
-            scale: 0.5,       
-            ),
+            getImage('assets/images/dirt.png', BoxFit.cover, 0.5),
             SimpleDialogOption(
               onPressed: (){
                 Navigator.pop(context, SeedType.carrot);
@@ -212,9 +199,7 @@ class _FarmScreen extends State<FarmScreen> {
     )){
       case SeedType.carrot:
       if(Inventory.instance().carrotSeeds != 0) {
-        plot.plantSomething(SeedType.carrot);
-        Inventory.instance().plantSeed(SeedType.carrot); //decrease carrot seeds
-        _setProgressBars(plot, Carrot().minutesToGrow, 0);
+        plantSeeds(plot, SeedType.carrot, Carrot().minutesToGrow, 0);
         break;
       }
       else {
@@ -226,9 +211,7 @@ class _FarmScreen extends State<FarmScreen> {
 
       case SeedType.cabbage:
       if(Inventory.instance().cabbageSeeds != 0) {
-        plot.plantSomething(SeedType.cabbage);
-        Inventory.instance().plantSeed(SeedType.cabbage); //decrease cabbage seeds
-        _setProgressBars(plot, Cabbage().minutesToGrow, 1);
+        plantSeeds(plot, SeedType.cabbage, Cabbage().minutesToGrow, 1);
         break;
       }
       else {
@@ -240,9 +223,7 @@ class _FarmScreen extends State<FarmScreen> {
 
       case SeedType.kale:
       if(Inventory.instance().kaleSeeds != 0) {
-        plot.plantSomething(SeedType.kale); 
-        Inventory.instance().plantSeed(SeedType.kale); //decrease kale seeds
-        _setProgressBars(plot, Kale().minutesToGrow, 2);
+        plantSeeds(plot, SeedType.kale, Kale().minutesToGrow, 2);
         break;
       }
       else {
@@ -252,6 +233,14 @@ class _FarmScreen extends State<FarmScreen> {
       }
       break;
     }
+  }
+
+  //the necessary steps to plant the seeds
+  void plantSeeds(FarmPlot plot, SeedType theType, int time, int artIndex)
+  {
+    plot.plantSomething(theType); 
+    Inventory.instance().plantSeed(theType); //decrease kale seeds
+    _setProgressBars(plot, time, artIndex);
   }
 
   Column buildRows() {
@@ -316,8 +305,6 @@ class _FarmScreen extends State<FarmScreen> {
     );
   }
 
-  SeedMarker seeds = new SeedMarker(); //list to hold the ungrabbed seeds from the map
-
   //function to send over the list of ungrabbed seeds with navigator
   void sendSeeds() async {
     //await the ungrabbed seeds
@@ -325,12 +312,6 @@ class _FarmScreen extends State<FarmScreen> {
       context,
       MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
     );
-    /*
-    seeds.seedList = temp.seedList; //fill the seeds list with the ungrabbed seeds
-    Inventory.instance().addSeed(SeedType.carrot, temp.totalCarrotSeeds); //increment carrot seeds from map
-    Inventory.instance().addSeed(SeedType.cabbage, temp.totalCabbageSeeds); //increment cabbage seeds from map
-    Inventory.instance().addSeed(SeedType.kale, temp.totalKaleSeeds); //increment kale seeds from map
-    */
   }  
 
   void _displayNotification(String title, String message) {
@@ -344,7 +325,6 @@ class _FarmScreen extends State<FarmScreen> {
 
   void _load() async
   {
-    //farm = await farm();
     loadData();
     print(gamedata);
   }
@@ -381,40 +361,23 @@ class _FarmScreen extends State<FarmScreen> {
 
       //sets the signpost
       theFarmPlot.chosenPlant = plant;
-      theFarmPlot.signpostImage= Image.asset(
-          theFarmPlot.signpost[theFarmPlot.chosenPlant], 
-          scale: 6, 
-          fit: BoxFit.cover,
-      );
+      theFarmPlot.signpostImage= getImage(theFarmPlot.signpost[theFarmPlot.chosenPlant], BoxFit.cover, 6);
     });
-    
   }
   
-
   @override
   Widget build(BuildContext context) {
     while (farmPlots.length < numFields) {
       FarmPlot temp;
 
       farmPlots.add(temp = new FarmPlot(gestureDetector: new GestureDetector(
-        child: Image.asset(
-          'assets/images/Land.png',
-          scale: 3.0,
-          fit: BoxFit.cover,
-        ),
-      
-        onTap: () => {
-          _pickDialogue(temp),
-        },
+        child: getImage('assets/images/Land.png', BoxFit.cover, 3),      
+        onTap: () => _pickDialogue(temp),
         ),     
         ),
       );
       int index = farmPlots.length-1;
-      farmPlots[index].signpostImage= Image.asset(
-          farmPlots[index].signpost[farmPlots[index].chosenPlant], 
-          scale: 6, 
-          fit: BoxFit.cover,
-      );
+      farmPlots[index].signpostImage= getImage(farmPlots[index].signpost[farmPlots[index].chosenPlant], BoxFit.cover, 6);
     }
 
     return Scaffold(
@@ -455,14 +418,8 @@ class _FarmScreen extends State<FarmScreen> {
           Container(
             width: 300,
             height: 300,
-            
           child: Row(
-            children: <Widget>[
-              Image.asset(    
-                'assets/images/TheBarn.png',
-                width:375,
-                height:200,
-            ),         
+            children: <Widget>[getImage('assets/images/TheBarn.png', BoxFit.none, 2.4),     
           ],
           ),
           ),    
@@ -484,26 +441,16 @@ class _FarmScreen extends State<FarmScreen> {
       drawer: ListView(
         padding: EdgeInsets.only(top: 100.0, right: 200.0),
         children: [
-          /*Container(
-            height: 100.0,
-            child: DrawerHeader(
-              child: Text(
-                'Drawer Items',
-                textAlign: TextAlign.center,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.amber,
-              ),
+          Container(
+        height: 130.0,
+        child: DrawerHeader(
+            child: getImage('assets/images/menu.png', BoxFit.fitHeight,1),
             ),
-          ),*/
+          ),
           Container(
             height: 100.0,
             child: GestureDetector(
-              child: Image.asset(
-                'assets/images/mapicon.png',
-                fit: BoxFit.scaleDown,
-                scale: 3.0,
-              ),
+              child: getImage('assets/images/mapicon.png', BoxFit.scaleDown, 3.0,),
               onTap: () => sendSeeds(),
             ),
             alignment: Alignment.center,
@@ -511,20 +458,14 @@ class _FarmScreen extends State<FarmScreen> {
           Container(
             height: 100.0,
             child: GestureDetector(
-              child: Image.asset(
-                'assets/images/shopicon.png',
-                fit: BoxFit.scaleDown,
-              ),
+              child: getImage('assets/images/shopicon.png',BoxFit.scaleDown,1),
               onTap: () => Navigator.pushNamed(context, '/shop'),
             ),
           ),
           Container(
             height: 100.0,
             child: GestureDetector(
-              child: Image.asset(
-                'assets/images/tableicon.png',
-                fit: BoxFit.cover,
-              ),
+              child: getImage('assets/images/tableicon.png', BoxFit.cover, 1),
               onTap: () => Navigator.pushNamed(context, '/table'),
             ),
             alignment: Alignment.center,
@@ -532,10 +473,7 @@ class _FarmScreen extends State<FarmScreen> {
           Container(
             height: 100.0,
             child: GestureDetector(
-              child: Image.asset(
-                'assets/images/charticon.png',
-                fit: BoxFit.cover,
-              ),
+              child: getImage('assets/images/charticon.png', BoxFit.cover,1),
               onTap: () => Navigator.pushNamed(context, '/chart'),
             ),
             alignment: Alignment.center,
@@ -543,5 +481,11 @@ class _FarmScreen extends State<FarmScreen> {
         ],
       ),
     );
+  }
+
+  //a way to simplify all the code for getting images
+  Image getImage(String address, BoxFit fit, double theScale)
+  {
+    return Image.asset(address, fit: fit, scale: theScale,);
   }
 }

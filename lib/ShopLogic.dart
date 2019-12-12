@@ -146,7 +146,7 @@ class ShopLogic
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
         Image.asset('assets/images/shop.png', scale: 2,),
-        Text("money " + gamedata.money.toString()),
+        Text("Dollars " + Inventory.instance().dollars.toString()),
        ],
       ),
     );
@@ -212,9 +212,8 @@ class ShopLogic
      for (int i = 0; i < items.length; i++)
      {
        gamedata.sellItem(i, items[i]);
+       Inventory.instance().dollars+=(100*items[i]);
      }
-
-     print(gamedata.getShopList());
    }
 }
 

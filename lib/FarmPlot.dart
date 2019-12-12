@@ -9,6 +9,8 @@ import 'dart:async';
 import 'Inventory.dart';
 import 'Plants.dart';
 class FarmPlot{
+
+  //used variables
   Plant plant;
   List<String> signpost = [
   "assets/images/sp0.png",
@@ -25,9 +27,6 @@ class FarmPlot{
   Image signpostImage; 
   int progressTimer = 0, chosenPlant = 3;
   Timer growTimer;
-  //set up the timer stuff
-  //you set off the timer stuff in the switch statement
-
   bool showProgressBar = false;
 
   FarmPlot({this.gestureDetector, this.theProgress, this.signpostImage});
@@ -39,6 +38,7 @@ class FarmPlot{
     if(plant != null)
       return false;
 
+    //establishes the time it would take for the seed to grow
     switch(seed)
     {
       case SeedType.carrot:
@@ -69,6 +69,7 @@ class FarmPlot{
     return true;
   }
 
+  //harvests the plant
   void harvestPlant()
   {
     if(isReadyToPick())
@@ -79,6 +80,7 @@ class FarmPlot{
     }
   }
 
+  //checks if the seed is planted
   bool isPlanted()
   {
     if(plant == null)
@@ -87,6 +89,7 @@ class FarmPlot{
     return true;
   }
 
+  //checks if the seed is ready to be picked
   bool isReadyToPick()
   {
     if(isPlanted())
@@ -98,6 +101,7 @@ class FarmPlot{
     return false;
   }
 
+  //check if the seed is sprouted
   bool isSprouted()
   {
     if(isPlanted())

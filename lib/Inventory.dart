@@ -15,8 +15,6 @@ class Inventory{
     return _inventory;    
   }
 
-  
-
   int dollars = 100;
 
   int carrotSeeds = 1;
@@ -35,6 +33,7 @@ class Inventory{
 
   void addSeed(SeedType type, int amount)
   {
+    //picks which seed to add
     switch(type)
     {
       case SeedType.carrot:
@@ -54,6 +53,7 @@ class Inventory{
     }
   }
 
+  //plants the seed of a specific type
   bool plantSeed(SeedType type)
   {
     switch(type)
@@ -109,8 +109,8 @@ class Inventory{
   }
 
   void updateGameData()
-  {
-
+  { 
+        //updates the storage data
         gamedata.carrotSeeds = carrotSeeds;
         gamedata.cabbageSeeds = cabbageSeeds;
         gamedata.kayleSeeds = kaleSeeds;
@@ -121,7 +121,7 @@ class Inventory{
         gamedata.cabbageGrown = lifetimeGrownCabbages;
         gamedata.kayleGrown = lifetimeGrownKale;
         gamedata.money = dollars;
-
-        
   }
+
+  
 }
