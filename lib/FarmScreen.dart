@@ -51,29 +51,15 @@ class _FarmScreen extends State<FarmScreen> {
   //function to initiate a dialogue when players click on a farm plot
   void _pickDialogue(FarmPlot plot){
     
-    if(!plot.isPlanted())
-    {
-      _seedPicker(plot);
-    }
-
-    else
-    {
-      _checkOnPlant(plot);
-    } 
+    if(!plot.isPlanted()) _seedPicker(plot);
+    else _checkOnPlant(plot);
   }
 
   //function to check if a farm plot is ready to be harvested
   void _checkOnPlant(FarmPlot plot)
   {
-    if(plot.isReadyToPick())
-    {
-      _harvestPlant(plot);
-    }
-
-    else
-    {
-      _notReadyToHarvest(plot);
-    }
+    if(plot.isReadyToPick()) _harvestPlant(plot); 
+    else _notReadyToHarvest(plot);
   }
 
   //the dialogue that shows up to prompt the user to harvest
@@ -288,14 +274,6 @@ class _FarmScreen extends State<FarmScreen> {
     );
   }
 
-  //function to navigate to the map
-  void goToMapScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WorldMapScreen()) //go to map screen
-    );
-  }  
-
   //function to display notifications
   void _displayNotification(String title, String message) {
     _notifications.sendNotificationNow(title, message, 'payload');
@@ -375,20 +353,9 @@ class _FarmScreen extends State<FarmScreen> {
 
     if (farmPlots[index].plotId == index + 1)
     {
-      if (farmPlots[index].seedId == 1)
+      if (farmPlots[index].seedId == 1 || farmPlots[index].seedId == 2 || farmPlots[index].seedId == 3)
       { 
         gamePlant= farmPlots[index].seedId;
-        return gamePlant;
-      }
-      else if (farmPlots[index].seedId == 2)
-      {
-        gamePlant = farmPlots[index].seedId;
-        return gamePlant;
-      }
-
-      else if (farmPlots[index].seedId == 3)
-      {
-        gamePlant = farmPlots[index].seedId;
         return gamePlant;
       }
     }
@@ -401,19 +368,8 @@ class _FarmScreen extends State<FarmScreen> {
 
     if (farmPlots[index].plotId == index + 1)
     {
-      if (farmPlots[index].seedId == 1)
+      if (farmPlots[index].seedId == 1 || farmPlots[index].seedId == 2 || farmPlots[index].seedId == 3)
       { 
-        gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
-        return gameTimeLeft;
-      }
-      else if (farmPlots[index].seedId == 2)
-      {
-        gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
-        return gameTimeLeft;
-      }
-
-      else if (farmPlots[index].seedId == 3)
-      {
         gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
         return gameTimeLeft;
       }
@@ -554,7 +510,7 @@ class _FarmScreen extends State<FarmScreen> {
             height: 100.0,
             child: GestureDetector(
               child: getImage('assets/images/mapicon.png', BoxFit.scaleDown, 3.0,),
-              onTap: () => goToMapScreen(), //go to the map screen
+              onTap: () => Navigator.pushNamed(context, '/map'), //go to the map screen
             ),
             alignment: Alignment.center,
           ),
@@ -585,7 +541,6 @@ class _FarmScreen extends State<FarmScreen> {
       ),
     );
   }
-
   //a way to simplify all the code for getting images
   Image getImage(String address, BoxFit fit, double theScale)
   {

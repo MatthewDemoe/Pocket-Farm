@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:pocket_farm/WorldMapScreen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/shop' : (context) => ShopScreen(),
         '/table': (context) => TableScreen(),
         '/chart': (context) => ChartScreen(),
+        '/map': (context) => WorldMapScreen(),
       },
     );
   }

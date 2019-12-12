@@ -59,7 +59,6 @@ class _ShopScreen extends State<ShopScreen> {
   List<Card> theCart;
   List<int> itemsToSell = [0,0,0,0,0,0];
   
-
   @override
   Widget build(BuildContext context) {
   theShop = new ShopLogic(context);
@@ -117,6 +116,7 @@ class _ShopScreen extends State<ShopScreen> {
 
   void _checkList() async
   {
+    //builds the checkout view items
     theCart = theShop.buildCheckout();
 
     //the list of cart items are build here with a listview.builder
@@ -218,10 +218,9 @@ class _ShopScreen extends State<ShopScreen> {
                   child: Icon(Icons.arrow_upward),
                 ),
                 onTap: (){
-                  setState(() {
-                    if (temp[i]>0)
+                  setState(() { //if they're trying to sell less than the amount they have, increment it
+                    if (itemsToSell[i]<temp[i])
                     itemsToSell[i]++;
-                    print(itemsToSell);
                   });
                 },
             ),
@@ -234,9 +233,8 @@ class _ShopScreen extends State<ShopScreen> {
               ),
               onTap: (){
                 setState(() {
-                  if (itemsToSell[i]>0)
+                  if (itemsToSell[i]>0) //if this item is greater than 0, decrement it
                   itemsToSell[i]--;
-                  print(itemsToSell);
                 });
               },
           ),
