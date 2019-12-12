@@ -2,25 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:pocket_farm/Plants.dart';
-import 'package:pocket_farm/ShopItem.dart';
 import 'package:pocket_farm/Inventory.dart';
-import 'package:pocket_farm/ShopScreen.dart';
 import 'Enums.dart';
 import 'FarmPlot.dart';
 import 'WorldMapScreen.dart';
 import 'notifications.dart';
-import 'Player.dart';
 import 'CloudStorage.dart';
-import 'FarmPlot.dart';
 import 'GameData.dart';
 import 'Database.dart';
-
-import 'WorldMap_Player&SeedData.dart';
-
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-
 import 'dart:async';
 
 class FarmScreen extends StatefulWidget {
@@ -32,31 +23,20 @@ class FarmScreen extends StatefulWidget {
   _FarmScreen createState() => _FarmScreen();
 }
 
-final snackBar = SnackBar(
-  behavior: SnackBarBehavior.floating,
-  content: Text('Snacks'),
-  action: SnackBarAction(
-    label: 'Back',
-    onPressed: () {},
-  ),
-);
-
-class _FarmScreen extends State<FarmScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();  
+//farmscreen class
+class _FarmScreen extends State<FarmScreen> { 
   int numFields = 5;
   int counter = 0;
-
-  bool showBar = false;
 
   //List<GestureDetector> fields = new List<GestureDetector>();
   List<FarmPlot> farmPlots = new List<FarmPlot>();
   var _notifications = Notifications();
 
-
+  //override the initState
   @override void initState() {
     super.initState();
-    _notifications.init();
-    _scheduleTick();
+    _notifications.init(); //initialize notifications
+    _scheduleTick(); //begin scheduleTick
   }
 
   void _tick(Duration timestamp){
@@ -68,6 +48,7 @@ class _FarmScreen extends State<FarmScreen> {
     SchedulerBinding.instance.scheduleFrameCallback(_tick);
   }
 
+  //function to initiate a dialogue when players click on a farm plot
   void _pickDialogue(FarmPlot plot){
     
     if(!plot.isPlanted())
@@ -81,6 +62,7 @@ class _FarmScreen extends State<FarmScreen> {
     } 
   }
 
+  //function to check if a farm plot is ready to be harvested
   void _checkOnPlant(FarmPlot plot)
   {
     if(plot.isReadyToPick())
@@ -94,6 +76,7 @@ class _FarmScreen extends State<FarmScreen> {
     }
   }
 
+  //function to let players choose to harvest the plant or leave it for now
   Future<void> _harvestPlant(FarmPlot plot) async
   {
     switch(await showDialog<bool>(
@@ -105,7 +88,7 @@ class _FarmScreen extends State<FarmScreen> {
           ),
           title: Text(FlutterI18n.translate(context, "words.readytoharvest")),
           children: [
-            Image.asset('assets/images/carrot.png',
+            Image.asset('assets/images/${plot.plotPlant}.png',
             fit: BoxFit.cover,     
             scale: 0.5,       
             ),
@@ -130,7 +113,7 @@ class _FarmScreen extends State<FarmScreen> {
         setState(() {
           plot.showProgressBar = false;
           plot.signpostImage= Image.asset(
-          plot.signpost[3], //set back to regular fence
+          plot.signpost[3], //set back to regular sign
           scale: 6, 
           fit: BoxFit.cover,
         ); 
@@ -143,6 +126,7 @@ class _FarmScreen extends State<FarmScreen> {
 
   }
 
+  //function to alert players that the selected plant is currently not ready to harvest
   Future<void> _notReadyToHarvest(FarmPlot plot) async
   {    
     await showDialog<bool>(
@@ -164,19 +148,13 @@ class _FarmScreen extends State<FarmScreen> {
               },
               child: Text(FlutterI18n.translate(context, "words.okay")),
             ),
-            SimpleDialogOption(
-            child: Text(FlutterI18n.translate(context, "words.useFertilizer")),
-            onPressed: () { 
-              _displayNotification(FlutterI18n.translate(context, "words.fertilizerNotification"), FlutterI18n.translate(context, "words.checkBack")); 
-              Navigator.pop(context, true);
-              },
-          ),
-          ]
+          ],
         );
       }
     );
   }
 
+  //function to let players select which seed they want to plant
   Future<void> _seedPicker(FarmPlot plot) async{
     switch (await showDialog<SeedType>(
       context: context,
@@ -214,7 +192,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().carrotSeeds != 0) {
         plot.plantSomething(SeedType.carrot);
         Inventory.instance().plantSeed(SeedType.carrot); //decrease carrot seeds
-        _setProgressBars(plot, Carrot().minutesToGrow, 0);
+        _setProgressBars(plot, Carrot().secondsToGrow, 0);
         break;
       }
       else {
@@ -228,7 +206,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().cabbageSeeds != 0) {
         plot.plantSomething(SeedType.cabbage);
         Inventory.instance().plantSeed(SeedType.cabbage); //decrease cabbage seeds
-        _setProgressBars(plot, Cabbage().minutesToGrow, 1);
+        _setProgressBars(plot, Cabbage().secondsToGrow, 1);
         break;
       }
       else {
@@ -242,7 +220,7 @@ class _FarmScreen extends State<FarmScreen> {
       if(Inventory.instance().kaleSeeds != 0) {
         plot.plantSomething(SeedType.kale); 
         Inventory.instance().plantSeed(SeedType.kale); //decrease kale seeds
-        _setProgressBars(plot, Kale().minutesToGrow, 2);
+        _setProgressBars(plot, Kale().secondsToGrow, 2);
         break;
       }
       else {
@@ -254,6 +232,7 @@ class _FarmScreen extends State<FarmScreen> {
     }
   }
 
+  //build the rows of farm plots for the farm
   Column buildRows() {
     List<Row> rows = new List<Row>();
 
@@ -270,7 +249,7 @@ class _FarmScreen extends State<FarmScreen> {
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  if(farmPlots[i].showProgressBar)
+                  if(farmPlots[i].showProgressBar) //only show the progress bar when true
                     Flexible(
                     child: farmPlots[i].theProgress,
                   ), 
@@ -293,7 +272,7 @@ class _FarmScreen extends State<FarmScreen> {
                       farmPlots[i].signpostImage,
                     ],
                   ),
-                  if(farmPlots[i].showProgressBar)
+                  if(farmPlots[i].showProgressBar) //only show the progress bar when true
                     Flexible(
                       child: farmPlots[i].theProgress,
                     ),
@@ -304,6 +283,7 @@ class _FarmScreen extends State<FarmScreen> {
       }
     }
 
+    //add the rows of farm plots to a column
     return Column(
       children: rows
           .map((row) => Container(
@@ -316,49 +296,163 @@ class _FarmScreen extends State<FarmScreen> {
     );
   }
 
-  SeedMarker seeds = new SeedMarker(); //list to hold the ungrabbed seeds from the map
-
-  //function to send over the list of ungrabbed seeds with navigator
-  void sendSeeds() async {
-    //await the ungrabbed seeds
-    SeedMarker temp = await Navigator.push(
+  //function to navigate to the map
+  void goToMapScreen() {
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => WorldMapScreen(currentSeeds: seeds)) //send seeds
+      MaterialPageRoute(builder: (context) => WorldMapScreen()) //go to map screen
     );
-    /*
-    seeds.seedList = temp.seedList; //fill the seeds list with the ungrabbed seeds
-    Inventory.instance().addSeed(SeedType.carrot, temp.totalCarrotSeeds); //increment carrot seeds from map
-    Inventory.instance().addSeed(SeedType.cabbage, temp.totalCabbageSeeds); //increment cabbage seeds from map
-    Inventory.instance().addSeed(SeedType.kale, temp.totalKaleSeeds); //increment kale seeds from map
-    */
   }  
 
+  //function to display notifications
   void _displayNotification(String title, String message) {
     _notifications.sendNotificationNow(title, message, 'payload');
   }
 
+  //save function to save to local database
   void _save()
   {
+    //save what is currently being grown
+    gamedata.p1Plant = checkPlot(0);
+    gamedata.p2Plant = checkPlot(1);
+    gamedata.p3Plant = checkPlot(2);
+    gamedata.p4Plant = checkPlot(3);
+    gamedata.p5Plant = checkPlot(4);
+
+    gamedata.p1TimeLeft = checkTimeRemaining(0);
+    gamedata.p2TimeLeft = checkTimeRemaining(1);
+    gamedata.p3TimeLeft = checkTimeRemaining(2);
+    gamedata.p4TimeLeft = checkTimeRemaining(3);
+    gamedata.p5TimeLeft = checkTimeRemaining(4);
+
+    //save the game data
     saveData();
   }
 
+  //load function to save from local database
   void _load() async
   {
-    //farm = await farm();
+    //load the game data
     loadData();
     print(gamedata);
+
+    loadPlot(0, gamedata.p1Plant, gamedata.p1TimeLeft);
+    loadPlot(1, gamedata.p2Plant, gamedata.p2TimeLeft);
+    loadPlot(2, gamedata.p3Plant, gamedata.p3TimeLeft);
+    loadPlot(3, gamedata.p4Plant, gamedata.p4TimeLeft);
+    loadPlot(4, gamedata.p5Plant, gamedata.p5TimeLeft);
+
   }
 
+  //cloudsave function to save to the cloud
   void _cloudSave()
   {
+    //save what is currently being grown
+    gamedata.p1Plant = checkPlot(0);
+    gamedata.p2Plant = checkPlot(1);
+    gamedata.p3Plant = checkPlot(2);
+    gamedata.p4Plant = checkPlot(3);
+    gamedata.p5Plant = checkPlot(4);
+
+    gamedata.p1TimeLeft = checkTimeRemaining(0);
+    gamedata.p2TimeLeft = checkTimeRemaining(1);
+    gamedata.p3TimeLeft = checkTimeRemaining(2);
+    gamedata.p4TimeLeft = checkTimeRemaining(3);
+    gamedata.p5TimeLeft = checkTimeRemaining(4);
+
+    //save the game data
     saveDataCloud(gamedata);
   }
 
+  //cloudload function to load from the cloud
   void _cloudLoad()
   {
-      cloudLoad();
+    //load from the cloud
+    cloudLoad();
+
+    loadPlot(0, gamedata.p1Plant, gamedata.p1TimeLeft);
+    loadPlot(1, gamedata.p2Plant, gamedata.p2TimeLeft);
+    loadPlot(2, gamedata.p3Plant, gamedata.p3TimeLeft);
+    loadPlot(3, gamedata.p4Plant, gamedata.p4TimeLeft);
+    loadPlot(4, gamedata.p5Plant, gamedata.p5TimeLeft);
+
   }
 
+  int checkPlot(int index) {
+    int gamePlant;
+
+    if (farmPlots[index].plotId == index + 1)
+    {
+      if (farmPlots[index].seedId == 1)
+      { 
+        gamePlant= farmPlots[index].seedId;
+        return gamePlant;
+      }
+      else if (farmPlots[index].seedId == 2)
+      {
+        gamePlant = farmPlots[index].seedId;
+        return gamePlant;
+      }
+
+      else if (farmPlots[index].seedId == 3)
+      {
+        gamePlant = farmPlots[index].seedId;
+        return gamePlant;
+      }
+    }
+    return 0; //return 0 if no plant
+
+  }
+
+  int checkTimeRemaining(int index) {
+    int gameTimeLeft;
+
+    if (farmPlots[index].plotId == index + 1)
+    {
+      if (farmPlots[index].seedId == 1)
+      { 
+        gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
+        return gameTimeLeft;
+      }
+      else if (farmPlots[index].seedId == 2)
+      {
+        gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
+        return gameTimeLeft;
+      }
+
+      else if (farmPlots[index].seedId == 3)
+      {
+        gameTimeLeft = farmPlots[index].plant.secondsToGrow + DateTime.now().difference(farmPlots[index].timeCompleted).inSeconds;
+        return gameTimeLeft;
+      }
+    }
+    return 0; //return 0 if no plant
+  }
+
+  void loadPlot(int index, int plantType, int timeLeft) {
+    if(farmPlots[index].plotId == index + 1) { //plot
+        if (plantType == 1) { //grow a carrot
+          setState(() {
+            farmPlots[index].plantSomethingOnLoad(SeedType.carrot, timeLeft);
+            _setProgressBars(farmPlots[index], timeLeft, 0);
+          });
+        }
+        if (plantType == 2) { //grow a cabbage
+          setState(() {
+            farmPlots[index].plantSomethingOnLoad(SeedType.carrot, timeLeft);
+            _setProgressBars(farmPlots[index], timeLeft, 1);
+          });
+        }
+        if (plantType == 3) { //grow a kale
+          setState(() {
+            farmPlots[index].plantSomethingOnLoad(SeedType.carrot, timeLeft);
+            _setProgressBars(farmPlots[index], timeLeft, 2);
+          });
+        }
+    }
+  }
+
+  //function to setup the progress bars
   void _setProgressBars(FarmPlot theFarmPlot, int theTime, int plant)
   {
     setState(() {
@@ -390,12 +484,17 @@ class _FarmScreen extends State<FarmScreen> {
     
   }
   
-
+  //build the widget for the farm screen
   @override
   Widget build(BuildContext context) {
+    int id = 0;
+
+    //initialize the farm plots to go into the farmplots list
     while (farmPlots.length < numFields) {
       FarmPlot temp;
+      id++;
 
+      //add a new farmplot to the list
       farmPlots.add(temp = new FarmPlot(gestureDetector: new GestureDetector(
         child: Image.asset(
           'assets/images/Land.png',
@@ -415,6 +514,7 @@ class _FarmScreen extends State<FarmScreen> {
           scale: 6, 
           fit: BoxFit.cover,
       );
+      farmPlots[index].plotId = id;
     }
 
     return Scaffold(
@@ -443,7 +543,6 @@ class _FarmScreen extends State<FarmScreen> {
           )
         ],
       ),
-      key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -467,20 +566,11 @@ class _FarmScreen extends State<FarmScreen> {
           ),
           ),    
           
-          buildRows(),
-          
-          Container(
-            alignment: Alignment.bottomRight,
-            child: RaisedButton(
-              onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(snackBar);
-              },
-              child: Text('Snackbar'),
-            ),
-          ),
+          buildRows(), //build the farmplots
         ]),
       ),
 
+      //create the drawer for the menu options
       drawer: ListView(
         padding: EdgeInsets.only(top: 100.0, right: 200.0),
         children: [
@@ -496,7 +586,7 @@ class _FarmScreen extends State<FarmScreen> {
               ),
             ),
           ),*/
-          Container(
+          Container( //map menu option
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
@@ -504,39 +594,39 @@ class _FarmScreen extends State<FarmScreen> {
                 fit: BoxFit.scaleDown,
                 scale: 3.0,
               ),
-              onTap: () => sendSeeds(),
+              onTap: () => goToMapScreen(), //go to the map screen
             ),
             alignment: Alignment.center,
           ),
-          Container(
+          Container( //shop menu option
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
                 'assets/images/shopicon.png',
                 fit: BoxFit.scaleDown,
               ),
-              onTap: () => Navigator.pushNamed(context, '/shop'),
+              onTap: () => Navigator.pushNamed(context, '/shop'), //go to the shop screen
             ),
           ),
-          Container(
+          Container( //inventory menu option
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
                 'assets/images/tableicon.png',
                 fit: BoxFit.cover,
               ),
-              onTap: () => Navigator.pushNamed(context, '/table'),
+              onTap: () => Navigator.pushNamed(context, '/table'), //go to the inventory screen
             ),
             alignment: Alignment.center,
           ),
-          Container(
+          Container( //highscores menu option
             height: 100.0,
             child: GestureDetector(
               child: Image.asset(
                 'assets/images/charticon.png',
                 fit: BoxFit.cover,
               ),
-              onTap: () => Navigator.pushNamed(context, '/chart'),
+              onTap: () => Navigator.pushNamed(context, '/chart'), //go to the highscores screen
             ),
             alignment: Alignment.center,
           ),

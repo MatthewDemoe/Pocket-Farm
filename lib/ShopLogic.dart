@@ -180,12 +180,11 @@ class ShopLogic
 
     for (int i = 0; i < shopItems.length;i++)
     {
-      //only buy an item if it's in the cart
+      //increment total cost
       if (shopItems[i].amount > 0) {
-      totalCost += shopItems[i].price;
-        shopItems[i].addItem();
-        shopItems[i].amount = 0; //clear the amount after purchase
+        totalCost += shopItems[i].price * shopItems[i].amount;
       }
+
     }
 
     if(totalCost > Inventory.instance().dollars)
@@ -195,7 +194,17 @@ class ShopLogic
 
     else
     {
+      for (int i = 0; i < shopItems.length;i++)
+      {
+        //only buy an item if it's in the cart
+        if (shopItems[i].amount > 0) {
+          shopItems[i].addItem();
+          shopItems[i].amount = 0;
+        }
+      }
+
       Inventory.instance().dollars -= totalCost;
+      Inventory.instance().updateGameData();
       return true;
     }
   }
