@@ -74,7 +74,7 @@ class SeedMarker {
           child: GestureDetector (
             //create the iconbutton
             child: Image.asset (
-              'assets/images/carrotseed.png',
+              'assets/images/pouch0.png',
             ),
             onTap: () {
               Inventory.instance().addSeed(SeedType.carrot, 1);
@@ -98,7 +98,7 @@ class SeedMarker {
           child: GestureDetector (
             //create the iconbutton
             child: Image.asset (
-              'assets/images/cabbageseed.png',
+              'assets/images/pouch1.png',
             ),
             onTap: () {
               Inventory.instance().addSeed(SeedType.cabbage, 1);
@@ -123,7 +123,7 @@ class SeedMarker {
           child: GestureDetector (
             //create the iconbutton
             child: Image.asset (
-              'assets/images/kaleSeed.png',
+              'assets/images/pouch2.png',
             ),
             onTap: () {
               Inventory.instance().addSeed(SeedType.kale, 1);

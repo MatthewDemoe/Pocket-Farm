@@ -49,6 +49,7 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Inventory.instance().updateGameData();
     return new Center(
       child: Container(
       width: 400,

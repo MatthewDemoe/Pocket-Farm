@@ -58,11 +58,13 @@ class _ShopScreen extends State<ShopScreen> {
   ShopLogic theShop;
   List<Card> theCart;
   List<int> itemsToSell = [0,0,0,0,0,0];
+  
 
   @override
   Widget build(BuildContext context) {
   theShop = new ShopLogic(context);
   theShop.contextKey = _scaffoldKey; //set the shops scaffold key
+  Inventory.instance().updateGameData();
   //Sets up the tab options
   List<Layout> tabOptions = <Layout>[
       Layout(

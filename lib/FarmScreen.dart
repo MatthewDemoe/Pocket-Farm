@@ -180,7 +180,7 @@ class _FarmScreen extends State<FarmScreen> {
     )){
       case SeedType.carrot:
       if(Inventory.instance().carrotSeeds != 0) {
-        plantSeeds(plot, SeedType.carrot, Carrot().minutesToGrow, 0);
+        plantSeeds(plot, SeedType.carrot, Carrot().secondsToGrow, 0);
         break;
       }
       else {
@@ -192,7 +192,7 @@ class _FarmScreen extends State<FarmScreen> {
 
       case SeedType.cabbage:
       if(Inventory.instance().cabbageSeeds != 0) {
-        plantSeeds(plot, SeedType.cabbage, Cabbage().minutesToGrow, 1);
+        plantSeeds(plot, SeedType.cabbage, Cabbage().secondsToGrow, 1);
         break;
       }
       else {
@@ -204,7 +204,7 @@ class _FarmScreen extends State<FarmScreen> {
 
       case SeedType.kale:
       if(Inventory.instance().kaleSeeds != 0) {
-        plantSeeds(plot, SeedType.kale, Kale().minutesToGrow, 2);
+        plantSeeds(plot, SeedType.kale, Kale().secondsToGrow, 2);
         break;
       }
       else {
@@ -531,7 +531,7 @@ class _FarmScreen extends State<FarmScreen> {
             width: 300,
             height: 300,
           child: Row(
-            children: <Widget>[getImage('assets/images/TheBarn.png', BoxFit.none, 2.4),     
+            children: <Widget>[getImage('assets/images/TheBarn.png', BoxFit.none, 2.5),     
           ],
           ),
           ),    
