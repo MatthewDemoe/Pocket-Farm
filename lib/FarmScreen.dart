@@ -387,13 +387,13 @@ class _FarmScreen extends State<FarmScreen> {
         }
         if (plantType == 2) { //grow a cabbage
           setState(() {
-            farmPlots[index].plantSomethingOnLoad(SeedType.carrot, timeLeft);
+            farmPlots[index].plantSomethingOnLoad(SeedType.cabbage, timeLeft);
             _setProgressBars(farmPlots[index], timeLeft, 1);
           });
         }
         if (plantType == 3) { //grow a kale
           setState(() {
-            farmPlots[index].plantSomethingOnLoad(SeedType.carrot, timeLeft);
+            farmPlots[index].plantSomethingOnLoad(SeedType.kale, timeLeft);
             _setProgressBars(farmPlots[index], timeLeft, 2);
           });
         }
