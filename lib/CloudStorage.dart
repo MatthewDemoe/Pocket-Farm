@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:pocket_farm/GameData.dart';
 
 import 'dart:async';
@@ -61,11 +59,11 @@ void cloudLoad() async
     p3Plant: d.data['p3Plant'],
     p4Plant: d.data['p4Plant'],
     p5Plant: d.data['p5Plant'],
-    p1TimeLeft: d.data['p1TimeLeft'],
-    p2TimeLeft: d.data['p2TimeLeft'],
-    p3TimeLeft: d.data['p3TimeLeft'],
-    p4TimeLeft: d.data['p4TimeLeft'],
-    p5TimeLeft: d.data['p5TimeLeft'],
+    p1TimeLeft: d.data['p1TimeLeft'].toInt(),
+    p2TimeLeft: d.data['p2TimeLeft'].toInt(),
+    p3TimeLeft: d.data['p3TimeLeft'].toInt(),
+    p4TimeLeft: d.data['p4TimeLeft'].toInt(),
+    p5TimeLeft: d.data['p5TimeLeft'].toInt(),
     money: d.data['money'],
     fasterGrowingLevel: d.data['fasterGrowingLevel'],
     betterHarvestLevel: d.data['betterHarvestLevel'],

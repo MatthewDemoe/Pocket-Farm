@@ -45,7 +45,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
   //geocoding function to return street names
   String checkPosition() {
     //reverse geocoding to get street names from player location
-    playerLocation.placemarkFromCoordinates(mapPlayer.position.latitude, mapPlayer.position.longitude).then((List<Placemark> surroundingLoc) {
+    playerLocation. placemarkFromCoordinates(mapPlayer.position.latitude, mapPlayer.position.longitude).then((List<Placemark> surroundingLoc) {
       //loop through the list of surrounding locations
       for (Placemark currentStreets in surroundingLoc) { 
         street = currentStreets.thoroughfare; //set street to current street name
@@ -59,7 +59,9 @@ class _WorldMapPage extends State<WorldMapScreen> {
   LatLng getPosition()
   {
     //geolocation to get the GPS's current position
+    
     if (onWorldMapScreen) {
+    new Timer(new Duration(seconds: 1), () =>
       playerLocation.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position pos) {
         setState(() {
           //update the player's latitude and longitude information
@@ -69,8 +71,10 @@ class _WorldMapPage extends State<WorldMapScreen> {
           //so they don't lose track of their player or the seeds around them
           playerController.move(mapPlayer.position, 17);
         });
-      });
+      }),    
+    );
     }
+    
 
     return mapPlayer.position; //return the latitude/longitude of the player
   }
@@ -103,7 +107,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
   void seedSpawnTimer() async {
     
     //timer that updates every 1 second
-    spawnTimer = new Timer.periodic(new Duration(seconds: 1), (Timer temp) =>
+    spawnTimer = new Timer.periodic(new Duration(seconds: 5), (Timer temp) =>
     setState(() { 
 
       
@@ -113,7 +117,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
       //if the playersurroundings is the same as the current street (meaning they haven't moved)
       //and 10 or seeds have spawned, decrease the rate the spawnTime increases
       if (playerSurroundings == currentSurroundings && seedsSpawned >= 10) {
-        spawnTime-= 0.5;
+        spawnTime-= 2.5;
       }
       //otherwise, if the player has moved to a different street
       //update the playerSurroundings, and increase the rate the spawnTime increases
@@ -121,7 +125,7 @@ class _WorldMapPage extends State<WorldMapScreen> {
       //this is to encourage the player to move around to get seeds spawning more frequently
       else {
         playerSurroundings = currentSurroundings;
-        spawnTime-= 1;
+        spawnTime-= 5;
         if (seedsSpawned >= 11)
           seedsSpawned = 0;
       }
